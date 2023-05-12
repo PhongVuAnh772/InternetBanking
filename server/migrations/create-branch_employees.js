@@ -8,7 +8,7 @@ module.exports = {
         type: Sequelize.DATEONLY,
       },
       End_Date: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATEONLY,
       },
     });

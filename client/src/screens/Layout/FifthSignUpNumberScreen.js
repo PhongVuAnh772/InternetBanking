@@ -16,6 +16,38 @@ const FifthSignUpNumberScreen = () => {
   const navigation = useNavigation();
   const [valueEmail, setValueEmail] = useState('');
   const [valueCMND, setValueCMND] = useState('');
+  const onSubmitHandler = async () => {
+    const payload = {
+      email,
+      user_name,
+      password,
+    };
+    try {
+      const res = await axios.post(`http://10.0.2.2:5000/api/signUp`, payload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      let token = res.data.token;
+      if (token) {
+        AsyncStorage.setItem('token', token);
+
+        onLoggedIn(token);
+
+        setIsError(false);
+        setMessage(res.data.message);
+        setIsSignedIn(true);
+        navigation.navigate('Home', {
+          email: email,
+          user_name: user_name,
+        });
+      }
+    } catch (err) {
+      console.log('Co loi : ' + err);
+      setIsError(true);
+      setMessage(res.data.message);
+    }
+  };
   const handleButton = () => {
     // navigation.navigate('');
   };

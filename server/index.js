@@ -1,11 +1,11 @@
 const express = require("express");
 const cors = require("cors");
-const rootRouter = require("./src/routers/routes.js");
+const rootRouter = require("./routes/routes.js");
 const { Sequelize } = require("sequelize");
 
 const PORT = 5000;
 
-const sequelize = new Sequelize("movieengagement", "root", "22092002", {
+const sequelize = new Sequelize("banking_db", "root", "22092002", {
   host: "localhost",
   dialect: "mysql",
 });

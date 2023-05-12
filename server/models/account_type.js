@@ -1,12 +1,10 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Account_type extends Model {
-    static associate(models) {
-      // define association here
-    }
+  class account_type extends Model {
+    static associate(models) {}
   }
-  Account_type.init(
+  account_type.init(
     {
       Account_Type: DataTypes.STRING(20),
       Minimum_Balance_Restriction: DataTypes.DECIMAL(10, 2),
@@ -18,5 +16,5 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
-  return Account_type;
+  return account_type;
 };

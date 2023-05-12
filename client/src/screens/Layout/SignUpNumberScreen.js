@@ -7,21 +7,43 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import image from '../../assets/components/image.jpg';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
 const SignUpNumberScreen = () => {
   const navigation = useNavigation();
   const [valueEmail, setValueEmail] = useState('');
   const [valueCMND, setValueCMND] = useState('');
+  const [errMessage, seterrMessage] = useState('');
+  const [errMessageCMND, seterrMessageCMND] = useState('');
 
-  const handleButton = () => {
-    navigation.navigate('SecondSignUpNumberScreen', {
-      email: valueEmail,
-      CMND: valueCMND,
-    });
+  const regexEmail = /@gmail\.com$/;
+
+  const handleButton = async () => {
+    if (!regexEmail.test(valueEmail)) {
+      return seterrMessage('Email không đúng định dạng, vui lòng thử lại');
+    } else if (valueCMND.length < 9) {
+      return seterrMessageCMND(
+        'Số CMND không đúng định dạng, vui lòng thử lại',
+      );
+    }
+    try {
+      const res = await axios.post(`http://10.0.2.2:5000/api/validateEmail`, {
+        Email: valueEmail,
+      });
+      if (res.data.success) {
+        navigation.navigate('SecondSignUpNumberScreen', {
+          email: valueEmail,
+          CMND: valueCMND,
+        });
+      }
+    } catch (err) {
+      console.log('Co loi : ' + err);
+      console.log('Có lỗi server');
+    }
   };
 
   return (
@@ -66,23 +88,38 @@ const SignUpNumberScreen = () => {
             placeholder="example@gmail.com"
             placeholderTextColor="gray"
           />
-          <Text style={styles.countWord}>
-            Hãy viết đúng định dạng của Email
-          </Text>
+          {errMessage === '' ? (
+            <Text style={styles.countWord}>
+              Hãy viết đúng định dạng của Email
+            </Text>
+          ) : (
+            <Text style={[styles.countWord, styles.errMessage]}>
+              {errMessage}
+            </Text>
+          )}
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Nhập số CMND/CCCD</Text>
           <TextInput
             value={valueCMND}
             onChangeText={setValueCMND}
+            onFocus={() => seterrMessage('')}
             style={styles.input}
             placeholder="197xxxxxxx"
             placeholderTextColor="gray"
             maxLength={12}
+            keyboardType="numeric"
           />
-          <Text style={styles.countWord}>
-            Vui lòng nhập số CMND/CCCD 9 hoặc 12 kí tự
-          </Text>
+
+          {errMessageCMND === '' ? (
+            <Text style={styles.countWord}>
+              Vui lòng nhập số CMND/CCCD 9 hoặc 12 kí tự
+            </Text>
+          ) : (
+            <Text style={[styles.countWord, styles.errMessage]}>
+              {errMessageCMND}
+            </Text>
+          )}
         </View>
         <TouchableOpacity
           style={styles.inputContainerButton}
@@ -151,6 +188,7 @@ const styles = StyleSheet.create({
 
     alignItems: 'center',
   },
+  errMessage: {color: 'red'},
   header: {
     flexDirection: 'row',
     alignItems: 'center',

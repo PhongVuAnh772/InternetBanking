@@ -92,6 +92,7 @@ const SecondSignUpNumberScreen = ({route}) => {
             placeholder="197xxxxxxx"
             placeholderTextColor="gray"
             maxLength={8}
+            keyboardType="numeric"
           />
           <Text style={styles.countWord}>Vui lòng dãy số 8 số</Text>
         </View>

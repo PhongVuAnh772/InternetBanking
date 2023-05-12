@@ -3,7 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("banking_transactions", {
-      transaction_id: {
+      Transaction_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -18,7 +18,7 @@ module.exports = {
         type: Sequelize.STRING(45),
       },
       Description: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING(45),
       },
       Date: {

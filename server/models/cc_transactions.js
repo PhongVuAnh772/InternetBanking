@@ -1,27 +1,25 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Branches extends Model {
+  class cc_transactions extends Model {
     static associate(models) {
       // define association here
     }
   }
-  Branches.init(
+  cc_transactions.init(
     {
-      Branch_id: DataTypes.INTEGER,
-      Branch_Name: DataTypes.STRING(45),
-      Street_Address: DataTypes.STRING(50),
-      City: DataTypes.STRING(25),
-      State: DataTypes.CHAR(2),
-      Zipcode: DataTypes.INTEGER,
-      Phone_Number: DataTypes.STRING(12),
+      Transaction_id: DataTypes.INTEGER,
+      Transaction_Date: DataTypes.DATEONLY,
+      CC_Number: DataTypes.STRING(20),
+      Amount: DataTypes.DECIMAL(10, 2),
+      Merchant_Details: DataTypes.STRING(45),
     },
     {
       sequelize,
-      modelName: "branches",
+      modelName: "cc_transactions",
       freezeTableName: true,
       timestamps: false,
     }
   );
-  return Branches;
+  return cc_transactions;
 };

@@ -1,12 +1,12 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Accounts extends Model {
+  class accounts extends Model {
     static associate(models) {
       // define association here
     }
   }
-  Accounts.init(
+  accounts.init(
     {
       Account_id: DataTypes.INTEGER,
       Account_Balance: DataTypes.INTEGER,
@@ -22,5 +22,5 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
-  return Accounts;
+  return accounts;
 };

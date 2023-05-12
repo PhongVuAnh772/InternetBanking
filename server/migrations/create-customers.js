@@ -33,6 +33,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
+      Email: {
+        allowNull: false,
+        type: Sequelize.STRING(45),
+      },
       Sex: {
         allowNull: false,
         type: Sequelize.CHAR(1),

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, {Callout, Marker} from 'react-native-maps';
 
 const GoogleMap = () => {
   // const [initialRegion, setInitialRegion] = useState(null);
@@ -44,8 +44,9 @@ const GoogleMap = () => {
       // showsBuildings={true}
       // mapType="satellite"
       showsUserLocation={true}
-      minZoomLevel={0}
-    />
+      minZoomLevel={0}>
+      {/* <Marker /> */}
+    </MapView>
   );
 };
 
