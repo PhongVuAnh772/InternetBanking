@@ -4,6 +4,10 @@ module.exports = (sequelize, DataTypes) => {
   class branches extends Model {
     static associate(models) {
       // define association here
+      branches.belongsTo(models.accounts, {
+        foreignKey: "Branch_id",
+        as: "branchData",
+      });
     }
   }
   branches.init(

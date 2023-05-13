@@ -11,13 +11,8 @@ import React, {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
 const Content = () => {
-  //   useEffect(() => {
-  //     effect;
-  //     return () => {
-  //       cleanup;
-  //     };
-  //   }, [input]);
   const navigation = useNavigation();
   const [showPass, setshowPass] = useState(false);
   const [name, setName] = useState('');
@@ -36,8 +31,20 @@ const Content = () => {
   const toggleDeletePass = () => {
     setPassword('');
   };
+
+  const payload = {password: showPass, name: name};
+  const handlePressSignIn = async () => {
+    try {
+      const res = await axios.post('http://10.0.2.2:5000/api/login', payload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
   const iconName = showPass ? 'eye' : 'eye-slash';
-  const loginFunc = () => {};
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -79,7 +86,7 @@ const Content = () => {
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.loginButton} onPress={toggleShowPassword}>
-        <Text style={styles.loginButtonText} onPress={loginFunc}>
+        <Text style={styles.loginButtonText} onPress={handlePressSignIn}>
           Đăng nhập
         </Text>
       </TouchableOpacity>

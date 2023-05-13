@@ -30,6 +30,7 @@ const AuthScreen = () => {
       useNativeDriver: true,
     }).start(() => setLoading(false));
   }, [animationValue]);
+
   return loading ? (
     <LoadingScreen />
   ) : (

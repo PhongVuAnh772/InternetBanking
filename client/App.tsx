@@ -15,7 +15,7 @@ import FifthSignUpNumberScreen from './src/screens/Layout/FifthSignUpNumberScree
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [isSignIn, setIsLoggedIn] = useState(false);
+  const [isSignIn, setIsLoggedIn] = useState(true);
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>

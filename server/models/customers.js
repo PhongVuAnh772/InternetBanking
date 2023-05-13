@@ -4,6 +4,10 @@ module.exports = (sequelize, DataTypes) => {
   class customers extends Model {
     static associate(models) {
       // define association here
+      customers.hasMany(models.account_customers, {
+        foreignKey: "Customer_id",
+        as: "customerData",
+      });
     }
   }
   customers.init(
