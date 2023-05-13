@@ -4,7 +4,7 @@ const express = require("express");
 const bcryptjs = require("bcryptjs");
 const crypto = require("crypto");
 
-const getData = async (req, res, next) => {
+const getDataAccount = async (req, res, next) => {
   const { account_id } = req.body;
 
   try {
@@ -37,5 +37,5 @@ const getData = async (req, res, next) => {
 };
 
 module.exports = {
-  getData,
+  getDataAccount,
 };

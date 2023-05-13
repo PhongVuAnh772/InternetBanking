@@ -1,10 +1,15 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 import React from 'react';
 
 const ExtendedContent = () => {
   return (
     <View style={styles.container}>
-      <Text>ExtendedContent</Text>
+      <View style={styles.infoContainer}>
+        <Image style={styles.image} source={'../../../../assets/girl.png'} />
+        <View style={styles.infoDesc}>
+          {/* <Text style={styles.infoName}>{name}</Text> */}
+        </View>
+      </View>
     </View>
   );
 };

@@ -3,7 +3,11 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class loan extends Model {
     static associate(models) {
-      // define association here
+      loan.belongsTo(models.customers, {
+        foreignKey: "Customer_id",
+        targetKey: "Customer_id",
+        as: "loanData",
+      });
     }
   }
   loan.init(

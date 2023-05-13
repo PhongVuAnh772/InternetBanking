@@ -8,6 +8,14 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "Customer_id",
         as: "customerData",
       });
+      customers.hasMany(models.loan, {
+        foreignKey: "Customer_id",
+        as: "loanData",
+      });
+      customers.hasMany(models.credit_cards, {
+        foreignKey: "Customer_id",
+        as: "CreditCardData",
+      });
     }
   }
   customers.init(
