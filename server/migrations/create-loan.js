@@ -3,12 +3,13 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("loan", {
-      Loan_id: {
+      id: {
         allowNull: false,
-        autoIncrement: false,
-        primaryKey: true,
         type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
       },
+
       Duration_in_Years: {
         allowNull: false,
         type: Sequelize.DECIMAL(4, 2),

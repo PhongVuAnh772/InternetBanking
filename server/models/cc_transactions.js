@@ -8,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   cc_transactions.init(
     {
-      Transaction_id: DataTypes.INTEGER,
       Transaction_Date: DataTypes.DATEONLY,
       CC_Number: DataTypes.STRING(20),
       Amount: DataTypes.DECIMAL(10, 2),

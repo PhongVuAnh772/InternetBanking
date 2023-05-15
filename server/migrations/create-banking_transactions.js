@@ -3,12 +3,13 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("banking_transactions", {
-      Transaction_id: {
+      id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER.UNSIGNED,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
       },
+
       Amount: {
         allowNull: false,
         type: Sequelize.DECIMAL(10, 2),

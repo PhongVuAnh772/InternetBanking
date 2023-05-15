@@ -3,12 +3,15 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("accounts", {
-      Account_id: {
+      id: {
         allowNull: false,
-        autoIncrement: false,
         primaryKey: true,
-
-        type: Sequelize.INTEGER.UNSIGNED,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+      },
+      Branch_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
       },
       Account_Balance: {
         allowNull: false,
@@ -21,6 +24,10 @@ module.exports = {
       password: {
         allowNull: false,
         type: Sequelize.STRING(1000),
+      },
+      Account_Type: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
       },
     });
   },

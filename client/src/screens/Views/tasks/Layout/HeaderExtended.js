@@ -16,7 +16,6 @@ export default HeaderExtended;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.5,
     backgroundColor: 'white',
     paddingVertical: 10,
     width: '100%',
@@ -24,6 +23,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 10,
+    paddingVertical: 20,
   },
   header: {
     color: 'black',

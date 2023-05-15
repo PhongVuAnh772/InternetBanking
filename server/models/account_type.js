@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   account_type.init(
     {
-      Account_Type: DataTypes.STRING(20),
+      Account_Type: DataTypes.INTEGER,
       Minimum_Balance_Restriction: DataTypes.DECIMAL(10, 2),
     },
     {

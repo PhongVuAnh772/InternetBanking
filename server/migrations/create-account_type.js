@@ -3,10 +3,14 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("account_type", {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+      },
       Account_type: {
         allowNull: false,
-        autoIncrement: false,
-        primaryKey: true,
         type: Sequelize.INTEGER,
       },
       Minimum_Balance_Restriction: {

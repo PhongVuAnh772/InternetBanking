@@ -8,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   employees.init(
     {
-      Employees_id: DataTypes.INTEGER,
       First_Name: DataTypes.STRING(45),
       Last_Name: DataTypes.STRING(45),
       Supervisor: DataTypes.INTEGER.UNSIGNED,

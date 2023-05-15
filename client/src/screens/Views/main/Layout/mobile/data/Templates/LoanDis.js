@@ -1,14 +1,14 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
-const AdvertiseMent = () => {
+const LoanDis = () => {
   return (
     <View>
-      <Text>AdvertiseMent</Text>
+      <Text>LoanDis</Text>
     </View>
   );
 };
 
-export default AdvertiseMent;
+export default LoanDis;
 
 const styles = StyleSheet.create({});

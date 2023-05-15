@@ -8,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   banking_transactions.init(
     {
-      Transaction_id: DataTypes.INTEGER,
       Transaction_Type: DataTypes.INTEGER,
       Description: DataTypes.INTEGER,
       Amount: DataTypes.DATEONLY,

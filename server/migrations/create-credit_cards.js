@@ -3,10 +3,15 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("credit_cards", {
+      id: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+      },
       CC_number: {
         allowNull: false,
         autoIncrement: false,
-        primaryKey: true,
         type: Sequelize.INTEGER,
       },
       Maximum_Limit: {

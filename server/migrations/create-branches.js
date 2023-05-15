@@ -3,21 +3,17 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("branches", {
-      Branch_id: {
+      id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER.UNSIGNED,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
       },
       Branch_Name: {
         allowNull: false,
         type: Sequelize.STRING(45),
       },
-      Branch_Address: {
-        allowNull: false,
-        type: Sequelize.STRING(50),
-      },
-      Branch_Address: {
+      Street_Address: {
         allowNull: false,
         type: Sequelize.STRING(50),
       },
