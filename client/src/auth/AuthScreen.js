@@ -13,10 +13,10 @@ import Content from './Template/Content';
 import Footer from './Template/Footer';
 import background from '../assets/background2.jpg';
 import LoadingScreen from '../screens/LoadingScreen';
-const AuthScreen = () => {
+const AuthScreen = ({navigation, route}) => {
   const [loading, setLoading] = useState(true);
   const [animationValue] = useState(new Animated.Value(0));
-
+  const {isSignIn, setIsLoggedIn} = route.params;
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -54,7 +54,7 @@ const AuthScreen = () => {
             },
           ]}>
           <Header />
-          <Content />
+          <Content isSignIn={isSignIn} setIsLoggedIn={setIsLoggedIn} />
           <Footer />
         </Animated.View>
       </ImageBackground>

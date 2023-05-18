@@ -9,18 +9,22 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-
+      Loan_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       Duration_in_Years: {
         allowNull: false,
         type: Sequelize.DECIMAL(4, 2),
       },
-      Interest_Rate: {
-        allowNull: false,
-        type: Sequelize.DECIMAL(4, 2),
-      },
+
       Loan_Start_Date: {
         allowNull: false,
         type: Sequelize.DATEONLY,
+      },
+      Interest_Rate: {
+        allowNull: false,
+        type: Sequelize.DECIMAL(4, 2),
       },
       Loan_Amount_Taken: {
         allowNull: false,
@@ -34,6 +38,11 @@ module.exports = {
       Loan_Type: {
         allowNull: false,
         type: Sequelize.STRING(45),
+      },
+      Customer_id: {
+        allowNull: false,
+        foreignKey: true,
+        type: Sequelize.INTEGER,
       },
     });
   },

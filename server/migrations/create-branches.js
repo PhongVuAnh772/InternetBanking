@@ -9,17 +9,21 @@ module.exports = {
         type: Sequelize.INTEGER,
         autoIncrement: true,
       },
+      Branch_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       Branch_Name: {
         allowNull: false,
-        type: Sequelize.STRING(45),
+        type: Sequelize.STRING,
       },
       Street_Address: {
         allowNull: false,
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING,
       },
       City: {
         allowNull: false,
-        type: Sequelize.STRING(25),
+        type: Sequelize.STRING,
       },
       State: {
         allowNull: false,
@@ -31,7 +35,7 @@ module.exports = {
       },
       Phone_Number: {
         allowNull: false,
-        type: Sequelize.STRING(12),
+        type: Sequelize.STRING,
       },
     });
   },

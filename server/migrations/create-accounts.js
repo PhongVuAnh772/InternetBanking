@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         autoIncrement: true,
       },
-      Branch_id: {
+      Account_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
@@ -17,17 +17,24 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DECIMAL(10, 2),
       },
+      Branch_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        foreignKey: true,
+      },
+
       Date_Opened: {
         allowNull: false,
         type: Sequelize.DATEONLY,
       },
       password: {
         allowNull: false,
-        type: Sequelize.STRING(1000),
+        type: Sequelize.STRING,
       },
       Account_Type: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
+        foreignKey: true,
       },
     });
   },

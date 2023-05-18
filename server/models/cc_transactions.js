@@ -3,15 +3,22 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class cc_transactions extends Model {
     static associate(models) {
-      // define association here
+      cc_transactions.belongsTo(models.credit_cards, {
+        foreignKey: "CC_number",
+        targetKey: "id",
+        as: "CreditCardcctransactionsData",
+      });
     }
   }
   cc_transactions.init(
     {
+      Transaction_id: DataTypes.INTEGER,
+
+      CC_number: DataTypes.STRING,
       Transaction_Date: DataTypes.DATEONLY,
-      CC_Number: DataTypes.STRING(20),
+
       Amount: DataTypes.DECIMAL(10, 2),
-      Merchant_Details: DataTypes.STRING(45),
+      Merchant_Details: DataTypes.STRING,
     },
     {
       sequelize,

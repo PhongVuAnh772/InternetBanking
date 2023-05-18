@@ -11,8 +11,7 @@ module.exports = {
       },
       CC_number: {
         allowNull: false,
-        autoIncrement: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       Maximum_Limit: {
         allowNull: false,
@@ -25,6 +24,11 @@ module.exports = {
       Credit_Score: {
         allowNull: false,
         type: Sequelize.INTEGER.UNSIGNED,
+      },
+      Customer_id: {
+        allowNull: false,
+        foreignKey: true,
+        type: Sequelize.INTEGER,
       },
     });
   },

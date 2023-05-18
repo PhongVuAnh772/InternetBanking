@@ -16,7 +16,7 @@ const HomeScreen = () => {
     <Tab.Navigator
       screenOptions={({route}) => ({
         headerShown: false,
-        tabBarActiveTintColor: '#000000',
+        tabBarActiveTintColor: 'green',
         tabBarInactiveTintColor: '#000000',
         tabBarStyle: {
           height: 55,
@@ -30,16 +30,16 @@ const HomeScreen = () => {
 
           if (route.name === 'AccountPage') {
             iconName = focused ? 'credit-card' : 'credit-card';
-            color = focused ? 'rgb(0, 97, 159)' : 'gray';
+            color = focused ? 'green' : 'gray';
           } else if (route.name === 'MainPage') {
             iconName = focused ? 'bar-chart' : 'bar-chart';
-            color = focused ? 'rgb(0, 97, 159)' : 'gray';
+            color = focused ? 'green' : 'gray';
           } else if (route.name === 'ExtendedContainer') {
             iconName = focused ? 'more-horiz' : 'more-horiz';
-            color = focused ? 'rgb(0, 97, 159)' : 'gray';
+            color = focused ? 'green' : 'gray';
           } else if (route.name === 'NotificationContainer') {
             iconName = focused ? 'notifications-none' : 'notifications-none';
-            color = focused ? 'rgb(0, 97, 159)' : 'gray';
+            color = focused ? 'green' : 'gray';
           }
 
           return <MaterialIcons name={iconName} size={25} color={color} />;
@@ -65,8 +65,8 @@ const HomeScreen = () => {
           tabBarIcon: () => {
             return (
               <FastImage
-                style={{width: 45, height: 45, marginTop: 20}}
-                source={require('../assets/qr-code.gif')}
+                style={{width: 45, height: 45, marginTop: 20, borderRadius: 10}}
+                source={require('../assets/output-onlinegiftools.gif')}
                 resizeMode={FastImage.resizeMode.contain}
               />
             );

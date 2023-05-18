@@ -1,10 +1,20 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {useNavigation} from '@react-navigation/native';
+
 const ContentExtended = ({name, icon}) => {
+  const navigation = useNavigation();
+  const clickHandler = () => {
+    if (name == 'Cài đặt') {
+      navigation.navigate('SettingExtended');
+    } else if (name == 'Smart OTP') {
+      navigation.navigate('SettingExtended');
+    }
+  };
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={clickHandler}>
       <FontAwesome
         name={icon}
         size={20}
@@ -20,7 +30,7 @@ const ContentExtended = ({name, icon}) => {
       ) : (
         <Text style={styles.textVersion}>5.4.4</Text>
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 

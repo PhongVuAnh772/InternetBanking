@@ -11,7 +11,7 @@ const HeaderAccountPage = () => {
         <Text style={styles.Text}>Tài khoản</Text>
       </View>
       <TouchableOpacity
-        onPress={() => navigation.navigate('QRPageOriginal')}
+        onPress={() => navigation.navigate('AccountQR')}
         style={styles.touchableOpacity}>
         <MaterialIcons
           name="account-balance-wallet"

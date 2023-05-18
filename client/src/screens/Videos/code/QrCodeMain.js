@@ -1,19 +1,21 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import ContentMain from './mobile/ContentMain';
-const MainIndex = () => {
+
+const QrCodeMain = () => {
   return (
     <View style={styles.container}>
-      <ContentMain />
+      <Text>QrCodeMain</Text>
     </View>
   );
 };
 
-export default MainIndex;
+export default QrCodeMain;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgb(242, 246, 245)',
+    backgroundColor: 'black',
   },
 });
+
+// npm i react-native-camera

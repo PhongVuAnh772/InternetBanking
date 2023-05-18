@@ -9,7 +9,7 @@ const getDataAccount = async (req, res) => {
 
   try {
     let account = await db.account_customers.findOne({
-      where: { id: account_id },
+      where: { Account_id: account_id },
       include: [
         { model: db.customers, as: "customerData" },
         {

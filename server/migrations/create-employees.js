@@ -9,30 +9,37 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-
+      Employee_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       First_Name: {
         allowNull: false,
-        type: Sequelize.STRING(45),
+        type: Sequelize.STRING,
       },
       Last_Name: {
         allowNull: false,
-        type: Sequelize.STRING(45),
+        type: Sequelize.STRING,
       },
       Supervisor_id: {
         allowNull: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER.UNSIGNED,
       },
       Level_of_Access: {
         allowNull: false,
-        type: Sequelize.STRING(15),
+        type: Sequelize.STRING,
       },
       Date_of_Birth: {
         allowNull: false,
         type: Sequelize.DATEONLY,
       },
+      Street_Address: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
       City: {
         allowNull: false,
-        type: Sequelize.STRING(25),
+        type: Sequelize.STRING,
       },
       State: {
         allowNull: false,

@@ -3,12 +3,20 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class credit_cards extends Model {
     static associate(models) {
-      // define association here
+      credit_cards.belongsTo(models.customers, {
+        foreignKey: "Customer_id",
+        targetKey: "id",
+        as: "creditcardsData",
+      });
+      credit_cards.hasMany(models.cc_transactions, {
+        foreignKey: "CC_number",
+        as: "CreditCardcctransactionsData",
+      });
     }
   }
   credit_cards.init(
     {
-      CC_number: DataTypes.STRING(20),
+      CC_number: DataTypes.STRING,
       Maximum_Limit: DataTypes.DECIMAL(10, 2),
       Expiry_Date: DataTypes.DATEONLY,
       Credit_Score: DataTypes.INTEGER,

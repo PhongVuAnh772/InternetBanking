@@ -2,11 +2,16 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class account_type extends Model {
-    static associate(models) {}
+    static associate(models) {
+      account_type.hasMany(models.accounts, {
+        foreignKey: "Account_Type",
+        as: "AccountTypeData",
+      });
+    }
   }
   account_type.init(
     {
-      Account_Type: DataTypes.INTEGER,
+      Account_Type: DataTypes.STRING,
       Minimum_Balance_Restriction: DataTypes.DECIMAL(10, 2),
     },
     {

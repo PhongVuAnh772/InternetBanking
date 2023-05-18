@@ -29,7 +29,7 @@ const ContentMainIcon = () => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={true}
+      showsHorizontalScrollIndicator={false}
       horizontal
       contentContainerStyle={{paddingVertical: 20}}>
       <FlatList

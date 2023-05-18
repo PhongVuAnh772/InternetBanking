@@ -22,9 +22,14 @@ export const flatIndex = [
     time: '06/03/2023 - 31/08/2023',
     source: {
       html: `
-    <p style='text-align:center;'>
-      Hello World!
-    </p>`,
+    <p style=''>
+      Thăng hạng đặc biệt - Chương trình được thiết kế riêng biệt cho Khách hàng Ưu tiên trở lại cùng với Dịch vụ Ngân hàng Ưu tiên VPBank Diamond, với chuỗi các quà tặng tài chính và phi tài chính hấp dẫn<br>
+      Bộ tài khoản số đẹp trị giá 50 - 300 - 500 triệu đồng<br>
+      EVoucher Urbox trị giá đến 500.000 đồng<br>
+      Hoàn tiền lên đến 800.000 đồng
+    </p>
+   
+    `,
     },
   },
   {
@@ -34,9 +39,14 @@ export const flatIndex = [
     time: '06/03/2023 - 31/08/2023',
     source: {
       html: `
-    <p style='text-align:center;'>
-      Hello World!
-    </p>`,
+    <p style=''>
+      Thăng hạng đặc biệt - Chương trình được thiết kế riêng biệt cho Khách hàng Ưu tiên trở lại cùng với Dịch vụ Ngân hàng Ưu tiên VPBank Diamond, với chuỗi các quà tặng tài chính và phi tài chính hấp dẫn<br>
+      Bộ tài khoản số đẹp trị giá 50 - 300 - 500 triệu đồng<br>
+      EVoucher Urbox trị giá đến 500.000 đồng<br>
+      Hoàn tiền lên đến 800.000 đồng
+    </p>
+   
+    `,
     },
   },
   {
@@ -45,9 +55,14 @@ export const flatIndex = [
     time: '06/03/2023 - 31/08/2023',
     source: {
       html: `
-    <p style='text-align:center;'>
-      Hello World!
-    </p>`,
+    <p style=''>
+      Thăng hạng đặc biệt - Chương trình được thiết kế riêng biệt cho Khách hàng Ưu tiên trở lại cùng với Dịch vụ Ngân hàng Ưu tiên VPBank Diamond, với chuỗi các quà tặng tài chính và phi tài chính hấp dẫn<br>
+      Bộ tài khoản số đẹp trị giá 50 - 300 - 500 triệu đồng<br>
+      EVoucher Urbox trị giá đến 500.000 đồng<br>
+      Hoàn tiền lên đến 800.000 đồng
+    </p>
+   
+    `,
     },
   },
   {
@@ -57,7 +72,13 @@ export const flatIndex = [
     time: '06/03/2023 - 31/08/2023',
     source: {
       html: `
-      alooo <span style="color: #F5A623">&#x2605;</span> hi
+    <p style=''>
+      Thăng hạng đặc biệt - Chương trình được thiết kế riêng biệt cho Khách hàng Ưu tiên trở lại cùng với Dịch vụ Ngân hàng Ưu tiên VPBank Diamond, với chuỗi các quà tặng tài chính và phi tài chính hấp dẫn<br>
+      Bộ tài khoản số đẹp trị giá 50 - 300 - 500 triệu đồng<br>
+      EVoucher Urbox trị giá đến 500.000 đồng<br>
+      Hoàn tiền lên đến 800.000 đồng
+    </p>
+   
     `,
     },
   },
@@ -67,9 +88,14 @@ export const flatIndex = [
     time: '06/03/2023 - 31/08/2023',
     source: {
       html: `
-    <p style='text-align:center;'>
-      Hello World!
-    </p>`,
+    <p style=''>
+      Thăng hạng đặc biệt - Chương trình được thiết kế riêng biệt cho Khách hàng Ưu tiên trở lại cùng với Dịch vụ Ngân hàng Ưu tiên VPBank Diamond, với chuỗi các quà tặng tài chính và phi tài chính hấp dẫn<br>
+      Bộ tài khoản số đẹp trị giá 50 - 300 - 500 triệu đồng<br>
+      EVoucher Urbox trị giá đến 500.000 đồng<br>
+      Hoàn tiền lên đến 800.000 đồng
+    </p>
+   
+    `,
     },
   },
 ];

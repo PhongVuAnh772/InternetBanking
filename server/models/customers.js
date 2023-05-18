@@ -8,18 +8,31 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "Customer_id",
         as: "customerData",
       });
+      customers.hasMany(models.loan, {
+        foreignKey: "Customer_id",
+        as: "loanData",
+      });
+      customers.hasMany(models.banking_transactions, {
+        foreignKey: "Customer_id",
+        as: "bankingtransactionsData",
+      });
+      customers.hasMany(models.credit_cards, {
+        foreignKey: "Customer_id",
+        as: "creditcardsData",
+      });
     }
   }
   customers.init(
     {
-      First_Name: DataTypes.STRING(45),
-      Last_Name: DataTypes.STRING(45),
+      Customer_id: DataTypes.INTEGER,
+      First_Name: DataTypes.STRING,
+      Last_Name: DataTypes.STRING,
       Date_of_Birth: DataTypes.DATEONLY,
-      Street_Address: DataTypes.STRING(50),
-      City: DataTypes.STRING(25),
+      Street_Address: DataTypes.STRING,
+      City: DataTypes.STRING,
       State: DataTypes.CHAR(2),
       Zipcode: DataTypes.INTEGER,
-      Email: DataTypes.STRING(45),
+      Email: DataTypes.STRING,
       Sex: DataTypes.CHAR(1),
     },
     {

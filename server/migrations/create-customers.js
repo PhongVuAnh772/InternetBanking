@@ -9,22 +9,29 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-
+      Customer_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       First_Name: {
         allowNull: false,
-        type: Sequelize.STRING(45),
+        type: Sequelize.STRING,
       },
       Last_Name: {
         allowNull: false,
-        type: Sequelize.STRING(45),
+        type: Sequelize.STRING,
       },
       Date_of_Birth: {
         allowNull: false,
         type: Sequelize.DATEONLY,
       },
+      Street_Address: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
       City: {
         allowNull: false,
-        type: Sequelize.STRING(25),
+        type: Sequelize.STRING,
       },
       State: {
         allowNull: false,
@@ -36,12 +43,9 @@ module.exports = {
       },
       Email: {
         allowNull: false,
-        type: Sequelize.STRING(45),
+        type: Sequelize.STRING,
       },
-      Street_Address: {
-        allowNull: false,
-        type: Sequelize.STRING(50),
-      },
+
       Sex: {
         allowNull: false,
         type: Sequelize.CHAR(1),

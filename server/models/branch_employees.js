@@ -3,7 +3,16 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class branch_employees extends Model {
     static associate(models) {
-      // define association here
+      branch_employees.belongsTo(models.branches, {
+        foreignKey: "Branch_id",
+        targetKey: "id",
+        as: "BranchEmployeesbranchesData",
+      });
+      branch_employees.belongsTo(models.employees, {
+        foreignKey: "Employee_id",
+        targetKey: "id",
+        as: "BranchEmployeesemployeesData",
+      });
     }
   }
   branch_employees.init(

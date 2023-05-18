@@ -11,7 +11,7 @@ module.exports = {
       },
       Account_type: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       Minimum_Balance_Restriction: {
         allowNull: false,

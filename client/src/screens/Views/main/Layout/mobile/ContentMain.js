@@ -3,9 +3,12 @@ import React from 'react';
 import ContentMainIcon from './Generators/ContentMain';
 import SwiperComponent from './Generators/SwiperComponent';
 import AdvertiseMent from './Generators/AdvertiseMent';
+import HeaderMain from './HeaderMain';
+
 const ContentMain = () => {
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <HeaderMain />
       <ContentMainIcon />
       <SwiperComponent />
       <AdvertiseMent />
@@ -16,7 +19,6 @@ const ContentMain = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 10,
   },
 });
 

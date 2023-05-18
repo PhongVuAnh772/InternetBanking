@@ -14,16 +14,23 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: "id",
         as: "branchData",
       });
+
+      accounts.belongsTo(models.account_type, {
+        foreignKey: "Account_Type",
+        targetKey: "id",
+        as: "AccountTypeData",
+      });
     }
   }
   accounts.init(
     {
+      Account_id: DataTypes.INTEGER,
+
       Account_Balance: DataTypes.INTEGER,
       Branch_id: DataTypes.INTEGER,
       Date_Opened: DataTypes.DATEONLY,
-      Account_Type: DataTypes.STRING(20),
-      password: DataTypes.STRING(1000),
-      Account_Type: DataTypes.INTEGER,
+      password: DataTypes.STRING,
+      Account_Type: DataTypes.STRING,
     },
     {
       sequelize,

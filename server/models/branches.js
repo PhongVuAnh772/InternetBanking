@@ -7,16 +7,22 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "Branch_id",
         as: "branchData",
       });
+      branches.hasMany(models.branch_employees, {
+        foreignKey: "Branch_id",
+        as: "BranchEmployeesData",
+      });
     }
   }
   branches.init(
     {
-      Branch_Name: DataTypes.STRING(45),
-      Street_Address: DataTypes.STRING(50),
-      City: DataTypes.STRING(25),
+      Branch_id: DataTypes.INTEGER,
+
+      Branch_Name: DataTypes.STRING,
+      Street_Address: DataTypes.STRING,
+      City: DataTypes.STRING,
       State: DataTypes.CHAR(2),
       Zipcode: DataTypes.INTEGER,
-      Phone_Number: DataTypes.STRING(12),
+      Phone_Number: DataTypes.STRING,
     },
     {
       sequelize,

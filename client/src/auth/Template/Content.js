@@ -12,13 +12,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
-const Content = () => {
-  const navigation = useNavigation();
+const Content = ({isSignIn, setIsLoggedIn}) => {
   const [showPass, setshowPass] = useState(false);
   const [name, setName] = useState('');
   const [showButton, setshowButton] = useState(false);
 
   const [password, setPassword] = useState('');
+  const navigation = useNavigation();
   const toggleShowButton = () => {
     setshowButton(true);
   };
@@ -32,19 +32,68 @@ const Content = () => {
     setPassword('');
   };
 
-  const payload = {password: showPass, name: name};
-  const handlePressSignIn = async () => {
+  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState('');
+  const [isLogin, setIsLogin] = useState(true);
+
+  const onChangeHandler = () => {
+    setIsLogin(!isLogin);
+    setMessage('');
+  };
+
+  const onLoggedIn = async token => {
     try {
-      const res = await axios.post('http://10.0.2.2:5000/api/login', payload, {
+      const ress = await axios.get(`http://10.0.2.2:5000/api/private`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (ress.status === 200) {
+        setMessage(ress.data.message);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onSubmitHandler = async () => {
+    const payload = {
+      name,
+      password,
+    };
+    try {
+      const res = await axios.post(`http://10.0.2.2:5000/api/login`, payload, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-    } catch (e) {
-      console.error(e);
+      let token = res.data.token;
+      if (token) {
+        // AsyncStorage.setItem('token', token);
+
+        onLoggedIn(token);
+
+        setIsError(false);
+        setMessage(res.data.message);
+        setIsLoggedIn(true);
+        navigation.navigate('MainPage', {
+          name: name,
+        });
+      } else if (res.data.success === false) {
+        setMessage('Sai thông tin đăng nhập, hãy thử lại');
+      }
+    } catch (err) {
+      console.log('Co loi : ' + err);
+      setIsError(true);
+      setMessage(err.message);
     }
   };
+
   const iconName = showPass ? 'eye' : 'eye-slash';
+  useEffect(() => {
+    navigation.setOptions({isSignIn});
+  }, [navigation, isSignIn]);
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -56,6 +105,7 @@ const Content = () => {
           onChangeText={setName}
           placeholderTextColor="#fff"
         />
+
         <View style={styles.iconFirst}>
           <Icon name="user-o" size={20} color="white" />
         </View>
@@ -63,6 +113,8 @@ const Content = () => {
           <MaterialIcons name="cancel" size={20} color="rgb(163, 210, 206)" />
         </TouchableOpacity>
       </View>
+      <Text style={styles.loginButtonerr}>{message}</Text>
+
       <View style={styles.inputContainer}>
         <TextInput
           onFocus={toggleShowButton}
@@ -85,18 +137,12 @@ const Content = () => {
           <Icon name={iconName} size={20} color="rgb(163, 210, 206)" />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.loginButton} onPress={toggleShowPassword}>
-        <Text style={styles.loginButtonText} onPress={handlePressSignIn}>
-          Đăng nhập
-        </Text>
+      <TouchableOpacity style={styles.loginButton} onPress={onSubmitHandler}>
+        <Text style={styles.loginButtonText}>Đăng nhập</Text>
       </TouchableOpacity>
       <View style={styles.otherFunc}>
-        <TouchableOpacity onPress={toggleShowPassword}>
-          <Text
-            style={styles.loginButtonText}
-            onPress={() => navigation.navigate('Registered')}>
-            Đăng ký ngay
-          </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Registered')}>
+          <Text style={styles.loginButtonText}>Đăng ký ngay</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={toggleShowPassword}>
           <Text style={styles.loginButtonText} onPress={toggleShowPassword}>
@@ -117,6 +163,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     width: '100%',
     flex: 2.5,
+  },
+  loginButtonerr: {
+    color: 'red',
   },
   input: {
     backgroundColor: 'rgb(80, 174, 144)',

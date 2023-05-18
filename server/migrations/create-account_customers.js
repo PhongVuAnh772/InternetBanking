@@ -11,12 +11,12 @@ module.exports = {
       },
       Account_id: {
         allowNull: false,
-        foreinKey: true,
+        foreignKey: true,
         type: Sequelize.INTEGER,
       },
       Customer_id: {
         allowNull: false,
-        foreinKey: true,
+        foreignKey: true,
         type: Sequelize.INTEGER,
       },
     });
