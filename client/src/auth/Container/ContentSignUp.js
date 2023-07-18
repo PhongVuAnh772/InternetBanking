@@ -20,13 +20,13 @@ const ContentSignUp = () => {
           image={account}
           index={1}
         />
-        <SignUpComponents
+        {/* <SignUpComponents
           title="Đăng ký dịch vụ"
           desc="Dành cho khách hàng đã có tài khoản/thẻ"
           header="ngân hàng số"
           image={credit}
           index={2}
-        />
+        /> */}
       </View>
     </View>
   );

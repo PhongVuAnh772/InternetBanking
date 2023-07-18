@@ -8,18 +8,26 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: "id",
         as: "creditcardsData",
       });
-      credit_cards.hasMany(models.cc_transactions, {
-        foreignKey: "CC_number",
-        as: "CreditCardcctransactionsData",
-      });
+      // credit_cards.hasMany(models.cc_transactions, {
+      //   foreignKey: "CC_number",
+      //   as: "CreditCardcctransactionsData",
+      // });
     }
   }
   credit_cards.init(
     {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       CC_number: DataTypes.STRING,
       Maximum_Limit: DataTypes.DECIMAL(10, 2),
       Expiry_Date: DataTypes.DATEONLY,
       Credit_Score: DataTypes.INTEGER,
+      CVC: DataTypes.INTEGER,
+      locked: DataTypes.BOOLEAN,
+      get_physical_card: DataTypes.BOOLEAN,
       Customer_id: DataTypes.INTEGER,
     },
     {

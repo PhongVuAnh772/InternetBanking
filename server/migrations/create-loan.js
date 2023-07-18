@@ -9,10 +9,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      Loan_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
+      
       Duration_in_Years: {
         allowNull: false,
         type: Sequelize.DECIMAL(4, 2),

@@ -8,7 +8,7 @@ const ContentExtended = ({name, icon}) => {
   const navigation = useNavigation();
   const clickHandler = () => {
     if (name == 'Cài đặt') {
-      navigation.navigate('SettingExtended');
+      navigation.navigate('SettingExtendedContainer');
     } else if (name == 'Smart OTP') {
       navigation.navigate('SettingExtended');
     }

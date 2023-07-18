@@ -25,11 +25,24 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER.UNSIGNED,
       },
+      CVC: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+      locked: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+      },
+      get_physical_card: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+      },
       Customer_id: {
         allowNull: false,
         foreignKey: true,
         type: Sequelize.INTEGER,
-      },
+      }
+      
     });
   },
   async down(queryInterface, Sequelize) {

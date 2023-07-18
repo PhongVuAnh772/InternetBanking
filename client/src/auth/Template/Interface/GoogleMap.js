@@ -1,36 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import MapView, {Callout, Marker} from 'react-native-maps';
+import axios from 'axios';
 
 const GoogleMap = () => {
-  // const [initialRegion, setInitialRegion] = useState(null);
 
-  // useEffect(() => {
-  //   navigator.geolocation.getCurrentPosition(
-  //     position => {
-  //       const {latitude, longitude} = position.coords;
-  //       setInitialRegion({
-  //         latitude,
-  //         longitude,
-  //         latitudeDelta: 0.0922,
-  //         longitudeDelta: 0.0421,
-  //       });
-  //     },
-  //     error => console.log(error),
-  //     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
-  //   );
-  // }, []);
-
-  // if (!initialRegion) {
-  //   return (
-  //     <View>
-  //       <Text>Loading...</Text>
-  //     </View>
-  //   );
-  // }
   const HANOI_COORDINATE = {
-    latitude: 21.0278,
-    longitude: 105.8342,
+    latitude: 21.029045,
+    longitude: 105.806627,
   };
   return (
     <MapView

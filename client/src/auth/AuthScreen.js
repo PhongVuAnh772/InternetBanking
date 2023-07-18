@@ -16,7 +16,6 @@ import LoadingScreen from '../screens/LoadingScreen';
 const AuthScreen = ({navigation, route}) => {
   const [loading, setLoading] = useState(true);
   const [animationValue] = useState(new Animated.Value(0));
-  const {isSignIn, setIsLoggedIn} = route.params;
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -54,7 +53,7 @@ const AuthScreen = ({navigation, route}) => {
             },
           ]}>
           <Header />
-          <Content isSignIn={isSignIn} setIsLoggedIn={setIsLoggedIn} />
+          <Content />
           <Footer />
         </Animated.View>
       </ImageBackground>

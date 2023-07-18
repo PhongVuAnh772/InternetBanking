@@ -33,24 +33,8 @@ export const flatIndex = [
     title: 'Mua Vietlott SMS',
     screen: 'VietlottSMS',
   },
-  {
-    icon: 'cc-mastercard',
-
-    title: 'Trả góp thẻ',
-    screen: 'CreditCardPayment',
-  },
-  {
-    icon: 'id-card',
-
-    title: 'Thấu chi tín chấp',
-    screen: 'loanDis',
-  },
-  {
-    icon: 'road',
-
-    title: 'Phí giao thông',
-    scrren: 'TrafficFee',
-  },
+  
+  
   {
     icon: 'ticket',
 
@@ -75,17 +59,5 @@ export const flatIndex = [
     title: 'Cộng đồng VP',
     screen: 'CommunityComponent',
   },
-  {
-    icon: 'gamepad',
-
-    title: 'Games',
-    scrren: 'GamesComponent',
-  },
-  {title: 'Nước', screen: 'WaterFee', icon: 'shower'},
-  {
-    icon: 'stack-exchange',
-
-    title: 'Xem tất cả',
-    screen: 'WatchAll',
-  },
+  
 ];

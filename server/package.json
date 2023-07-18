@@ -14,6 +14,7 @@
   "author": "phong",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/storage": "^6.12.0",
     "axios": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -21,6 +22,7 @@
     "fs": "^0.0.1-security",
     "http-errors": "^2.0.0",
     "jsonwebtoken": "^9.0.0",
+    "multer": "^1.4.5-lts.1",
     "mysql2": "^3.3.0",
     "nodemon": "^2.0.22",
     "sequelize": "^6.31.1"

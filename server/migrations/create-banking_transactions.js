@@ -9,10 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         autoIncrement: true,
       },
-      Transaction_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
+      
       Transaction_Type: {
         allowNull: false,
         type: Sequelize.STRING,

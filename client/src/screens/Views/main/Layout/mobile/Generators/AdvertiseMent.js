@@ -17,7 +17,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 const AdvertiseMent = () => {
   const cardGap = 16;
 
-  const cardWidth = (Dimensions.get('window').width - cardGap * 3) / 2;
+  const cardWidth = (Dimensions.get('window').width - cardGap * 4) / 2;
 
   const navigation = useNavigation();
   const RenderItem = ({item}) => (
@@ -54,7 +54,7 @@ const AdvertiseMent = () => {
               shadowOpacity: 0.2,
               justifyContent: 'center',
               alignItems: 'center',
-              paddingVertical: 15,
+              paddingVertical: 5,
             }}
             onPress={() =>
               navigation.navigate('AdvertiseMentSpecified', {subject})
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '500',
     fontSize: 15,
-    // paddingBottom: 20,
+    paddingBottom: 20,
   },
   // imageContainer: {
   //   width: '100%',

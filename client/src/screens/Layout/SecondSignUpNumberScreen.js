@@ -8,31 +8,70 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useState} from 'react';
-import image from '../../assets/components/image.jpg';
+import image from '../../assets/components/image-openbank.jpg';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
+import {useAppSelector, useAppDispatch} from '../../app/hooks/hooks';
+import {setnewAccountSTK} from '../../slice/signUpSlice';
+import axios from 'axios';
 
 const SecondSignUpNumberScreen = ({route}) => {
+  const dispatch = useAppDispatch();
+  const CMNDReduxState = useAppSelector(state => state.signUp.CMNDUser);
   const navigation = useNavigation();
   const [valueSTK, setValueSTK] = useState('');
-
+  const [enabledErr, setenabledErr] = useState(false);
   const {email, CMND} = route.params;
-  const valueSTKNotWant = CMND.slice(-8);
+  const valueSTKNotWant = CMNDReduxState.slice(-8);
   console.log(email, CMND);
-  const handleButton = () => {
-    navigation.navigate('ThirdSignUpNumberScreen', {
-      email: email,
-      CMND: CMND,
-      valueSTK: valueSTK,
-    });
+  const handleButton = async () => {
+    if (valueSTK.length < 8) {
+      setenabledErr(true);
+      return;
+    } else {
+      try {
+        const res = await axios.post(
+          `http://192.168.100.6:5000/api/checkSTKBanks`,
+          {
+            Account_id: valueSTK,
+          },
+        );
+        if (res.data.success) {
+          dispatch(setnewAccountSTK(valueSTK));
+          navigation.navigate('ThirdSignUpNumberScreen', {
+            email: email,
+            CMND: CMND,
+            valueSTK: valueSTK,
+          });
+        }
+      } catch (err) {
+        console.log('Co loi : ' + err);
+        console.log('Có lỗi server');
+      }
+    }
   };
-  const handleButtonNotWant = () => {
-    navigation.navigate('ThirdSignUpNumberScreen', {
-      email: email,
-      CMND: CMND,
-      valueSTK: valueSTKNotWant,
-    });
+  const handleButtonNotWant = async () => {
+    try {
+      const res = await axios.post(
+        `http://192.168.100.6:5000/api/checkSTKBanks`,
+        {
+          Account_id: valueSTKNotWant,
+        },
+      );
+      if (res.data.success) {
+        dispatch(setnewAccountSTK(valueSTKNotWant));
+
+        navigation.navigate('ThirdSignUpNumberScreen', {
+          email: email,
+          CMND: CMND,
+          valueSTK: valueSTKNotWant,
+        });
+      }
+    } catch (err) {
+      console.log('Co loi : ' + err);
+      console.log('Có lỗi server');
+    }
   };
 
   return (
@@ -79,7 +118,7 @@ const SecondSignUpNumberScreen = ({route}) => {
             điện thoại
           </Text>
           <TouchableOpacity>
-            <Text style={styles.textFee}>Chi tiết biểu phí</Text>
+            <Text style={styles.textFee}>Tài khoản đẹp - Lợi lộc tới</Text>
           </TouchableOpacity>
         </View>
 
@@ -89,12 +128,14 @@ const SecondSignUpNumberScreen = ({route}) => {
             value={valueSTK}
             onChangeText={setValueSTK}
             style={styles.input}
-            placeholder="197xxxxxxx"
+            placeholder="xxxxxxx"
             placeholderTextColor="gray"
             maxLength={8}
             keyboardType="numeric"
           />
-          <Text style={styles.countWord}>Vui lòng dãy số 8 số</Text>
+          {enabledErr && (
+            <Text style={styles.countWord}>Vui lòng dãy số 8 số</Text>
+          )}
         </View>
         <TouchableOpacity
           style={styles.inputContainerButton}
@@ -170,7 +211,7 @@ const styles = StyleSheet.create({
     // borderBottomColor: 'gray',
     // borderBottomWidth: 0.4,
   },
-  countWord: {paddingVertical: 10},
+  countWord: {paddingVertical: 10, color: 'red'},
   textHeader: {
     flex: 1,
     paddingLeft: 10,
@@ -247,5 +288,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 15,
     paddingTop: 5,
+  },
+  textCongrat: {
+    color: 'black',
+    textAlign: 'center',
   },
 });

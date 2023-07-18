@@ -1,212 +1,226 @@
+import React, {useState} from 'react';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {
+  SafeAreaView,
   StyleSheet,
   Text,
   View,
-  Image,
-  Pressable,
-  TextInput,
   TouchableOpacity,
+  Image,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
-import React, {useState} from 'react';
-import image from '../../assets/components/image.jpg';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import iconMember from '../../assets/member-card.png';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
-const FourthSignUpNumberScreen = () => {
+import {useAppDispatch} from '../../app/hooks/hooks';
+import {setimageBackURL, setimageFrontURL} from '../../slice/signUpSlice';
+
+const App = () => {
+  const [filePath, setFilePath] = useState([]);
+  const [responseDataUser, setResponseDataUser] = useState([]);
   const navigation = useNavigation();
-  const [valueEmail, setValueEmail] = useState('');
-  const [valueCMND, setValueCMND] = useState('');
-  const handleButton = () => {
-    navigation.navigate('FifthSignUpNumberScreen');
+  const dispatch = useAppDispatch();
+
+  const requestCameraPermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: 'Camera Permission',
+            message: 'App needs camera permission',
+          },
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        console.warn(err);
+        return false;
+      }
+    } else return true;
+  };
+
+  const requestExternalWritePermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'External Storage Write Permission',
+            message: 'App needs write permission',
+          },
+        );
+        // If WRITE_EXTERNAL_STORAGE Permission is granted
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        console.warn(err);
+        alert('Write permission err', err);
+      }
+      return false;
+    } else return true;
+  };
+  const fetchDataUser = async results => {
+    try {
+      if (results) {
+        const response = await axios.post(
+          'http://192.168.100.6:5000/api/upImageToGlobal',
+          {
+            filePathSpecified: results.assets[0].base64,
+          },
+        );
+        if (response.data.success) {
+          dispatch(setimageFrontURL(response.data.data));
+          console.log(response.data.data);
+          navigation.navigate('BonusContinueSignUpNumberScreen');
+        }
+      }
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+
+  const captureImage = async type => {
+    let options = {
+      mediaType: type,
+      maxWidth: 600, // Tăng độ rộng của ảnh
+      maxHeight: 800, // Tăng chiều cao của ảnh
+      quality: 2, // Tăng chất lượng ảnh
+      videoQuality: 'high',
+      includeBase64: true,
+      saveToPhotos: true,
+    };
+    let isCameraPermitted = await requestCameraPermission();
+    let isStoragePermitted = await requestExternalWritePermission();
+    if (isCameraPermitted && isStoragePermitted) {
+      launchCamera(options, response => {
+        if (!response.assets) {
+          alert('Hệ thống chưa nhận được ảnh xác thực, hãy thử lại');
+          return;
+        } else if (response.didCancel) {
+          alert('Bạn đã rời hệ thống xác thực');
+          return;
+        } else if (response.errorCode == 'camera_unavailable') {
+          alert(
+            'Hệ thống chưa nhận diện được Camera trên thiết bị của bạn, hãy thử lại',
+          );
+          return;
+        } else if (response.errorCode == 'permission') {
+          alert('Hãy chấp nhận yêu cầu truy cập Camera trong Cài đặt thiết bị');
+          return;
+        } else if (response.errorCode == 'others') {
+          alert(response.errorMessage);
+          return;
+        } else {
+          fetchDataUser(response);
+        }
+      });
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Image style={styles.imageHeader} source={image} />
-
-      <View style={styles.contentComponents}>
-        <View style={styles.iconNumber}>
-          <Text style={[styles.numberText, styles.active]}>1</Text>
-          <View style={styles.content} />
-          <Text style={[styles.numberText, styles.active]}>2</Text>
-          <View style={styles.content} />
-
-          <Text style={[styles.numberText, styles.active]}>3</Text>
-          <View style={styles.content} />
-
-          <Text style={[styles.numberText, styles.active]}>4</Text>
-          <View style={styles.content} />
-
-          <Text style={[styles.numberText]}>5</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-
-            paddingVertical: 10,
-          }}>
-          <Pressable onPress={() => navigation.goBack()}>
-            <MaterialIcons name="arrow-back" size={25} color="black" />
-          </Pressable>
-          <View style={{flex: 1, alignItems: 'center', paddingRight: 20}}>
-            <Text style={styles.textHelp}>
-              Bước 2: Chọn số tài khoản mong muốn
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            alignItems: 'center',
-          }}>
-          <Text style={styles.textCongrat}>
-            VPBank tặng bạn 1 số tài khoản như ý: số ngày sinh nhật, số cuối
-            điện thoại
-          </Text>
-          <TouchableOpacity>
-            <Text style={styles.textFee}>Chi tiết biểu phí</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Nhập Email</Text>
-          <TextInput
-            value={valueEmail}
-            onChangeText={setValueEmail}
-            style={styles.input}
-            placeholder="example@gmail.com"
-            placeholderTextColor="gray"
-          />
-          <Text style={styles.countWord}>
-            Hãy viết đúng định dạng của Email
-          </Text>
-        </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Nhập số CMND/CCCD</Text>
-          <TextInput
-            value={valueCMND}
-            onChangeText={setValueCMND}
-            style={styles.input}
-            placeholder="197xxxxxxx"
-            placeholderTextColor="gray"
-            maxLength={12}
-          />
-          <Text style={styles.countWord}>
-            Vui lòng nhập số CMND/CCCD 9 hoặc 12 kí tự
-          </Text>
-        </View>
-        <TouchableOpacity
-          style={styles.inputContainerButton}
-          onPress={() => handleButton()}>
-          <Text style={styles.inputButton}>Tiếp tục</Text>
-        </TouchableOpacity>
+      <View style={styles.backContainer}>
+        <MaterialIcons name="arrow-back" size={20} color="white" />
       </View>
+      <View style={styles.screenContainer}>
+        <View style={styles.imageContainer}>
+          <Image source={iconMember} style={styles.imageTitle} />
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.textStyleHighLight}>
+            <Text style={styles.textStyleHighLight}>
+              Bạn được đưa tới hệ thống nhận diện danh tính chuẩn Auth02
+            </Text>
+          </Text>
+          <Text style={styles.textStyle}>
+            {'\u2022'} <Text style={styles.textStyleFocus}>Bước 1:</Text> Chụp
+            mặt trước căn cước công dân của bạn.
+          </Text>
+          <Text style={styles.textStyle}>
+            {'\u2022'} <Text style={styles.textStyleFocus}>Bước 2:</Text> Sau
+            khi hệ thống xác nhận, tiếp tục chụp mặt sau của giấy tờ.
+          </Text>
+          <Text style={styles.textStyle}>
+            {'\u2022'} <Text style={styles.textStyleFocus}>Bước 3:</Text> Đối
+            chiếu và xác nhận thông tin cá nhân
+          </Text>
+          <Text style={styles.textStyleHighLight}>
+            Xin mời chụp mặt trước CCCD/CMND đầu tiên
+          </Text>
+        </View>
+      </View>
+
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={styles.buttonStyle}
+        onPress={() => captureImage('photo')}>
+        <Text style={styles.textStyle}>Bắt đầu xác thực</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-export default FourthSignUpNumberScreen;
+export default App;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
-  },
-  imageHeader: {
-    width: '100%',
-    flex: 2,
-  },
-  contentComponents: {
-    flex: 8.5,
-    flexDirection: 'column',
-    paddingVertical: 10,
     paddingHorizontal: 10,
+    backgroundColor: 'rgb(40, 28, 112)',
   },
-  iconNumber: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    paddingHorizontal: 40,
-    paddingVertical: 10,
-  },
-  content: {
-    width: 5,
-    height: 1,
-    paddingHorizontal: 10,
-    backgroundColor: 'gray',
-  },
-  active: {backgroundColor: 'rgb(0, 173, 83)'},
-  numberText: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 20,
-    color: 'white',
-    backgroundColor: 'rgb(208, 208, 208)',
-  },
-  contentInput: {
-    paddingHorizontal: 15,
-    flexDirection: 'row',
-
-    // paddingVertical: 15,
-    // flexDirection:w3'row',
+  titleText: {
+    fontSize: 22,
+    fontWeight: 'bold',
     textAlign: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    // borderBottomColor: 'gray',
-    // borderBottomWidth: 0.4,
+    paddingVertical: 20,
   },
-  countWord: {paddingVertical: 10},
-  textHeader: {
-    flex: 1,
-    paddingLeft: 10,
-
-    alignItems: 'center',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-  },
-  textHelp: {
-    fontSize: 16,
-    color: 'rgb(4, 171, 83)',
-    fontWeight: '500',
-  },
-  input: {
-    width: '100%',
-    backgroundColor: 'rgb(230, 230, 230)',
-    borderRadius: 5,
+  textStyle: {
+    padding: 10,
+    color: 'white',
     fontSize: 17,
-    color: 'black',
-    paddingHorizontal: 10,
+    textAlign: 'left',
   },
-  inputContainer: {
-    paddingVertical: 10,
-  },
-  inputContainerButton: {
-    marginTop: 10,
-    paddingVertical: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgb(0, 173, 83)',
-    borderRadius: 10,
-  },
-  label: {
-    fontSize: 15,
-    paddingBottom: 5,
-    color: 'rgb(96, 100, 104)',
-  },
-  inputButton: {
-    fontSize: 18,
-    color: 'rgb(255, 255, 255)',
+  textStyleHighLight: {
+    padding: 10,
+    color: 'white',
+    fontSize: 17,
+    textAlign: 'center',
     fontWeight: 'bold',
   },
-  textCongrat: {
-    textAlign: 'center',
-    fontSize: 16,
+
+  textStyleFocus: {
+    fontWeight: 'bold',
   },
-  textFee: {
-    color: 'green',
-    fontSize: 15,
-    paddingVertical: 5,
+  buttonStyle: {
+    alignItems: 'center',
+    backgroundColor: 'rgb(253, 55, 164)',
+    paddingVertical: 2,
+    marginVertical: 20,
+    width: '100%',
+    alignSelf: 'center',
+    position: 'absolute',
+    bottom: 0,
+    borderRadius: 20,
+  },
+  imageStyle: {
+    width: 200,
+    height: 200,
+    margin: 5,
+  },
+  backContainer: {
+    paddingVertical: 20,
+    paddingHorizontal: 5,
+  },
+  imageTitle: {
+    width: 80,
+    height: 80,
+  },
+  imageContainer: {
+    justifyContent: 'center',
+    paddingVertical: 20,
+  },
+  screenContainer: {
+    alignItems: 'center',
   },
 });

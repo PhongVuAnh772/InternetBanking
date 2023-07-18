@@ -4,6 +4,7 @@ import user from '../../../../assets/girl.png';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ContentExtended from './ContentExtended';
 import ContentExtendedDown from './ContentExtenedDown';
+
 const ExtendedContent = ({name = 'VU ANH PHONG'}) => {
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     borderRadius: 50,
     alignItems: 'center',
-    backgroundColor: 'green',
+    backgroundColor: 'rgb(16, 143, 87)',
   },
   textIconFooter: {
     color: 'black',

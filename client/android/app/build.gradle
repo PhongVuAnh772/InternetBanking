@@ -1,12 +1,13 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
+apply plugin: 'com.google.gms.google-services'
 
 import com.android.build.OutputFile
 
 
-project.ext.vectoricons = [
-    iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf' ,'FontAwesome.ttf','Ionicons.ttf','AntDesign.ttf'] // Name of the font files you want to copy
-]
+// project.ext.vectoricons = [
+//     iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf' ,'FontAwesome.ttf','Ionicons.ttf','AntDesign.ttf', 'Feather.ttf'] // Name of the font files you want to copy
+// ]
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 /**
@@ -106,6 +107,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        missingDimensionStrategy 'react-native-camera', 'general'
+
     }
 
     splits {
@@ -157,9 +160,10 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
+    implementation(platform("com.google.firebase:firebase-bom:32.1.1"))
+    implementation("com.google.firebase:firebase-storage")
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
-
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.squareup.okhttp3', module:'okhttp'

@@ -1,6 +1,7 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Collapsible from 'react-native-collapsible';
 
 const BarShow = ({name, button}) => {
   return (
@@ -14,10 +15,10 @@ const BarShow = ({name, button}) => {
             size={15}
             color="white"
             style={{
-              paddingHorizontal: 4,
-              paddingVertical: 4,
+              paddingHorizontal: 5,
+              paddingVertical: 3,
               backgroundColor: 'green',
-              borderRadius: 10,
+              borderRadius: 20,
             }}
           />
         </View>
@@ -45,12 +46,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  buttonBar: {flex: 4, flexDirection: 'row-reverse', alignItems: 'center'},
+  buttonBar: {flex: 4, flexDirection: 'row-reverse', alignItems: 'center',paddingVertical:5},
   textTouchableOpacity: {
     color: 'green',
     textAlign: 'center',
     fontSize: 15,
     fontWeight: '500',
+    
   },
   buttonAdd: {
     paddingLeft: 8,

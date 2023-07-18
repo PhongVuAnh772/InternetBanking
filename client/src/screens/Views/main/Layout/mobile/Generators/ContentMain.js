@@ -5,6 +5,7 @@ import {
   FlatList,
   ScrollView,
   Pressable,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useState} from 'react';
 import {flatIndex} from '../data/index';
@@ -16,22 +17,22 @@ const ContentMainIcon = () => {
   const navigation = useNavigation();
   const numColumns = Math.ceil(flatIndex.length / 2);
   const renderItem = ({item}) => (
-    <Pressable
+    <TouchableOpacity
       style={styles.container}
       // onPress={navigation.navigate(`${item.screen}`)}
     >
       <View style={styles.iconContainer}>
-        <FontAwesome name={item.icon} size={20} color="rgb(43, 163, 104)" />
+        <FontAwesome name={item.icon} size={16} color="rgb(16, 143, 87)" />
       </View>
       <Text style={styles.Text}>{item.title}</Text>
-    </Pressable>
+    </TouchableOpacity>
   );
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
       horizontal
-      contentContainerStyle={{paddingVertical: 20}}>
+      contentContainerStyle={{paddingVertical: 5}}>
       <FlatList
         data={flatIndex}
         key={numColumns}
@@ -50,15 +51,15 @@ export default ContentMainIcon;
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 10,
-    paddingRight: 20,
-    width: 130,
+    paddingRight: 10,
+    width: 105,
     alignItems: 'center',
     justifyContent: 'center',
   },
   iconContainer: {
-    paddingVertical: 20,
+    paddingVertical: 18,
     backgroundColor: 'white',
-    paddingHorizontal: 20,
+    paddingHorizontal: 18,
     borderRadius: 10,
   },
   Text: {

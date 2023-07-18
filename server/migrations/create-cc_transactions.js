@@ -9,10 +9,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      Transaction_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
+      
       CC_number: {
         type: Sequelize.STRING,
         allowNull: false,

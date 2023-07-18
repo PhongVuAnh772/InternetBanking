@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "868605246989",
+    "project_id": "vp-bank-f38c8",
+    "storage_bucket": "vp-bank-f38c8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868605246989:android:d462623115eec8a7c85f44",
+        "android_client_info": {
+          "package_name": "com.client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "868605246989-lqvt8bmit9g0fqje61dhsvjv0mkmdtat.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDY0E1iMJb5non69j8Z0mNUMFma2OSnFIQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "868605246989-lqvt8bmit9g0fqje61dhsvjv0mkmdtat.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

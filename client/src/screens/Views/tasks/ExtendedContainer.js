@@ -2,7 +2,8 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import ExtendedMain from './Layout/ExtendedMain';
-import SettingExtended from './Layout/screens/SettingExtended';
+import SettingExtendedContainer from './Layout/screens/SettingExtendedContainer';
+import GoogleMap from '../../../auth/Template/Interface/GoogleMap';
 
 const ExtendedStack = createStackNavigator();
 
@@ -11,9 +12,10 @@ const ExtendedContainer = () => {
     <ExtendedStack.Navigator screenOptions={{headerShown: false}}>
       <ExtendedStack.Screen name="ExtendedMain" component={ExtendedMain} />
       <ExtendedStack.Screen
-        name="SettingExtended"
-        component={SettingExtended}
+        name="SettingExtendedContainer"
+        component={SettingExtendedContainer}
       />
+      <ExtendedStack.Screen name="GoogleMap" component={GoogleMap} />
     </ExtendedStack.Navigator>
   );
 };

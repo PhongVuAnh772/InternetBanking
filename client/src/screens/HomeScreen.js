@@ -9,8 +9,22 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import QrCodeContainer from './Videos/QrCodeContainer';
 import FastImage from 'react-native-fast-image';
+import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 
-const HomeScreen = () => {
+const HomeScreen = route => {
+  const routeName = getFocusedRouteNameFromRoute(route);
+  const getTabBarVisibility = route => {
+    const routeName = route.state
+      ? route.state.routes[route.state.index].name
+      : route.params?.screen || 'QrCodeMain';
+
+    if (routeName === 'QrCodeContainer') {
+      return false;
+    }
+
+    return true;
+  };
+
   const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator
@@ -60,7 +74,7 @@ const HomeScreen = () => {
         name="QrCodeContainer"
         component={QrCodeContainer}
         options={{
-          tabBarVisible: false,
+          tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: '',
           tabBarIcon: () => {
             return (

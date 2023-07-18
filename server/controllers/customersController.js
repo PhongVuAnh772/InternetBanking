@@ -4,6 +4,7 @@ const getData = async (req, res) => {
     .findOne({
       where: {
         Email: req.body.Email,
+        CMND: req.body.CMNDValue,
       },
     })
     .then((dbUser) => {
@@ -23,9 +24,11 @@ const getData = async (req, res) => {
     .catch((error) => {
       // Xử lý lỗi
       console.log(error);
-      res.status(200).send({ success: false, error: "Internal server error" });
+      res.status(200).send({ success: false, error: "Server hiện tại bảo trì, vui lòng thử lại sau ít phút" });
     });
 };
+
+
 
 module.exports = {
   getData,

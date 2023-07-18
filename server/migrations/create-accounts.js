@@ -10,18 +10,14 @@ module.exports = {
         autoIncrement: true,
       },
       Account_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
+        allowNull: false, 
+        type: Sequelize.STRING,
       },
       Account_Balance: {
         allowNull: false,
         type: Sequelize.DECIMAL(10, 2),
       },
-      Branch_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        foreignKey: true,
-      },
+    
 
       Date_Opened: {
         allowNull: false,
@@ -36,6 +32,7 @@ module.exports = {
         type: Sequelize.STRING,
         foreignKey: true,
       },
+      
     });
   },
   async down(queryInterface, Sequelize) {

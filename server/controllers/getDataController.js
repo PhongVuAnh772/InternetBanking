@@ -21,7 +21,6 @@ const getDataAccount = async (req, res) => {
       nest: true,
     });
 
-    console.log(account);
     if (!account) {
       return res.status(200).json({
         success: false,
@@ -31,6 +30,37 @@ const getDataAccount = async (req, res) => {
       return res.status(200).json({
         success: true,
         message: "Lấy dữ liệu người dùng thành công",
+        data: account,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const getDataBankingTransactions = async (req, res) => {
+  const { customer_id } = req.params;
+
+  try {
+    let account = await db.account_customers.findOne({
+      where: { Customer_id: customer_id },
+      include: [
+        { model: db.customers, as: "customerData" },
+        
+      ],
+      nest: true,
+    });
+
+    if (!account) {
+      return res.status(200).json({
+        success: false,
+        message: "Người dùng không tồn tại trong hệ thống",
+      });
+    } else {
+      return res.status(200).json({
+        success: true,
+        message: "Lấy dữ liệu người dùng thành công",
+        data: account,
       });
     }
   } catch (e) {
@@ -40,4 +70,5 @@ const getDataAccount = async (req, res) => {
 
 module.exports = {
   getDataAccount,
+  getDataBankingTransactions
 };

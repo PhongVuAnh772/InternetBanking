@@ -7,9 +7,10 @@ import {
   Dimensions,
   TouchableOpacity,
   useWindowDimensions,
+  Linking
 } from 'react-native';
-import React from 'react';
 
+import React from 'react';
 import HeaderSpecified from './tasks/HeaderSpecified';
 import RenderHtml from 'react-native-render-html';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -31,7 +32,7 @@ const AdvertiseMentSpecified = ({route, navigation}) => {
           <Text style={styles.titleDesc}>{subject.title}</Text>
           <Text style={styles.ContentTiledesc}>Nội dung</Text>
           <RenderHtml contentWidth={width} source={subject.source} />
-          <TouchableOpacity style={styles.TouchableOpacity}>
+          <TouchableOpacity style={styles.TouchableOpacity} onPress={ () => Linking.openURL(subject.link)}>
             <Text style={styles.TextButton}>Tìm hiểu thêm</Text>
           </TouchableOpacity>
         </View>
@@ -72,6 +73,10 @@ const styles = StyleSheet.create({
   ContentDesc: {
     fontSize: 14,
     color: 'black',
+  },
+  contentTitleTextdesc: {
+    color: 'black',
+    fontSize: 15,
   },
   TouchableOpacity: {
     backgroundColor: 'green',

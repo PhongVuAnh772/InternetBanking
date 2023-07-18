@@ -8,10 +8,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import image from '../../assets/components/image.jpg';
+import image from '../../assets/components/image-openbank.jpg';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
+import { useAppDispatch } from '../../app/hooks/hooks';
+import { setEmail,setCMND,setnewAccountSTK } from '../../slice/signUpSlice';
 import axios from 'axios';
 const SignUpNumberScreen = () => {
   const navigation = useNavigation();
@@ -21,7 +23,8 @@ const SignUpNumberScreen = () => {
   const [errMessageCMND, seterrMessageCMND] = useState('');
 
   const regexEmail = /@gmail\.com$/;
-
+  const dispatch = useAppDispatch();
+  
   const handleButton = async () => {
     if (!regexEmail.test(valueEmail)) {
       return seterrMessage('Email không đúng định dạng, vui lòng thử lại');
@@ -31,10 +34,16 @@ const SignUpNumberScreen = () => {
       );
     }
     try {
-      const res = await axios.post(`http://10.0.2.2:5000/api/validateEmail`, {
-        Email: valueEmail,
-      });
+      const res = await axios.post(
+        `http://192.168.100.6:5000/api/validateEmail`,
+        {
+          Email: valueEmail,
+          CMNDValue: valueCMND
+        },
+      );
       if (res.data.success) {
+        dispatch(setEmail(valueEmail))
+        dispatch(setCMND(valueCMND));
         navigation.navigate('SecondSignUpNumberScreen', {
           email: valueEmail,
           CMND: valueCMND,

@@ -3,17 +3,20 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class loan extends Model {
     static associate(models) {
-      loan.belongsTo(models.customers, {
-        foreignKey: "Customer_id",
-        targetKey: "id",
-        as: "loanData",
-      });
+      // loan.belongsTo(models.customers, {
+      //   foreignKey: "Customer_id",
+      //   targetKey: "id",
+      //   as: "loanData",
+      // });
     }
   }
   loan.init(
     {
-      Loan_id: DataTypes.INTEGER,
-
+id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       Duration_in_Years: DataTypes.DECIMAL(4, 2),
       Loan_Start_Date: DataTypes.DATEONLY,
       Interest_Rate: DataTypes.DECIMAL(4, 2),

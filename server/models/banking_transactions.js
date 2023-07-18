@@ -12,12 +12,14 @@ module.exports = (sequelize, DataTypes) => {
   }
   banking_transactions.init(
     {
-      Transaction_id: DataTypes.INTEGER,
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       Amount: DataTypes.DECIMAL(10, 2),
       Transaction_Type: DataTypes.INTEGER,
-
       Description: DataTypes.INTEGER,
-
       Date: DataTypes.STRING(20),
       Customer_id: DataTypes.STRING,
     },

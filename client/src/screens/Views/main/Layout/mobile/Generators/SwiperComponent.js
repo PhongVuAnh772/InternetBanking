@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingVertical: 10,
-    height: 300,
+    height: 250,
+    paddingHorizontal: 10,
   },
 });
 

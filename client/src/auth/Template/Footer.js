@@ -119,7 +119,7 @@ const Footer = () => {
           <View style={styles.titleModalTicket}>
             <Text style={styles.titleContainerTicket}>Thông báo !</Text>
             <Text style={styles.titleDecsTicket}>
-              Vui lòng nhập mật khẩu để đăng nhập
+              Vui lòng đăng nhập để truy cập dịch vụ
             </Text>
           </View>
           <TouchableOpacity
@@ -174,10 +174,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'white',
     alignSelf: 'center',
-    width: '80%',
-    height: '30%',
+    width: '70%',
+    height: '20%',
     borderRadius: 10,
-    paddingHorizontal: 15,
   },
   modalView: {
     paddingVertical: 15,
@@ -207,8 +206,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgb(233, 233, 233)',
     flex: 1,
-    alignSelf: 'stretch',
-    marginVertical: 5,
+    borderRadius: 10,
   },
   btnModalTicketText: {
     fontSize: 17,

@@ -11,7 +11,7 @@ const HeaderAccountPage = () => {
         <Text style={styles.Text}>Tài khoản</Text>
       </View>
       <TouchableOpacity
-        onPress={() => navigation.navigate('AccountQR')}
+        onPress={() => navigation.navigate('QRgenerator')}
         style={styles.touchableOpacity}>
         <MaterialIcons
           name="account-balance-wallet"
@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: 'black',
     fontWeight: '500',
+    paddingLeft: 50
   },
   textTouchableOpacity: {
     paddingLeft: 5,

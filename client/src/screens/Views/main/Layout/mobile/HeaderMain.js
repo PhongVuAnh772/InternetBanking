@@ -36,11 +36,13 @@ const HeaderMain = ({props = '10299200...', money = 14000}) => {
               <Text style={styles.accountInfo}>Tài khoản chính - {props}</Text>
               <View style={styles.moneyContent}>
                 {show ? (
-                  <Text style={styles.textMoney}>{money} đ</Text>
+                  <Text style={styles.textMoneyShow}>{money} đ</Text>
                 ) : (
                   <Text style={styles.textMoney}>*** *** ***</Text>
                 )}
-                <TouchableOpacity style={styles.buttonBtnShow}>
+                <TouchableOpacity
+                  style={styles.buttonBtnShow}
+                  onPress={() => setShow(!show)}>
                   <MaterialIcons name="search" color="white" size={20} />
                 </TouchableOpacity>
               </View>
@@ -135,5 +137,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
+  },
+  textMoneyShow: {
+    color: 'white',
+    fontSize: 20,
   },
 });

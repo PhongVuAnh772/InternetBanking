@@ -1,14 +1,36 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {useNavigation} from '@react-navigation/native';
+
 const ContentExtendedDown = ({name, icon}) => {
+  const navigation = useNavigation();
+  const clickHandler = () => {
+    if (name == 'Tỷ giá ngoại tệ') {
+      navigation.navigate('SettingExtendedContainer');
+    } else if (name == 'ATM và chi nhánh') {
+      navigation.navigate('GoogleMap');
+    } else if (name == 'Tới số tài khoản liên ngân hàng') {
+      navigation.navigate('SendingMoney');
+    } else if (name == 'Tới số tài khoản nội bộ') {
+      navigation.navigate('SendingMoneyByCredits');
+    } else if (name == 'Tới số thẻ nội bộ') {
+      navigation.navigate('SendingMoneyByCustomer');
+    } else if (name == 'Danh sách lịch sử giao dịch') {
+      navigation.navigate('ListOfTransfer');
+    } else if (name == 'Giao dịch đặt lịch') {
+      navigation.navigate('SendingMoneyOrderCalendar');
+    } else if (name == 'Tặng quà') {
+      navigation.navigate('SendingGift');
+    }
+  };
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={clickHandler}>
       <FontAwesome
         name={icon}
         size={20}
-        color="green"
+        color="rgb(17, 164, 87)"
         style={styles.iconContent}
       />
       <View style={styles.textIconcontainer}>
@@ -19,7 +41,7 @@ const ContentExtendedDown = ({name, icon}) => {
       ) : (
         <Text style={styles.textVersion}>5.4.4</Text>
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 

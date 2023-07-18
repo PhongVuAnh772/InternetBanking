@@ -9,17 +9,15 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useState} from 'react';
-import image from '../../assets/components/image.jpg';
+import image from '../../assets/components/image-openbank.jpg';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 import cccd from '../../assets/identification_card.jpeg';
-const ThirdSignUpNumberScreen = ({route}) => {
+const ThirdSignUpNumberScreen = () => {
   const navigation = useNavigation();
   const [valueEmail, setValueEmail] = useState('');
   const [valueCMND, setValueCMND] = useState('');
-  const {email, CMND, valueSTK} = route.params;
-  console.log(email, CMND, valueSTK);
   const handleButton = () => {
     navigation.navigate('FourthSignUpNumberScreen');
   };
@@ -93,7 +91,7 @@ const ThirdSignUpNumberScreen = ({route}) => {
           </Text>
         </ScrollView>
         <Text style={styles.inputTextAreaOut}>
-          Nhấn{' '}
+          Nhấn
           <Text style={styles.inputTextAreaSpanContainerOut}>
             Bắt đầu thực hiện giao dịch xác thực thông tin
           </Text>

@@ -48,38 +48,88 @@ const signIn = (req, res) => {
       }
     })
     .catch(function (err) {
-      console.error(err);
+      return res.status(200).json({
+        success: false,
+        message: "Lỗi server",
+      });
     });
 };
 
 const signUp = (req, res) => {
-  db.accounts
-    .findOne({
-      where: {
-        Account_id: req.body.name,
-      },
-    })
-    .then((dbUser) => {
-      if (dbUser) {
-        return res.status(200).json({
-          message: "Tài khoản đã tồn tại trong hệ thống",
-        });
-      } else {
-        const hash = crypto.createHash("sha256").update(email).digest("hex");
+  bcryptjs.hash(req.body.password, 16, (err, passwordHash) => {
+    if (err) {
+      return res.status(200).json({
+        message: "Không mã hóa được mật khẩu",
+      });
+    } else if (passwordHash) {
+      db.customers
+        .max("id") // Lấy giá trị lớn nhất của CustomerId
+        .then((maxCustomerId) => {
+          const newCustomerId = maxCustomerId ? maxCustomerId + 1 : 1;
 
-        bcryptjs.hash(req.body.password, 12, (err, passwordHash) => {
-          if (err) {
-            return res.status(200).json({
-              message: "Không mã hóa được mật khẩu",
+          db.account_customers
+            .create({
+              Account_id: req.body.Account_id,
+              Customer_id: newCustomerId,
+            })
+            .then((account_customers) => {
+              db.accounts
+                .create({
+                  Account_id: req.body.Account_id,
+                  Account_Balance: 0,
+                  Date_Opened: new Date(),
+                  password: passwordHash,
+                  Account_Type: "checking",
+                })
+                .then((createdAccount) => {
+                  db.customers
+                    .create({
+                      id: newCustomerId,
+                      Full_Name: req.body.fullName,
+                      Date_of_Birth: req.body.dateOfBirth,
+                      Country: req.body.region,
+                      Email: req.body.email,
+                      CMND: req.body.CMNDUser,
+                      Sex: req.body.gender,
+                    })
+                    .then((createCustomer) => {
+                      return res.status(200).json({
+                        success: true,
+                        message: "Tạo tài khoản thành công",
+                        accountCustomer: account_customers,
+                        createdAccount: createdAccount,
+                        createCustomer: createCustomer,
+                      });
+                    })
+                    .catch((error) => {
+                      return res.status(500).json({
+                        message: "Lỗi khi tạo dữ liệu cho bảng Customers",
+                        error: error.message,
+                      });
+                    });
+                })
+                .catch((error) => {
+                  return res.status(500).json({
+                    message: "Lỗi khi tạo dữ liệu cho bảng accounts",
+                    error: error.message,
+                  });
+                });
+            })
+            .catch((error) => {
+              return res.status(500).json({
+                message: "Lỗi khi tạo tài khoản",
+                error: error.message,
+              });
             });
-          } else if (passwordHash) {
-            db.accounts.create({
-              Customers_id: req.body.Account_id,
-            });
-          }
+        })
+        .catch((error) => {
+          return res.status(500).json({
+            message: "Lỗi khi lấy giá trị lớn nhất của CustomerId",
+            error: error.message,
+          });
         });
-      }
-    });
+    }
+  });
 };
 
 const isAuth = (req, res) => {

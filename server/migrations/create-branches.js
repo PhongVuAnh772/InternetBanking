@@ -9,10 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         autoIncrement: true,
       },
-      Branch_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
+
       Branch_Name: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -25,17 +22,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      State: {
+      latitude: {
         allowNull: false,
-        type: Sequelize.CHAR(2),
+        type: Sequelize.FLOAT,
       },
-      Zipcode: {
+      longitude: {
         allowNull: false,
-        type: Sequelize.INTEGER,
-      },
-      Phone_Number: {
-        allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.FLOAT,
       },
     });
   },

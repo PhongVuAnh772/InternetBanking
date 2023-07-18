@@ -6,14 +6,24 @@ import {
   TextInput,
   TouchableOpacity,
   Modal,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
+import {useAppSelector, useAppDispatch} from '../../app/hooks/hooks';
+import {setLogin, setToken} from '../../slice/authSlice';
+import Toast from 'react-native-toast-message';
+
 const Content = ({isSignIn, setIsLoggedIn}) => {
-  const [showPass, setshowPass] = useState(false);
+  const loggedIn = useAppSelector(state => state.login.loggedIn);
+  const dispatch = useAppDispatch();
+  const [showName, setshowName] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [showPass, setshowPass] = useState(true);
   const [name, setName] = useState('');
   const [showButton, setshowButton] = useState(false);
 
@@ -25,6 +35,16 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
   const toggleShowPassword = () => {
     setshowPass(!showPass);
   };
+  const showToast = () => {
+    Toast.show({
+      type: 'success',
+      text1: 'Hello',
+      text2: 'This is some something 👋',
+    });
+  };
+  const toggleShowName = () => {
+    setshowName(!showName);
+  };
   const toggleDeleteName = () => {
     setName('');
   };
@@ -35,7 +55,8 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState('');
   const [isLogin, setIsLogin] = useState(true);
-
+  const ipv4Address = useAppSelector(state => state.network.ipv4Address);
+  const tokenString = useAppSelector(state => state.login.token);
   const onChangeHandler = () => {
     setIsLogin(!isLogin);
     setMessage('');
@@ -43,7 +64,7 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
 
   const onLoggedIn = async token => {
     try {
-      const ress = await axios.get(`http://10.0.2.2:5000/api/private`, {
+      const ress = await axios.get(`http://192.168.100.6:5000/api/private`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -58,39 +79,50 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
   };
 
   const onSubmitHandler = async () => {
+    setIsLoading(true);
+
     const payload = {
       name,
       password,
     };
     try {
-      const res = await axios.post(`http://10.0.2.2:5000/api/login`, payload, {
-        headers: {
-          'Content-Type': 'application/json',
+      const res = await axios.post(
+        `http://192.168.100.6:5000/api/login`,
+        payload,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      });
+      );
       let token = res.data.token;
       if (token) {
-        // AsyncStorage.setItem('token', token);
-
         onLoggedIn(token);
-
+        console.log(token);
         setIsError(false);
         setMessage(res.data.message);
-        setIsLoggedIn(true);
-        navigation.navigate('MainPage', {
-          name: name,
-        });
+        dispatch(setLogin(true));
+        dispatch(setToken(token));
+        setIsLoading(false);
+
+        console.log(token);
+        navigation.navigate('MainPage');
       } else if (res.data.success === false) {
         setMessage('Sai thông tin đăng nhập, hãy thử lại');
+        setIsLoading(false);
       }
     } catch (err) {
       console.log('Co loi : ' + err);
       setIsError(true);
+      setIsLoading(false);
+
       setMessage(err.message);
     }
   };
 
-  const iconName = showPass ? 'eye' : 'eye-slash';
+  const iconName = showName ? 'eye' : 'eye-slash';
+  const iconNamePass = showPass ? 'eye' : 'eye-slash';
+
   useEffect(() => {
     navigation.setOptions({isSignIn});
   }, [navigation, isSignIn]);
@@ -99,7 +131,7 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          secureTextEntry={false}
+          secureTextEntry={showName}
           value={name}
           placeholder="Tên đăng nhập"
           onChangeText={setName}
@@ -109,8 +141,15 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
         <View style={styles.iconFirst}>
           <Icon name="user-o" size={20} color="white" />
         </View>
-        <TouchableOpacity style={styles.buttonText} onPress={toggleDeleteName}>
-          <MaterialIcons name="cancel" size={20} color="rgb(163, 210, 206)" />
+        {name !== '' && (
+          <TouchableOpacity
+            style={styles.buttonText}
+            onPress={toggleDeleteName}>
+            <MaterialIcons name="cancel" size={20} color="rgb(163, 210, 206)" />
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity style={styles.buttonHide} onPress={toggleShowName}>
+          <Icon name={iconName} size={20} color="rgb(163, 210, 206)" />
         </TouchableOpacity>
       </View>
       <Text style={styles.loginButtonerr}>{message}</Text>
@@ -128,26 +167,38 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
         <View style={styles.iconFirst}>
           <MaterialIcons name="lock-outline" size={20} color="white" />
         </View>
-        <TouchableOpacity style={styles.buttonText} onPress={toggleDeletePass}>
-          <MaterialIcons name="cancel" size={20} color="rgb(163, 210, 206)" />
-        </TouchableOpacity>
+        {password !== '' && (
+          <TouchableOpacity
+            style={styles.buttonText}
+            onPress={toggleDeletePass}>
+            <MaterialIcons name="cancel" size={20} color="rgb(163, 210, 206)" />
+          </TouchableOpacity>
+        )}
         <TouchableOpacity
           style={styles.buttonHide}
           onPress={toggleShowPassword}>
-          <Icon name={iconName} size={20} color="rgb(163, 210, 206)" />
+          <Icon name={iconNamePass} size={20} color="rgb(163, 210, 206)" />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.loginButton} onPress={onSubmitHandler}>
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={() => onSubmitHandler()}>
         <Text style={styles.loginButtonText}>Đăng nhập</Text>
       </TouchableOpacity>
+      {isLoading && (
+        <ActivityIndicator
+          size="large"
+          color="#00ff00"
+        />
+      )}
+
       <View style={styles.otherFunc}>
         <TouchableOpacity onPress={() => navigation.navigate('Registered')}>
           <Text style={styles.loginButtonText}>Đăng ký ngay</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={toggleShowPassword}>
-          <Text style={styles.loginButtonText} onPress={toggleShowPassword}>
-            Quên mật khẩu ?
-          </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ForgotPasswordScreen')}>
+          <Text style={styles.loginButtonText}>Quên mật khẩu?</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -31,37 +31,28 @@ const TransferMoney = ({name = 'VU ANH PHONG'}) => {
         style={styles.containerContent}
         showsVerticalScrollIndicator={false}>
         <ContentExtendedDown
-          name="Tới số tài khoản"
+          name="Tới số tài khoản liên ngân hàng"
           icon="bar-chart-o"
           style={{paddingVertical: 0}}
         />
 
         <ContentExtendedDown
-          name="Tới số thẻ"
+          name="Tới số tài khoản nội bộ"
           icon="location-arrow"
           style={{paddingVertical: 0}}
         />
 
         <ContentExtendedDown
-          name="Tới người nhận tại VNPost"
+          name="Tới số thẻ nội bộ"
           icon="handshake-o"
           style={{paddingVertical: 0}}
         />
         <ContentExtendedDown
-          name="Danh sách người nhận"
+          name="Danh sách lịch sử giao dịch"
           icon="id-card"
           style={{paddingVertical: 0}}
         />
-        <ContentExtendedDown
-          name="Giao dịch đặt lịch"
-          icon="ticket"
-          style={{paddingVertical: 0}}
-        />
-        <ContentExtendedDown
-          name="Tặng quà"
-          icon="institution"
-          style={{paddingVertical: 0}}
-        />
+       
         <View style={styles.containerIconFooter}>
           <Text style={styles.textTransferForm}>Mẫu giao dịch</Text>
           <TouchableOpacity>
