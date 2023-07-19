@@ -8,10 +8,18 @@ import { setLogin } from '../../slice/authSlice';
 const LastSuccessSignUpScreen = () => {
     const navigation = useNavigation()
     const dispatch = useAppDispatch()
+    const showToast = () => {
+    Toast.show({
+      type: 'success',
+      text1: 'Đăng ký thành công',
+      text2: 'Xin chàoo 👋',
+    });
+  };
   useEffect(() => {
 
     const timer = setTimeout(() => {
-        dispatch(setLogin(true));
+      dispatch(setLogin(true));
+      showToast();
       navigation.navigate('Home'); 
     }, 3000);
 

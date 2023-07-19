@@ -32,7 +32,10 @@ module.exports = {
         type: Sequelize.STRING,
         foreignKey: true,
       },
-      
+      PINCode: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      } 
     });
   },
   async down(queryInterface, Sequelize) {

@@ -5,13 +5,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
 
-      
-
       accounts.hasMany(models.account_customers, {
         foreignKey: "Account_id",
         as: "accountData",
         targetKey: "Account_id",
-
       });
     }
   }
@@ -22,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      Account_id:{
+      Account_id: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -30,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       Date_Opened: DataTypes.DATEONLY,
       password: DataTypes.STRING,
       Account_Type: DataTypes.STRING,
+      PINCode: DataTypes.STRING,
     },
     {
       sequelize,

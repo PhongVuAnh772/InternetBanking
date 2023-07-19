@@ -28,8 +28,38 @@ const getData = async (req, res) => {
     });
 };
 
+const getOTPAccount = async (req, res) => {
+  db.customers
+    .findOne({
+      where: {
+        OTPCode: req.body.OTPCode,
+      },
+    })
+    .then((dbUser) => {
+      if (dbUser) {
+        return res.status(200).json({
+          success: true,
+
+          message: "OTP đúng",
+          data: dbUser
+        });
+      } else {
+        return res.status(200).json({
+          success: false,
+          message: "OTP không khớp, hãy thử lại",
+        });
+      }
+    })
+    .catch((error) => {
+      // Xử lý lỗi
+      console.log(error);
+      res.status(200).send({ success: false, error: "Lỗi server" });
+    });
+};
+
 
 
 module.exports = {
   getData,
+  getOTPAccount
 };

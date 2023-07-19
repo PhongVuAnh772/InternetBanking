@@ -62,8 +62,8 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
   const showToast = () => {
     Toast.show({
       type: 'success',
-      text1: 'Hello',
-      text2: 'This is some something 👋',
+      text1: 'Đăng nhập thành công',
+      text2: 'Xin chàoo 👋',
     });
   };
   const toggleShowName = () => {
@@ -85,7 +85,8 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
     setIsLogin(!isLogin);
     setMessage('');
   };
-
+ 
+  const dateValues = useAppSelector(state => state.signUp.DateValue);
   const onLoggedIn = async token => {
     try {
       const ress = await axios.post(
@@ -136,11 +137,10 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
           dispatch(setEmail(res.data.other.customerData.Email));
           dispatch(setpersonalIdNumber(res.data.other.customerData.CMND));
           dispatch(setnewAccountSTK(res.data.other.customerData.Account_id));
-          dispatch(setEmail(res.data.other.customerData.Email));
           dispatch(setdateOfBirth(res.data.other.customerData.Date_of_Birth));
           dispatch(setSex(res.data.other.customerData.Sex));
           dispatch(setBalance(res.data.data.Account_Balance));
-          dispatch(setDateValue(res.data.credit_cards.Date_Opened));
+          dispatch(setDateValue(res.data.data.Date_Opened));
           dispatch(setCVVNumber(res.data.credit_cards.CVC));
           dispatch(setgetPhysicalCard(res.data.credit_cards.get_physical_card));
           dispatch(setLocked(res.data.credit_cards.locked));
@@ -151,6 +151,7 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
           dispatch(setfullName(res.data.other.customerData.Full_Name));
           dispatch(setCC_number(res.data.credit_cards.CC_number));
           setIsLoading(false);
+          showToast();
           navigation.navigate('MainPage');
         } else {
           setMessage('Có lỗi trong quá trình xác thực');

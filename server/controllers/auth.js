@@ -118,75 +118,176 @@ const signUp = (req, res) => {
         message: "Không mã hóa được mật khẩu",
       });
     } else if (passwordHash) {
-      db.customers
-        .max("id") // Lấy giá trị lớn nhất của CustomerId
-        .then((maxCustomerId) => {
-          const newCustomerId = maxCustomerId ? maxCustomerId + 1 : 1;
+      db.credit_cards
+        .max("id") // Lấy giá trị lớn nhất của CreditCard_id
+        .then((maxCreditCardId) => {
+          const newCreditCardId = maxCreditCardId ? maxCreditCardId + 1 : 1;
+          db.customers
+            .max("id") // Lấy giá trị lớn nhất của CustomerId
+            .then((maxCustomerId) => {
+              const newCustomerId = maxCustomerId ? maxCustomerId + 1 : 1;
 
-          db.account_customers
-            .create({
-              Account_id: req.body.Account_id,
-              Customer_id: newCustomerId,
-            })
-            .then((account_customers) => {
-              db.accounts
+              db.account_customers
                 .create({
                   Account_id: req.body.Account_id,
-                  Account_Balance: 0,
-                  Date_Opened: new Date(),
-                  password: passwordHash,
-                  Account_Type: "checking",
+                  Customer_id: newCustomerId,
                 })
-                .then((createdAccount) => {
-                  db.customers
+                .then((account_customers) => {
+                  db.accounts
                     .create({
-                      id: newCustomerId,
-                      Full_Name: req.body.fullName,
-                      Date_of_Birth: req.body.dateOfBirth,
-                      Country: req.body.region,
-                      Email: req.body.email,
-                      CMND: req.body.CMNDUser,
-                      Sex: req.body.gender,
+                      Account_id: req.body.Account_id,
+                      Account_Balance: 0,
+                      Date_Opened: new Date(),
+                      password: passwordHash,
+                      Account_Type: "checking",
+                      PINCode: req.body.PINCode,
                     })
-                    .then((createCustomer) => {
-                      return res.status(200).json({
-                        success: true,
-                        message: "Tạo tài khoản thành công",
-                        accountCustomer: account_customers,
-                        createdAccount: createdAccount,
-                        createCustomer: createCustomer,
-                      });
+                    .then((createdAccount) => {
+                      db.customers
+                        .create({
+                          id: newCustomerId,
+                          Full_Name: req.body.fullName,
+                          Date_of_Birth: req.body.dateOfBirth,
+                          Country: req.body.region,
+                          Email: req.body.email,
+                          CMND: req.body.CMNDUser,
+                          Sex: req.body.gender,
+                        })
+                        .then((createCustomers) => {
+                          db.credit_cards
+                            .create({
+                              id: newCreditCardId,
+                              CC_number: req.body.CardNumber,
+                              Maximum_Limit: 10000.0,
+                              Expiry_Date: new Date(
+                                new Date().setFullYear(
+                                  new Date().getFullYear() + 4
+                                )
+                              ),
+                              Credit_Score: 0,
+                              CVC: req.body.CVCNumber,
+                              locked: false,
+                              get_physical_card: false,
+                              Customer_id: createCustomers.id,
+                            })
+                            .then((createCreditCard) => {
+                              return res.status(200).json({
+                                success: true,
+                                message: "Tạo tài khoản thành công",
+                                accountCustomer: account_customers,
+                                createdAccount: createdAccount,
+                                createCustomer: createCustomers,
+                                credit_cards: createCreditCard,
+                              });
+                            })
+                            .catch((error) => {
+                              // Xóa bỏ các bảng đã tạo nếu có lỗi
+                              Promise.all([
+                                db.accounts.destroy({
+                                  where: {
+                                    Account_id: req.body.Account_id,
+                                  },
+                                }),
+                                db.customers.destroy({
+                                  where: {
+                                    id: newCustomerId,
+                                  },
+                                }),
+                                db.account_customers.destroy({
+                                  where: {
+                                    Account_id: req.body.Account_id,
+                                    Customer_id: newCustomerId,
+                                  },
+                                }),
+                              ])
+                                .then(() => {
+                                  return res.status(500).json({
+                                    message:
+                                      "Lỗi khi tạo dữ liệu cho bảng credit_cards",
+                                    error: error.message,
+                                  });
+                                })
+                                .catch((deleteError) => {
+                                  return res.status(500).json({
+                                    message:
+                                      "Lỗi khi xóa dữ liệu không hợp lệ",
+                                    error: deleteError.message,
+                                  });
+                                });
+                            });
+                        })
+                        .catch((error) => {
+                          // Xóa bỏ các bảng đã tạo nếu có lỗi
+                          Promise.all([
+                            db.accounts.destroy({
+                              where: {
+                                Account_id: req.body.Account_id,
+                              },
+                            }),
+                            db.account_customers.destroy({
+                              where: {
+                                Account_id: req.body.Account_id,
+                                Customer_id: newCustomerId,
+                              },
+                            }),
+                          ])
+                            .then(() => {
+                              return res.status(500).json({
+                                message:
+                                  "Lỗi khi tạo dữ liệu cho bảng customers",
+                                error: error.message,
+                              });
+                            })
+                            .catch((deleteError) => {
+                              return res.status(500).json({
+                                message:
+                                  "Lỗi khi xóa dữ liệu không hợp lệ",
+                                error: deleteError.message,
+                              });
+                            });
+                        });
                     })
                     .catch((error) => {
-                      return res.status(500).json({
-                        message: "Lỗi khi tạo dữ liệu cho bảng Customers",
-                        error: error.message,
-                      });
+                      // Xóa bỏ bảng đã tạo nếu có lỗi
+                      db.account_customers
+                        .destroy({
+                          where: {
+                            Account_id: req.body.Account_id,
+                            Customer_id: newCustomerId,
+                          },
+                        })
+                        .then(() => {
+                          return res.status(500).json({
+                            message: "Lỗi khi tạo dữ liệu cho bảng accounts",
+                            error: error.message,
+                          });
+                        })
+                        .catch((deleteError) => {
+                          return res.status(500).json({
+                            message: "Lỗi khi xóa dữ liệu không hợp lệ",
+                            error: deleteError.message,
+                          });
+                        });
                     });
                 })
                 .catch((error) => {
                   return res.status(500).json({
-                    message: "Lỗi khi tạo dữ liệu cho bảng accounts",
+                    message: "Lỗi khi tạo tài khoản",
                     error: error.message,
                   });
                 });
             })
             .catch((error) => {
               return res.status(500).json({
-                message: "Lỗi khi tạo tài khoản",
+                message: "Lỗi khi lấy giá trị lớn nhất của CustomerId",
                 error: error.message,
               });
             });
-        })
-        .catch((error) => {
-          return res.status(500).json({
-            message: "Lỗi khi lấy giá trị lớn nhất của CustomerId",
-            error: error.message,
-          });
         });
     }
   });
 };
+
 
 module.exports = {
   signUp,
