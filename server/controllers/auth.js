@@ -5,56 +5,112 @@ const bcryptjs = require("bcryptjs");
 const crypto = require("crypto");
 
 const signIn = (req, res) => {
-  db.accounts
+  db.account_customers
     .findOne({
       where: {
         Account_id: req.body.name,
       },
+      include: [{ model: db.customers, as: "customerData" }],
     })
-    .then((account) => {
-      if (!account) {
-        return res.status(200).json({
-          success: false,
-          message: "Tài khoản không tồn tại",
+    .then((dataAccountCustomer) => {
+      db.credit_cards
+        .findOne({
+          where: {
+            Customer_id: dataAccountCustomer.Customer_id,
+          },
+        })
+        .then((dataCreditCards) => {
+          db.accounts
+            .findOne({
+              where: {
+                Account_id: req.body.name,
+              },
+            })
+            .then((account) => {
+              if (!account) {
+                return res.status(200).json({
+                  success: false,
+                  message: "Tài khoản không tồn tại",
+                });
+              } else {
+                bcryptjs.compare(
+                  req.body.password,
+                  account.password,
+                  (err, compareRes) => {
+                    if (err) {
+                      return res.status(200).json({
+                        success: false,
+                        message:
+                          "Có lỗi trong khi kiểm tra mật khẩu, vui lòng thử lại",
+                      });
+                    } else if (compareRes) {
+                      const token = jwt.sign(
+                        { Account_id: req.body.Account_id },
+                        "secret",
+                        { expiresIn: "1h" }
+                      );
+                      return res.status(200).json({
+                        success: true,
+                        token: token,
+                        message: "Đăng nhập thành công",
+                        data: account,
+                        credit_cards: dataCreditCards,
+                        other: dataAccountCustomer,
+                      });
+                    } else {
+                      return res.status(200).json({
+                        success: false,
+                        message: "Xác thực không thành công",
+                      });
+                    }
+                  }
+                );
+              }
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(200).json({
+            success: false,
+            message: "Lỗi khi lấy dữ liệu credit_Cards",
+          });
         });
-      } else {
-        bcryptjs.compare(
-          req.body.password,
-          account.password,
-          (err, compareRes) => {
-            if (err) {
-              return res.status(200).json({
-                suscess: false,
-                message: "Có lỗi trong khi kiểm tra mật khẩu, vui lòng thử lại",
-              });
-            } else if (compareRes) {
-              const token = jwt.sign(
-                { Account_id: req.body.Account_id },
-                "secret",
-                { expiresIn: "1h" }
-              );
-              return res.status(200).json({
-                success: true,
-                token: token,
-                message: "Đăng nhập thành công",
-              });
-            } else {
-              return res
-                .status(200)
-                .json({ success: false, message: "Xác thực không thành công" });
-            }
-          }
-        );
-      }
     })
-    .catch(function (err) {
+    .catch((err) => {
+      console.log(err);
       return res.status(200).json({
         success: false,
-        message: "Lỗi server",
+        message: "Lỗi khi lấy dữ liệu account_customers",
       });
     });
 };
 
+const isAuth = (req, res) => {
+  const authHeader = req.get("Authorization");
+  if (!authHeader) {
+    return res
+      .status(401)
+      .json({ success: false, message: "Không xác thực thành công" });
+  }
+  const token = authHeader.split(" ")[1];
+  console.log("token: " + token);
+  let decodedToken;
+  try {
+    decodedToken = jwt.verify(token, "secret");
+  } catch (err) {
+    return res.status(200).json({
+      success: false,
+      message: err.message || "could not decode the token",
+    });
+  }
+  if (!decodedToken) {
+    return res.status(200).json({ success: false, message: "unauthorized" });
+  } else {
+    return res
+      .status(200)
+      .json({ success: true, message: "here is your resource" });
+  }
+};
 const signUp = (req, res) => {
   bcryptjs.hash(req.body.password, 16, (err, passwordHash) => {
     if (err) {
@@ -130,28 +186,6 @@ const signUp = (req, res) => {
         });
     }
   });
-};
-
-const isAuth = (req, res) => {
-  const authHeader = req.get("Authorization");
-  if (!authHeader) {
-    return res.status(401).json({ message: "Không xác thực thành công" });
-  }
-  const token = authHeader.split(" ")[1];
-  console.log("token: " + token);
-  let decodedToken;
-  try {
-    decodedToken = jwt.verify(token, "secret");
-  } catch (err) {
-    return res
-      .status(200)
-      .json({ message: err.message || "could not decode the token" });
-  }
-  if (!decodedToken) {
-    return res.status(200).json({ message: "unauthorized" });
-  } else {
-    return res.status(200).json({ message: "here is your resource" });
-  }
 };
 
 module.exports = {

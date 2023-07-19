@@ -97,16 +97,23 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
       );
       let token = res.data.token;
       if (token) {
-        onLoggedIn(token);
-        console.log(token);
-        setIsError(false);
-        setMessage(res.data.message);
-        dispatch(setLogin(true));
-        dispatch(setToken(token));
-        setIsLoading(false);
+        console.log(res);
+        onLoggedIn(token)
+        .then(() => {
+          console.log(token);
+          
+          setIsError(false);
+          setMessage(res.data.message);
+          dispatch(setLogin(true));
+          dispatch(setToken(token));
+          setIsLoading(false);
+          navigation.navigate('MainPage');
+        })
+        .catch(err => {
+          setMessage(err);
+        }) 
 
-        console.log(token);
-        navigation.navigate('MainPage');
+       
       } else if (res.data.success === false) {
         setMessage('Sai thông tin đăng nhập, hãy thử lại');
         setIsLoading(false);
