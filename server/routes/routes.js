@@ -13,6 +13,7 @@ const loanController = require("../controllers/loanController")
 
 router.post("/signup", index.signUp);
 router.post("/login", index.signIn);
+router.post("/private",index.isAuth);
 router.post("/validateEmail", customersController.getData);
 router.get("/getData/:account_id", getDataController.getDataAccount);
 router.get("/getDataOtherBanks",getDataBanksController.getDataOtherBanks);

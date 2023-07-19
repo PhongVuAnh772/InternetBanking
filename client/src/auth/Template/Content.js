@@ -27,7 +27,6 @@ import {
   setregionName,
   setfullName,
   setpersonalIdNumber,
-  setCC_number
 } from '../../slice/signUpSlice';
 import {
   setCVVNumber,
@@ -36,19 +35,22 @@ import {
   setBalance,
   setgetPhysicalCard,
   setLocked,
+  setCC_number,
+
 } from '../../slice/creditSlice';
 
 const Content = ({isSignIn, setIsLoggedIn}) => {
   const loggedIn = useAppSelector(state => state.login.loggedIn);
+  const CC_number = useAppSelector(state => state.credit.CC_number);
   const dispatch = useAppDispatch();
   const [showName, setshowName] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const [showPass, setshowPass] = useState(true);
-  const [name, setName] = useState('');
+  const [name, setName] = useState('45949545');
   const [showButton, setshowButton] = useState(false);
 
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('tranviettrung2@gmail.com');
 
   const navigation = useNavigation();
   const toggleShowButton = () => {
@@ -86,17 +88,23 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
 
   const onLoggedIn = async token => {
     try {
-      const ress = await axios.get(`http://192.168.100.6:5000/api/private`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+      const ress = await axios.post(
+        `http://192.168.100.6:5000/api/private`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
-      if (ress.status === 200) {
-        setMessage(ress.data.message);
+      );
+      if (ress.data.success === true) {
+        return true;
+      } else {
+        return false;
       }
     } catch (err) {
       console.log(err);
+      return false; 
     }
   };
 
@@ -118,41 +126,36 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
         },
       );
       let token = res.data.token;
+      console.log(token);
       if (token) {
-        console.log(res);
-        onLoggedIn(token)
-          .then(() => {
-            console.log(token);
+        if (await onLoggedIn(token)) {
 
-            setIsError(false);
-            setMessage(res.data.message);
-            dispatch(setLogin(true));
-            dispatch(setToken(token));
-            dispatch(setEmail(res.data.other.customerData.Email));
-            dispatch(setpersonalIdNumber(res.data.other.customerData.CMND));
-            dispatch(setnewAccountSTK(res.data.other.customerData.Account_id));
-            dispatch(setEmail(res.data.other.customerData.Email));
-            dispatch(setdateOfBirth(res.data.other.customerData.Date_of_Birth));
-            dispatch(setSex(res.data.other.customerData.Sex));
-            dispatch(setBalance(res.data.data.Account_Balance));
-            dispatch(setDateValue(res.data.credit_cards.Date_Opened));
-            dispatch(setCVVNumber(res.data.credit_cards.CVC));
-            dispatch(
-              setgetPhysicalCard(res.data.credit_cards.get_physical_card),
-            );
-            dispatch(setLocked(res.data.credit_cards.locked));
-            dispatch(setregionName(res.data.other.customerData.Country));
-            dispatch(
-              setUserNameCreditCard(res.data.other.customerData.Full_Name),
-            );
-            dispatch(setfullName(res.data.other.customerData.Full_Name));
-            dispatch(setCC_number(res.data.credit_cards.CC_number))
-            setIsLoading(false);
-            navigation.navigate('MainPage');
-          })
-          .catch(err => {
-            setMessage(err);
-          });
+          setIsError(false);
+          dispatch(setLogin(true));
+          dispatch(setToken(token));
+          dispatch(setEmail(res.data.other.customerData.Email));
+          dispatch(setpersonalIdNumber(res.data.other.customerData.CMND));
+          dispatch(setnewAccountSTK(res.data.other.customerData.Account_id));
+          dispatch(setEmail(res.data.other.customerData.Email));
+          dispatch(setdateOfBirth(res.data.other.customerData.Date_of_Birth));
+          dispatch(setSex(res.data.other.customerData.Sex));
+          dispatch(setBalance(res.data.data.Account_Balance));
+          dispatch(setDateValue(res.data.credit_cards.Date_Opened));
+          dispatch(setCVVNumber(res.data.credit_cards.CVC));
+          dispatch(setgetPhysicalCard(res.data.credit_cards.get_physical_card));
+          dispatch(setLocked(res.data.credit_cards.locked));
+          dispatch(setregionName(res.data.other.customerData.Country));
+          dispatch(
+            setUserNameCreditCard(res.data.other.customerData.Full_Name),
+          );
+          dispatch(setfullName(res.data.other.customerData.Full_Name));
+          dispatch(setCC_number(res.data.credit_cards.CC_number));
+          setIsLoading(false);
+          navigation.navigate('MainPage');
+        } else {
+          setMessage('Có lỗi trong quá trình xác thực');
+          setIsLoading(false);
+        }
       } else if (res.data.success === false) {
         setMessage('Sai thông tin đăng nhập, hãy thử lại');
         setIsLoading(false);

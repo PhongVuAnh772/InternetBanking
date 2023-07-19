@@ -23,7 +23,7 @@ function QRgenerator() {
   const [loading, setloading] = useState(false);
   const navigation = useNavigation()
   const resultUserName = useAppSelector(state => state.signUp.fullName)
-  const resultSTK = useAppSelector(state => state.signUp.CMNDUser)
+  const resultSTK = useAppSelector(state => state.signUp.personalIdNumber)
   const resultToString = `${resultUserName} - ${resultSTK} - VPBANK`
   const shareQR = () => {
     QRImage.toDataURL(data => {

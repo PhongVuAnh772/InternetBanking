@@ -98,13 +98,13 @@ const isAuth = (req, res) => {
   try {
     decodedToken = jwt.verify(token, "secret");
   } catch (err) {
-    return res.status(200).json({
+    return res.status(500).json({
       success: false,
       message: err.message || "could not decode the token",
     });
   }
   if (!decodedToken) {
-    return res.status(200).json({ success: false, message: "unauthorized" });
+    return res.status(500).json({ success: false, message: "unauthorized" });
   } else {
     return res
       .status(200)
