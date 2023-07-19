@@ -6,13 +6,21 @@ interface creditState {
   UserNameCreditCard: string;
   CVVNumber: string;
   DateValue: string;
+  Balance: number;
+  locked: boolean;
+  getPhysicalCard: boolean;
+  CC_number: string;
 }
 
 
 const initialState: creditState = {
   CVVNumber: '',
   UserNameCreditCard: '',
-  DateValue: ''
+  DateValue: '',
+  Balance: 0.00,
+  locked: false,
+  getPhysicalCard: false,
+  CC_number: '',
 };
 
 export const creditSlice = createSlice({
@@ -28,10 +36,22 @@ export const creditSlice = createSlice({
     setDateValue: (state, action: PayloadAction<string>) => {
       state.DateValue = action.payload;
     },
+    setBalance: (state, action: PayloadAction<number>) => {
+      state.Balance = action.payload;
+    },
+    setLocked: (state, action: PayloadAction<boolean>) => {
+      state.locked = action.payload;
+    },
+    setgetPhysicalCard: (state, action: PayloadAction<boolean>) => {
+      state.getPhysicalCard = action.payload;
+    },
+    setCC_number: (state, action: PayloadAction<string>) => {
+      state.CC_number = action.payload;
+    },
   },
 });
 
 
-export const {setCVVNumber, setDateValue,setUserNameCreditCard} = creditSlice.actions;
+export const {setCVVNumber, setDateValue,setUserNameCreditCard, setBalance,setgetPhysicalCard,setLocked,setCC_number} = creditSlice.actions;
 // export const selectCount = (state: RootState) => state.credit.loggedIn;
 export default creditSlice.reducer;

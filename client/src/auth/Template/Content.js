@@ -16,6 +16,27 @@ import axios from 'axios';
 import {useAppSelector, useAppDispatch} from '../../app/hooks/hooks';
 import {setLogin, setToken} from '../../slice/authSlice';
 import Toast from 'react-native-toast-message';
+import {
+  setEmail,
+  setCMND,
+  setnewAccountSTK,
+  setimageFrontURL,
+  setimageBackURL,
+  setdateOfBirth,
+  setSex,
+  setregionName,
+  setfullName,
+  setpersonalIdNumber,
+  setCC_number
+} from '../../slice/signUpSlice';
+import {
+  setCVVNumber,
+  setDateValue,
+  setUserNameCreditCard,
+  setBalance,
+  setgetPhysicalCard,
+  setLocked,
+} from '../../slice/creditSlice';
 
 const Content = ({isSignIn, setIsLoggedIn}) => {
   const loggedIn = useAppSelector(state => state.login.loggedIn);
@@ -28,6 +49,7 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
   const [showButton, setshowButton] = useState(false);
 
   const [password, setPassword] = useState('');
+
   const navigation = useNavigation();
   const toggleShowButton = () => {
     setshowButton(true);
@@ -99,21 +121,38 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
       if (token) {
         console.log(res);
         onLoggedIn(token)
-        .then(() => {
-          console.log(token);
-          
-          setIsError(false);
-          setMessage(res.data.message);
-          dispatch(setLogin(true));
-          dispatch(setToken(token));
-          setIsLoading(false);
-          navigation.navigate('MainPage');
-        })
-        .catch(err => {
-          setMessage(err);
-        }) 
+          .then(() => {
+            console.log(token);
 
-       
+            setIsError(false);
+            setMessage(res.data.message);
+            dispatch(setLogin(true));
+            dispatch(setToken(token));
+            dispatch(setEmail(res.data.other.customerData.Email));
+            dispatch(setpersonalIdNumber(res.data.other.customerData.CMND));
+            dispatch(setnewAccountSTK(res.data.other.customerData.Account_id));
+            dispatch(setEmail(res.data.other.customerData.Email));
+            dispatch(setdateOfBirth(res.data.other.customerData.Date_of_Birth));
+            dispatch(setSex(res.data.other.customerData.Sex));
+            dispatch(setBalance(res.data.data.Account_Balance));
+            dispatch(setDateValue(res.data.credit_cards.Date_Opened));
+            dispatch(setCVVNumber(res.data.credit_cards.CVC));
+            dispatch(
+              setgetPhysicalCard(res.data.credit_cards.get_physical_card),
+            );
+            dispatch(setLocked(res.data.credit_cards.locked));
+            dispatch(setregionName(res.data.other.customerData.Country));
+            dispatch(
+              setUserNameCreditCard(res.data.other.customerData.Full_Name),
+            );
+            dispatch(setfullName(res.data.other.customerData.Full_Name));
+            dispatch(setCC_number(res.data.credit_cards.CC_number))
+            setIsLoading(false);
+            navigation.navigate('MainPage');
+          })
+          .catch(err => {
+            setMessage(err);
+          });
       } else if (res.data.success === false) {
         setMessage('Sai thông tin đăng nhập, hãy thử lại');
         setIsLoading(false);
@@ -192,12 +231,7 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
         onPress={() => onSubmitHandler()}>
         <Text style={styles.loginButtonText}>Đăng nhập</Text>
       </TouchableOpacity>
-      {isLoading && (
-        <ActivityIndicator
-          size="large"
-          color="#00ff00"
-        />
-      )}
+      {isLoading && <ActivityIndicator size="large" color="#00ff00" />}
 
       <View style={styles.otherFunc}>
         <TouchableOpacity onPress={() => navigation.navigate('Registered')}>

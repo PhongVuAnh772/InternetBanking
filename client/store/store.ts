@@ -6,6 +6,7 @@ import transferReducer from '../src/slice/transferSlice';
 import allTokenReducer from '../src/slice/allTokenSlice';
 import transferInternalReducer from '../src/slice/transferInternalSlice';
 import signUpSlice from '../src/slice/signUpSlice';
+import creditSlice from '../src/slice/creditSlice';
 
 
 
@@ -18,6 +19,7 @@ const store = configureStore({
     allToken: allTokenReducer,
     transferInternal: transferInternalReducer,
     signUp: signUpSlice,
+    credit: creditSlice
   },
   middleware: [thunk]
 
