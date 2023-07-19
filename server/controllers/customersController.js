@@ -29,10 +29,10 @@ const getData = async (req, res) => {
 };
 
 const getOTPAccount = async (req, res) => {
-  db.customers
+  db.accounts
     .findOne({
       where: {
-        OTPCode: req.body.OTPCode,
+        PINCode: req.body.PINCode,
       },
     })
     .then((dbUser) => {
@@ -51,7 +51,6 @@ const getOTPAccount = async (req, res) => {
       }
     })
     .catch((error) => {
-      // Xử lý lỗi
       console.log(error);
       res.status(200).send({ success: false, error: "Lỗi server" });
     });

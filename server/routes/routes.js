@@ -24,6 +24,7 @@ router.post("/upImageToGlobal",createBucketggCloudController.uploadImageToBucket
 router.post("/upImageBackToGlobal",createBucketggCloudController.uploadImageBackToBucket)
 router.post("/updateCreditCard",bankingController.addCreditCard)
 router.post("/addLoan", loanController.addLoans)
+router.post("/getOTPCode", customersController.getOTPAccount)
 
 router.use("/", (req, res, next) => {
   res.status(404).json({ error: "router không tồn tại" });

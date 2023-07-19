@@ -1,17 +1,23 @@
-import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
+import {StyleSheet, Text, View, Image, ScrollView,TouchableOpacity} from 'react-native';
 import React from 'react';
-import user from '../../../../assets/girl.png';
+import usergirl from '../../../../assets/girl.png';
+import userman from '../../../../assets/man.jpg';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ContentExtended from './ContentExtended';
 import ContentExtendedDown from './ContentExtenedDown';
+import { useAppSelector } from '../../../../app/hooks/hooks';
 
-const ExtendedContent = ({name = 'VU ANH PHONG'}) => {
+const ExtendedContent = () => {
+  const gender = useAppSelector(state => state.signUp.sex)
+  const name = useAppSelector(state => state.signUp.fullName)
+  console.log(gender)
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.infoContainer}>
         <View style={styles.imageContainer}>
-          <Image style={styles.image} source={user} />
-        </View>
+  <Image style={styles.image} source={gender === 'M' ? userman : usergirl} />
+</View>
+
         <View style={styles.infoDesc}>
           <Text style={styles.infoName}>{name}</Text>
           <Text style={styles.infoName}>Thông tin cá nhân</Text>
@@ -26,7 +32,6 @@ const ExtendedContent = ({name = 'VU ANH PHONG'}) => {
       <ContentExtended name="Cài đặt" icon="gear" />
       <ContentExtended name="Smart OTP" icon="cc-discover" />
 
-      <ContentExtended name="Chủ đề giao diện" icon="paint-brush" />
 
       <ContentExtended name="Phiên bản" icon="wifi" />
 
@@ -48,7 +53,7 @@ const ExtendedContent = ({name = 'VU ANH PHONG'}) => {
         style={{paddingVertical: 0}}
       />
       <View style={styles.containerIconFooter}>
-        <View>
+        <TouchableOpacity>
           <FontAwesome
             name="globe"
             size={30}
@@ -56,8 +61,8 @@ const ExtendedContent = ({name = 'VU ANH PHONG'}) => {
             style={styles.contentIconFooter}
           />
           <Text style={styles.textIconFooter}>Xem trang web</Text>
-        </View>
-        <View>
+        </TouchableOpacity>
+        <TouchableOpacity>
           <FontAwesome
             name="wechat"
             size={30}
@@ -65,7 +70,7 @@ const ExtendedContent = ({name = 'VU ANH PHONG'}) => {
             style={styles.contentIconFooter}
           />
           <Text style={styles.textIconFooter}>Hỗ trợ</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

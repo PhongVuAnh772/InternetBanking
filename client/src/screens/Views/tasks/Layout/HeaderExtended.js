@@ -1,12 +1,22 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
+import { useAppDispatch,useAppSelector } from '../../../../app/hooks/hooks';
+import { setLogin,setToken } from '../../../../slice/authSlice';
+import { useNavigation } from '@react-navigation/native';
 
 const HeaderExtended = () => {
+  const dispatch = useAppDispatch()
+  const navigation = useNavigation()
+  const loginCheck = useAppSelector(state => state.login.loggedIn)
+  const handleLogout = () => {
+    dispatch(setLogin(false))
+    dispatch(setToken(''))
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Mở rộng</Text>
-      <TouchableOpacity style={styles.touchable}>
-        <Text style={styles.textTouchable}> Đăng xuất</Text>
+      <TouchableOpacity style={styles.touchable} onPress={() => handleLogout()}>
+        <Text style={styles.textTouchable}>Đăng xuất</Text>
       </TouchableOpacity>
     </View>
   );

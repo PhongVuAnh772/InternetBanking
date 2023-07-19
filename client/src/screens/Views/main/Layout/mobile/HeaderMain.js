@@ -10,33 +10,35 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import banner from '../../../../../assets/main-page/background.jpg';
-import girl from '../../../../../assets/girl.png';
+import usergirl from '../../../../../assets/girl.png';
+import userman from '../../../../../assets/man.jpg';
 import a from '../../../../../assets/main-page/1.png';
 import b from '../../../../../assets/main-page/2.png';
-
 import c from '../../../../../assets/main-page/3.png';
-
 import d from '../../../../../assets/main-page/4.png';
-
 import e from '../../../../../assets/main-page/5.png';
-
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import BankingContent from './Generators/modules/tasks/BankingContent';
+import { useAppSelector,useAppDispatch } from '../../../../../app/hooks/hooks';
 
 const HeaderMain = ({props = '10299200...', money = 14000}) => {
   const [show, setShow] = useState(false);
+  const gender = useAppSelector(state => state.signUp.sex)
+  const originalSTK = useAppSelector(state => state.signUp.newAccountSTK)
+  const moneyValue = useAppSelector(state => state.credit.Balance)
+  console.log(originalSTK)
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Image style={styles.poster} source={banner} />
         <View style={styles.iconContainer}>
           <View style={styles.iconContent}>
-            <Image style={styles.imageInfo} source={girl} />
+            <Image style={styles.imageInfo} source={gender === 'M' ? userman : usergirl} />
             <View style={styles.iconTextContent}>
-              <Text style={styles.accountInfo}>Tài khoản chính - {props}</Text>
+              <Text style={styles.accountInfo}>Tài khoản chính - {originalSTK}</Text>
               <View style={styles.moneyContent}>
                 {show ? (
-                  <Text style={styles.textMoneyShow}>{money} đ</Text>
+                  <Text style={styles.textMoneyShow}>{moneyValue} đ</Text>
                 ) : (
                   <Text style={styles.textMoney}>*** *** ***</Text>
                 )}

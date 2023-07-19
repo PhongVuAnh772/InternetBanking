@@ -29,7 +29,7 @@ const ButtonOtherCredit = ({name, icon}) => {
         <Text style={styles.textIcon}>{name}</Text>
       </View>
 
-      <FontAwesome name="angle-right" size={20} style={styles.iconVersion} color="black" />
+      <FontAwesome name="angle-right" size={20} style={styles.iconVersion} color="green" />
     </TouchableOpacity>
   );
 };

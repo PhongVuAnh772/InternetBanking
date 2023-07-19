@@ -20,9 +20,6 @@ export const loginSlice = createSlice({
     setLogin: (state, action: PayloadAction<boolean>) => {
       state.loggedIn = action.payload;
     },
-    setLogout: (state, action: PayloadAction<boolean>) => {
-      state.loggedIn = action.payload;
-    },
     setToken: (state, action: PayloadAction<string>) => {
       state.token = action.payload;
     },
@@ -30,6 +27,6 @@ export const loginSlice = createSlice({
 });
 
 
-export const {setLogin, setLogout,setToken} = loginSlice.actions;
+export const {setLogin, setToken} = loginSlice.actions;
 // export const selectCount = (state: RootState) => state.login.loggedIn;
 export default loginSlice.reducer;

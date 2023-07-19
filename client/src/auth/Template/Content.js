@@ -136,7 +136,7 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
           dispatch(setToken(token));
           dispatch(setEmail(res.data.other.customerData.Email));
           dispatch(setpersonalIdNumber(res.data.other.customerData.CMND));
-          dispatch(setnewAccountSTK(res.data.other.customerData.Account_id));
+          dispatch(setnewAccountSTK(res.data.data.Account_id));
           dispatch(setdateOfBirth(res.data.other.customerData.Date_of_Birth));
           dispatch(setSex(res.data.other.customerData.Sex));
           dispatch(setBalance(res.data.data.Account_Balance));

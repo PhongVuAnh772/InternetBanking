@@ -10,7 +10,7 @@ const NotificationContainer = () => {
     <Tab.Navigator
       screenOptions={({route}) => ({
         headerShown: false,
-        tabBarActiveTintColor: 'green',
+        tabBarActiveTintColor: 'blue',
         tabBarInactiveTintColor: '#000000',
         tabBarStyle: {
           height: 55,
@@ -20,11 +20,7 @@ const NotificationContainer = () => {
           paddingBottom: 5,
         },
       })}>
-      <Tab.Screen
-        name="DiscountContainer"
-        component={DiscountContainer}
-        options={{tabBarLabel: 'Khuyến mãi'}}
-      />
+      
       <Tab.Screen
         name="LetterContainer"
         component={LetterContainer}
