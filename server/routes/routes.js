@@ -8,6 +8,7 @@ const checkSTKBanksController = require("../controllers/accountController");
 const createBucketggCloudController = require("../controllers/ggCloudController")
 const bankingController = require("../controllers/BankingController")
 const loanController = require("../controllers/loanController")
+const updateController = require("../controllers/updateController")
 
 
 
@@ -25,6 +26,9 @@ router.post("/upImageBackToGlobal",createBucketggCloudController.uploadImageBack
 router.post("/updateCreditCard",bankingController.addCreditCard)
 router.post("/addLoan", loanController.addLoans)
 router.post("/getOTPCode", customersController.getOTPAccount)
+router.put("/changeLocked", updateController.changeLocked);
+router.put("/changePhysicalCards", updateController.changePhysicalCards);
+router.put("/changeDataPINCode", updateController.changeDataPINCode);
 
 router.use("/", (req, res, next) => {
   res.status(404).json({ error: "router không tồn tại" });
