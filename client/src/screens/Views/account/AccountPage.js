@@ -4,9 +4,13 @@ import {createStackNavigator} from '@react-navigation/stack';
 import AccountMainContainer from './screens/AccountMainContainer';
 import AccountQR from './screens/AccountQR';
 import QRgenerator from '../../Videos/code/QRgenerator';
+import CVVScreen from './modules/Layout/Tasks/CVVScreen';
+import HistoryTransfer from './modules/Layout/Tasks/HistoryTransfer';
+import PhysicalCardScreen from './modules/Layout/Tasks/PhysicalCardScreen';
+import OTPCheckingWrap from '../../../auth/Template/Interface/tasks/OTPChecking/OTPCheckingWrap';
+import OTPScreenWrap from '../../../auth/Template/Interface/tasks/OTP/OTPScreenWrap';
 
 const AccountStack = createStackNavigator();
-
 
 const AccountPage = () => {
   return (
@@ -16,11 +20,15 @@ const AccountPage = () => {
         component={AccountMainContainer}
       />
 
-<AccountStack.Screen
-        name="QRgenerator"
-        component={QRgenerator}
+      <AccountStack.Screen name="QRgenerator" component={QRgenerator} />
+      {/* <AccountStack.Screen name="OTPScreen" component={OTPScreenWrap} /> */}
+      {/* <AccountStack.Screen name="CVVScreen" component={CVVScreen} /> */}
+      <AccountStack.Screen name="HistoryTransfer" component={HistoryTransfer} />
+      <AccountStack.Screen
+        name="PhysicalCardScreen"
+        component={PhysicalCardScreen}
       />
-      <AccountStack.Screen name="AccountQR" component={AccountQR} />
+      {/* <AccountStack.Screen name="OTPCheckingWrap" component={OTPCheckingWrap} /> */}
     </AccountStack.Navigator>
   );
 };

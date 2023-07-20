@@ -8,13 +8,15 @@ const ButtonOtherCredit = ({name, icon}) => {
   const navigation = useNavigation();
   const clickHandler = () => {
     if (name == 'Phát hành thẻ vật lý') {
-      navigation.navigate('SettingExtendedContainer');
+      navigation.navigate('PhysicalCardScreen');
     } else if (name == 'Xem thông tin số thẻ - CVV') {
-      navigation.navigate('GoogleMap');
+      navigation.navigate('OTPScreen');
     } else if (name == 'Lịch sử giao dịch thẻ') {
-      navigation.navigate('SendingMoney');
-    } else if (name == 'Phát hành thẻ vật lý') {
-      navigation.navigate('SendingMoneyByCredits');
+      navigation.navigate('HistoryTransfer');
+    } else if (name == 'Sử dụng thẻ an toàn') {
+      navigation.navigate('HistoryTransfer');
+    } else if (name == 'Thêm gỡ nguồn thẻ') {
+      navigation.navigate('HistoryTransfer');
     }
   };
   return (
@@ -29,7 +31,12 @@ const ButtonOtherCredit = ({name, icon}) => {
         <Text style={styles.textIcon}>{name}</Text>
       </View>
 
-      <FontAwesome name="angle-right" size={20} style={styles.iconVersion} color="green" />
+      <FontAwesome
+        name="angle-right"
+        size={20}
+        style={styles.iconVersion}
+        color="green"
+      />
     </TouchableOpacity>
   );
 };
@@ -42,6 +49,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     paddingVertical: 15,
+    paddingHorizontal: 15,
   },
   iconContent: {
     flex: 1,
@@ -51,7 +59,7 @@ const styles = StyleSheet.create({
     flex: 7,
   },
   iconVersion: {
-    flex: 0.6,
+    flex: 0.4,
   },
   textVersion: {
     flex: 1,

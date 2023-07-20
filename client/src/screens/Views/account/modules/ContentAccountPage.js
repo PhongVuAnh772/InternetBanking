@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity,ScrollView} from 'react-native';
 import React, {useState} from 'react';
 import creditCard from '../../../../assets/components/lady-card.png';
 import {useAppSelector} from '../../../../app/hooks/hooks';
@@ -21,7 +21,7 @@ const ContentAccountPage = () => {
     }
   }
   return (
-    <>
+    <ScrollView>
       <View style={styles.contentContainer}>
         <Image source={creditCard} style={styles.creditCard} />
         <Text
@@ -55,17 +55,20 @@ const ContentAccountPage = () => {
             </Text>
           </View>
           <TouchableOpacity style={styles.touchableOpacity}>
-            <Text style={styles.textTouchableOpacity}>Khóa thẻ</Text>
+            <Text style={styles.textTouchableOpacity}>{lockedStatus ? 'Mở khóa thẻ' : 'Khóa thẻ'}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.buttonOtherContainer}>
-          <ButtonOtherCredit name="Phát hành thẻ vật lý" icon="" />
-          <ButtonOtherCredit name="Xem thông tin số thẻ - CVV" icon="" />
-          <ButtonOtherCredit name="Lịch sử giao dịch thẻ" icon="" />
-          <ButtonOtherCredit name="Phát hành thẻ vật lý" icon="" />
+          <ButtonOtherCredit name="Phát hành thẻ vật lý" icon="cc-discover" />
+          <ButtonOtherCredit name="Xem thông tin số thẻ - CVV" icon="question" />
+          <ButtonOtherCredit name="Lịch sử giao dịch thẻ" icon="expeditedssl" />
+        </View>
+        <View style={styles.buttonOtherContainer}>
+          <ButtonOtherCredit name="Sử dụng thẻ an toàn" icon="shield" />
+          <ButtonOtherCredit name="Thêm gỡ nguồn thẻ" icon="feed" />
         </View>
       </View>
-    </>
+    </ScrollView>
   );
 };
 
