@@ -19,6 +19,10 @@ const ForgotContent = () => {
 
   const [dateOver, setDateOver] = useState('');
 
+  const handleForgetPass = () => {
+    
+  }
+
   return (
     <>
       <View style={styles.container}>
@@ -77,7 +81,7 @@ const ForgotContent = () => {
                 Quý khách lưu ý:
               </Text>
               <Text style={styles.phoneDescriptionsText}>
-                Trường hợp quý khách không có thẻ, vui lòng bỏ qua hai trường Số thẻ ghi nợ và ngày hiệu lực thẻ
+                Trường hợp quý khách không có thẻ, vui lòng xem lại gmail hệ thống gửi khi đăng ký trước đó
               </Text>
               <Text style={styles.phoneDescriptionsText}>
                 Nếu quý khách không nhận được tin nhắn gmail vui lòng liên hệ tổng đài 
@@ -99,7 +103,7 @@ const ForgotContent = () => {
         </View>
       </View>
       <View style={styles.contentFooter}>
-        <TouchableOpacity style={styles.buttonNext}>
+        <TouchableOpacity style={styles.buttonNext} onPress={() => handleForgetPass()}>
           <Text style={styles.buttonNextText}>Tiếp tục</Text>
         </TouchableOpacity>
       </View>

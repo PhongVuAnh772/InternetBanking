@@ -2,6 +2,8 @@ import React, {useEffect, useState, useRef} from 'react';
 import {Text, View, StyleSheet, Animated,ActivityIndicator, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import { useAppDispatch } from '../../../../../app/hooks/hooks';
+import Toast from 'react-native-toast-message';
+
 
 const TimerBar = () => {
   const dispatch = useAppDispatch();
@@ -22,7 +24,13 @@ const TimerBar = () => {
     const remainingSeconds = seconds % 60;
     return `${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
   };
-
+  const showToast = (type, title,text) => {
+    Toast.show({
+      type: type,
+      text1: title,
+      text2: text,
+    });
+  };
   const getProgressBarWidth = () => {
     const progress = progressAnimation.interpolate({
       inputRange: [0, 20],
@@ -87,6 +95,7 @@ const TimerBar = () => {
 
     return () => {
       clearInterval(interval);
+
     };
   }, []);
 

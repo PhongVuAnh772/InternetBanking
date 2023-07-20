@@ -29,8 +29,8 @@ const ExtendedContent = () => {
           style={styles.icon}
         />
       </View>
-      <ContentExtended name="Cài đặt" icon="gear" />
-      <ContentExtended name="Smart OTP" icon="cc-discover" />
+      {/* <ContentExtended name="Cài đặt" icon="gear" />
+      <ContentExtended name="Smart OTP" icon="cc-discover" /> */}
 
 
       <ContentExtended name="Phiên bản" icon="wifi" />
@@ -47,11 +47,11 @@ const ExtendedContent = () => {
         style={{paddingVertical: 0}}
       />
 
-      <ContentExtendedDown
+      {/* <ContentExtendedDown
         name="Câu hỏi thường gặp"
         icon="question-circle"
         style={{paddingVertical: 0}}
-      />
+      /> */}
       <View style={styles.containerIconFooter}>
         <TouchableOpacity>
           <FontAwesome

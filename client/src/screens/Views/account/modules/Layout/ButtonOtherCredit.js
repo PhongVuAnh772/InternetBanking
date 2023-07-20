@@ -15,8 +15,8 @@ const ButtonOtherCredit = ({name, icon}) => {
       navigation.navigate('HistoryTransfer');
     } else if (name == 'Sử dụng thẻ an toàn') {
       navigation.navigate('HistoryTransfer');
-    } else if (name == 'Thêm gỡ nguồn thẻ') {
-      navigation.navigate('HistoryTransfer');
+    } else if (name == "Thay đổi mã PIN") {
+      navigation.navigate('OTPScreen');
     }
   };
   return (
