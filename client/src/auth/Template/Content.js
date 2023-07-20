@@ -36,7 +36,8 @@ import {
   setgetPhysicalCard,
   setLocked,
   setCC_number,
-  setPINCode
+  setPINCode,
+  setDateClosed
 } from '../../slice/creditSlice';
 
 const Content = ({isSignIn, setIsLoggedIn}) => {
@@ -150,7 +151,9 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
           );
           dispatch(setfullName(res.data.other.customerData.Full_Name));
           dispatch(setCC_number(res.data.credit_cards.CC_number));
-          dispatch(setPINCode(res.data.data.PINCode))
+          dispatch(setPINCode(res.data.data.PINCode))          
+          dispatch(setDateClosed(res.data.credit_cards.Expiry_Date))
+
           setIsLoading(false);
           showToast();
           navigation.navigate('MainPage');

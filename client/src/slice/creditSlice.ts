@@ -11,6 +11,7 @@ interface creditState {
   getPhysicalCard: boolean;
   CC_number: string;
   PINCode: string;
+  DateClosed: string;
 }
 
 
@@ -22,7 +23,8 @@ const initialState: creditState = {
   locked: false,
   getPhysicalCard: false,
   CC_number: '',
-  PINCode: ''
+  PINCode: '',
+  DateClosed: ''
 };
 
 export const creditSlice = createSlice({
@@ -53,10 +55,13 @@ export const creditSlice = createSlice({
     setPINCode: (state, action: PayloadAction<string>) => {
       state.PINCode = action.payload;
     },
+    setDateClosed: (state, action: PayloadAction<string>) => {
+      state.DateClosed = action.payload;
+    },
   },
 });
 
 
-export const {setCVVNumber, setDateValue,setUserNameCreditCard, setBalance,setgetPhysicalCard,setLocked,setCC_number,setPINCode} = creditSlice.actions;
+export const {setDateClosed,setCVVNumber, setDateValue,setUserNameCreditCard, setBalance,setgetPhysicalCard,setLocked,setCC_number,setPINCode} = creditSlice.actions;
 // export const selectCount = (state: RootState) => state.credit.loggedIn;
 export default creditSlice.reducer;

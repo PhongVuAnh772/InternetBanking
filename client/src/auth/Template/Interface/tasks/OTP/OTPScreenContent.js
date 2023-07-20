@@ -35,6 +35,7 @@ const OTPScreenContent = () => {
       text2: text,
     });
   };
+  console.log(PINCode)
   const handleCodeChange = async newCode => {
     if (newCode.length <= 4) {
       setCode(newCode);
@@ -48,20 +49,25 @@ const OTPScreenContent = () => {
 
       if (newCode.length === 4) {
         try {
-          if (code === PINCode) {
+          if (newCode === PINCode) {
+            showToast('success', 'Mã PIN đúng', '')
+
             navigation.navigate('OTPCheckingWrap')
+          }
+          else {
+            showToast('error', 'Sai mã PIN', 'Vui lòng truy cập lại và nhập lại mã PIN')
+             navigation.navigate('AccountMainContainer')
           }
 
         } catch (error) {
           showToast('error', 'Lỗi server', 'Vui lòng tạo lại phiếu truy cập')
-          // navigation.navigate('OTPCheckingWrap')
+          navigation.navigate('OTPCheckingWrap')
 
         }
 
       }
     }
   };
-  console.log(code, circleStates);
 
   const handleNumberPress = number => {
     const newCode = code + number.toString();

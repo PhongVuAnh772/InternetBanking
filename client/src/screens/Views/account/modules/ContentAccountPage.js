@@ -64,8 +64,9 @@ const ContentAccountPage = () => {
           <ButtonOtherCredit name="Lịch sử giao dịch thẻ" icon="expeditedssl" />
         </View>
         <View style={styles.buttonOtherContainer}>
+          <ButtonOtherCredit name="Thay đổi mã PIN" icon="feed" />
+          
           <ButtonOtherCredit name="Sử dụng thẻ an toàn" icon="shield" />
-          <ButtonOtherCredit name="Thêm gỡ nguồn thẻ" icon="feed" />
         </View>
       </View>
     </ScrollView>

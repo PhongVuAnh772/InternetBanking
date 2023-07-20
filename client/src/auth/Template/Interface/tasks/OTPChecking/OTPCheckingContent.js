@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {Text, View, StyleSheet, Animated, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, Animated,ActivityIndicator, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import { useAppDispatch } from '../../../../../app/hooks/hooks';
 
@@ -8,6 +8,7 @@ const TimerBar = () => {
   const [remainingSeconds, setRemainingSeconds] = useState(20);
   const progressAnimation = useRef(new Animated.Value(0)).current;
   const [remainingTimesOTP, setRemainingTimesOTP] = useState(1);
+  const [visible, setVisible] = useState(false);
 
   const [randomNumbers, setRandomNumbers] = useState('');
   const [isSerialGenerated, setIsSerialGenerated] = useState(false);
@@ -52,8 +53,12 @@ const TimerBar = () => {
     return new Date().toLocaleString();
   };
   const handleContinue = () => {
+    setVisible(true);
+    setTimeout(() => {
+          setVisible(false);
+          navigation.navigate('CVVScreen');
 
-    navigation.navigate('CVVScreen');
+        }, 3000);
   };
   useEffect(() => {
     const animation = Animated.timing(progressAnimation, {
@@ -132,6 +137,7 @@ const TimerBar = () => {
             </Text>
           </View>
         </View>
+        {visible && <ActivityIndicator size="large" color="#00ff00" style={{alignSelf: 'center'}} />}
         <View style={styles.OTPCheckingSerial}>
           <Text style={styles.OTPCheckingSerialText}>Serial: {serial}</Text>
           <Text style={styles.OTPCheckingSerialText}>{currentDate}</Text>

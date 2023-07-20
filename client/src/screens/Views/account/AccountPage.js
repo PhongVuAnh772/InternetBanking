@@ -21,14 +21,14 @@ const AccountPage = () => {
       />
 
       <AccountStack.Screen name="QRgenerator" component={QRgenerator} />
-      {/* <AccountStack.Screen name="OTPScreen" component={OTPScreenWrap} /> */}
-      {/* <AccountStack.Screen name="CVVScreen" component={CVVScreen} /> */}
+      <AccountStack.Screen name="OTPScreen" component={OTPScreenWrap} />
+      <AccountStack.Screen name="CVVScreen" component={CVVScreen} />
       <AccountStack.Screen name="HistoryTransfer" component={HistoryTransfer} />
       <AccountStack.Screen
         name="PhysicalCardScreen"
         component={PhysicalCardScreen}
       />
-      {/* <AccountStack.Screen name="OTPCheckingWrap" component={OTPCheckingWrap} /> */}
+      <AccountStack.Screen name="OTPCheckingWrap" component={OTPCheckingWrap} />
     </AccountStack.Navigator>
   );
 };
