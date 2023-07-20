@@ -1,4 +1,8 @@
 const db = require("../models/index");
+const jwt = require("jsonwebtoken");
+const express = require("express");
+const bcryptjs = require("bcryptjs");
+const crypto = require("crypto");
 
 const forgetPassword = (req, res) => {
   const { Account_id, CC_number, Expiry_Date,CMND,Email } = req.body;
@@ -67,7 +71,50 @@ const forgetPassword = (req, res) => {
     });
 };
 
-const changePassWord = (req, res) => {};
+const changePassWord = (req, res) => {
+  db.accounts.findOne({
+            where: {
+              Account_id: req.body.Account_id,
+            },
+          })
+    .then((accounts) => {
+      if (!accounts) {
+        return res
+          .status(404)
+          .json({ success: false, message: "accounts not found." });
+      }
+      bcryptjs.hash( req.body.password, 16, (err, passwordHash) => {
+      if (err) {
+        return res.status(200).json({
+          message: "Không mã hóa được mật khẩu",
+        });}
+      
+        else if (passwordHash) {
+          accounts
+            .update({ password: passwordHash })
+            .then((updatedpassword) => {
+              return res.json({
+                success: true,
+                message: "Đổi MK thành công.",
+                updatedpassword: updatedpassword,
+              });
+            })
+            .catch((error) => {
+              return res
+                .status(500)
+                .json({ success: false, message: "Đổi mã PIN thất bại" });
+            });
+
+
+        }
+      
+      })
+    })
+    .catch((error) => {
+      return res.status(500).json({ success: false, message: 'Lỗi server.',error: error.message });
+    });
+};
+
 
 module.exports = {
   forgetPassword,

@@ -30,6 +30,7 @@ router.put("/changeLocked", updateController.changeLocked);
 router.put("/changePhysicalCards", updateController.changePhysicalCards);
 router.put("/changeDataPINCode", updateController.changeDataPINCode);
 router.post("/forgetPassword",forgetPasswordController.forgetPassword);
+router.post("/changePassword",forgetPasswordController.changePassWord);
 
 router.use("/", (req, res, next) => {
   res.status(404).json({ error: "router không tồn tại" });
