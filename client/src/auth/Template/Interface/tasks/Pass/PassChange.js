@@ -9,10 +9,10 @@ import {
 import React, {useState} from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
-import {useAppDispatch} from '../../../../app/hooks/hooks';
-import {setAccountChangePass} from '../../../../slice/changePassSlice';
+import { useAppDispatch,useAppSelector } from '../../../../../app/hooks/hooks';
+
 const ForgotContent = () => {
   const [name, setName] = useState('');
   const [phoneNum, setPhoneNum] = useState('');
@@ -22,32 +22,34 @@ const ForgotContent = () => {
   const [card, setCard] = useState('');
 
   const [dateOver, setDateOver] = useState('');
+  const AccountChangePass = useAppSelector(state => state.pass.AccountChangePass);
   const navigation = useNavigation();
-  const dispatch = useAppDispatch();
-  const showToast = (type, text1, tex2) => {
+   const showToast = (type,text1, tex2) => {
     Toast.show({
       type: type,
       text1: text1,
     });
   };
+  console.log(AccountChangePass)
   const handleForgetPass = async () => {
     try {
-      const ress = await axios.post(
-        `http://192.168.100.6:5000/api/forgetPassword`,
+      if (name === phoneNum) {
+        const ress = await axios.post(
+        `http://192.168.100.6:5000/api/changePassword`,
         {
-          Account_id: name,
-          CC_number: card,
-          CMND: cmnd,
-          Expiry_Date: dateOver,
-          Email: phoneNum,
+          Account_id: AccountChangePass,
+          password: name
         },
-      );
-      if (ress.data.success === true) {
-        showToast('success', 'Thông tin chính xác, mời bạn đổi mật khẩu');
-        dispatch(setAccountChangePass(name));
-        navigation.navigate('PassChange');
-      } else {
-        showToast('error', 'Thông tin sai, hãy nhập lại');
+        );
+        if (ress.data.success === true) {
+          showToast('success', 'Đổi mật khẩu thành công, hãy đăng nhập bằng mật khẩu mới')
+          navigation.navigate("Auth")
+        } else {
+          showToast('error', 'Thông tin sai, hãy nhập lại')
+        }
+      }
+      else {
+        showToast('error', '2 trường không khớp nhau, hãy thử lại')
       }
     } catch (err) {
       console.log(err);
@@ -61,7 +63,7 @@ const ForgotContent = () => {
         <View style={styles.containerContent}>
           <View style={styles.descriptionContainer}>
             <Text style={styles.descriptionText}>
-              Vui lòng cung cấp các thông tin sau để cấp lại mật khẩu VPBank NEO
+              Vui lòng cung cấp các thông tin sau để đặt lại mật khẩu VPBank NEO
             </Text>
           </View>
 
@@ -71,68 +73,17 @@ const ForgotContent = () => {
               value={name}
               onChangeText={setName}
               secureTextEntry={false}
-              placeholder="Mã đăng nhập"
+              placeholder="Nhập mật khẩu mới"
               placeholderTextColor="#929c9e"
             />
             <TextInput
               style={styles.input}
               secureTextEntry={false}
-              placeholder="Email"
+              placeholder="Nhập lại mật khẩu"
               placeholderTextColor="#929c9e"
               value={phoneNum}
               onChangeText={setPhoneNum}
             />
-            <TextInput
-              style={styles.input}
-              secureTextEntry={false}
-              placeholder="Số CMND/CCCD/Hộ chiếu"
-              placeholderTextColor="#929c9e"
-              value={cmnd}
-              onChangeText={setCMND}
-            />
-            <TextInput
-              style={styles.input}
-              secureTextEntry={false}
-              placeholder="Số thẻ ghi nợ/ Thẻ tín dụng"
-              placeholderTextColor="#929c9e"
-              value={card}
-              onChangeText={setCard}
-            />
-            <TextInput
-              style={styles.input}
-              secureTextEntry={false}
-              placeholder="Ngày hiệu lực/ Ngày hết hạn thẻ"
-              placeholderTextColor="#929c9e"
-              value={dateOver}
-              onChangeText={setDateOver}
-            />
-          </View>
-          <View style={styles.phoneContainer}>
-            <View style={styles.phoneDescriptionsContainer}>
-              <Text style={styles.phoneDescriptionsTitleText}>
-                Quý khách lưu ý:
-              </Text>
-              <Text style={styles.phoneDescriptionsText}>
-                Trường hợp quý khách không có thẻ, vui lòng xem lại gmail hệ
-                thống gửi khi đăng ký trước đó
-              </Text>
-              <Text style={styles.phoneDescriptionsText}>
-                Nếu quý khách không nhận được tin nhắn gmail vui lòng liên hệ
-                tổng đài
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={styles.phoneIconContainer}
-              onPress={() => {
-                Linking.openURL(`tel:${1900545415}`);
-              }}>
-              <MaterialIcons
-                name="local-phone"
-                size={25}
-                color="white"
-                style={styles.phoneIcon}
-              />
-            </TouchableOpacity>
           </View>
         </View>
       </View>

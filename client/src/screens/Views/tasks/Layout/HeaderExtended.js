@@ -3,13 +3,22 @@ import React from 'react';
 import { useAppDispatch,useAppSelector } from '../../../../app/hooks/hooks';
 import { setLogin,setToken } from '../../../../slice/authSlice';
 import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 const HeaderExtended = () => {
   const dispatch = useAppDispatch()
   const navigation = useNavigation()
   const loginCheck = useAppSelector(state => state.login.loggedIn)
+  const showToast = () => {
+    Toast.show({
+      type: 'success',
+      text1: 'Bạn đã đăng xuất, hẹn gặp lại 👋',
+    });
+  };
   const handleLogout = () => {
     dispatch(setLogin(false))
+    
+  showToast()
     dispatch(setToken(''))
   }
   return (

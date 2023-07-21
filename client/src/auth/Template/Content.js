@@ -51,7 +51,7 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
   const [name, setName] = useState('45949545');
   const [showButton, setshowButton] = useState(false);
 
-  const [password, setPassword] = useState('tranviettrung2@gmail.com');
+  const [password, setPassword] = useState('28082004d');
 
   const navigation = useNavigation();
   const toggleShowButton = () => {

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Image, ScrollView,TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, ScrollView,TouchableOpacity, Linking} from 'react-native';
 import React from 'react';
 import usergirl from '../../../../assets/girl.png';
 import userman from '../../../../assets/man.jpg';
@@ -53,7 +53,7 @@ const ExtendedContent = () => {
         style={{paddingVertical: 0}}
       /> */}
       <View style={styles.containerIconFooter}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => Linking.openURL("https://vpbankonline.vpbank.com.vn")}>
           <FontAwesome
             name="globe"
             size={30}
@@ -62,7 +62,7 @@ const ExtendedContent = () => {
           />
           <Text style={styles.textIconFooter}>Xem trang web</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => Linking.openURL(`tel:${1900545415}`)}>
           <FontAwesome
             name="wechat"
             size={30}

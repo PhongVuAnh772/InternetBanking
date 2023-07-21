@@ -20,6 +20,7 @@ import BonusContinueSignUpNumberScreen from './src/screens/Layout/BonusContinueS
 import ConfirmCheckMicroBlink from './src/screens/Layout/ConfirmCheckMicroBlink';
 import CongratulationConfirm from './src/screens/Layout/CongratulationConfirm';
 import LastSuccessSignUpScreen from './src/screens/Layout/LastSuccessSignUpScreen';
+import PassChange from './src/auth/Template/Interface/tasks/Pass/PassChange';
 import Toast from 'react-native-toast-message';
 
 // import {selectCount} from './src/slice/createSlice';
@@ -90,6 +91,10 @@ export default function App() {
               <Stack.Screen
                 name="ForgotPasswordScreen"
                 component={ForgotPasswordScreen}
+              />
+              <Stack.Screen
+                name="PassChange"
+                component={PassChange}
               />
               <Stack.Screen
                 name="SecondSignUpNumberScreen"
