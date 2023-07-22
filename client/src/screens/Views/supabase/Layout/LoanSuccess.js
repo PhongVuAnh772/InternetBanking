@@ -15,7 +15,7 @@ const LoanSuccess = () => {
   useEffect(() => {
      showToast('success', 'Vay thành công','');
       setTimeout(() => {
-          navigation.navigate("LoanOfficialScreen")
+          navigation.navigate("LoanOverview")
         }, 1500);
   },[])
   return (

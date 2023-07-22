@@ -14,8 +14,10 @@ import {useAppSelector, useAppDispatch} from '../../../../app/hooks/hooks';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
+import { setLoanTotal } from '../../../../slice/loanSlice';
 
 const LoanOfficialScreen = () => {
+  const dispatch = useAppDispatch()
   const fullName = useAppSelector(state => state.signUp.fullName);
   const Email = useAppSelector(state => state.signUp.email);
   const region = useAppSelector(state => state.signUp.regionName);
@@ -26,6 +28,8 @@ const LoanOfficialScreen = () => {
   const [loanMoney, setLoanMoney] = useState('');
   const newLoanMoney = parseFloat(loanMoney)
   const newFloatMoney = parseFloat(newLoanMoney.toFixed(2))
+  const oldLoan = useAppSelector(state => state.loan.loanTotal)
+
   const showToast = (type, title, text) => {
     Toast.show({
       type: type,
@@ -47,7 +51,7 @@ const LoanOfficialScreen = () => {
       if (res.data.success) {
         setTimeout(() => {
           setVisible(false);
-
+          dispatch(setLoanTotal(oldLoan + newFloatMoney))
           navigation.navigate("LoanSuccess")
         }, 3000);
       }

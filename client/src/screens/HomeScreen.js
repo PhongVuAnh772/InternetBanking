@@ -9,6 +9,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import QrCodeContainer from './Videos/QrCodeContainer';
 import FastImage from 'react-native-fast-image';
+import LoanGreeting from './Views/supabase/Layout/LoanGreeting';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 
 const HomeScreen = route => {

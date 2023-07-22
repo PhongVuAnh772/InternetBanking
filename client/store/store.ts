@@ -5,10 +5,10 @@ import thunk from 'redux-thunk';
 import transferReducer from '../src/slice/transferSlice';
 import allTokenReducer from '../src/slice/allTokenSlice';
 import transferInternalReducer from '../src/slice/transferInternalSlice';
-import signUpSlice from '../src/slice/signUpSlice';
-import creditSlice from '../src/slice/creditSlice';
-import passSlice  from '../src/slice/changePassSlice';
-
+import signUpReducer from '../src/slice/signUpSlice';
+import creditReducer from '../src/slice/creditSlice';
+import passReducer  from '../src/slice/changePassSlice';
+import loanReducer from '../src/slice/loanSlice';
 
 
 
@@ -19,9 +19,10 @@ const store = configureStore({
     transfer: transferReducer,
     allToken: allTokenReducer,
     transferInternal: transferInternalReducer,
-    signUp: signUpSlice,
-    credit: creditSlice,
-    pass: passSlice
+    signUp: signUpReducer,
+    credit: creditReducer,
+    pass: passReducer,
+    loan: loanReducer,
   },
   middleware: [thunk]
 

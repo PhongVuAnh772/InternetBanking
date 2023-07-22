@@ -150,7 +150,11 @@ const ContentAccountPage = () => {
           <View style={styles.centeredViewTicketDeep}>
             <View style={styles.titleModalTicket}>
               <Text style={styles.titleContainerTicket}>Thông báo !</Text>
-              <Text style={styles.titleDecsTicket}>{lockedStatus ? 'Bạn muốn mở khóa thẻ ?' : 'Bạn muốn khóa thẻ ?'}</Text>
+              <Text style={styles.titleDecsTicket}>
+                {lockedStatus
+                  ? 'Bạn muốn mở khóa thẻ ?'
+                  : 'Bạn muốn khóa thẻ ?'}
+              </Text>
             </View>
             <TouchableOpacity
               style={styles.btnModalTicket}
@@ -183,6 +187,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgb(246, 255, 255)',
   },
   numberCreditCard: {
     color: 'rgb(244, 246, 246)',
