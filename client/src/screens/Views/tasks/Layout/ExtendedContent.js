@@ -1,22 +1,36 @@
-import {StyleSheet, Text, View, Image, ScrollView,TouchableOpacity, Linking} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 import React from 'react';
 import usergirl from '../../../../assets/girl.png';
 import userman from '../../../../assets/man.jpg';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ContentExtended from './ContentExtended';
 import ContentExtendedDown from './ContentExtenedDown';
-import { useAppSelector } from '../../../../app/hooks/hooks';
+import {useAppSelector} from '../../../../app/hooks/hooks';
+import {useNavigation} from '@react-navigation/native';
 
 const ExtendedContent = () => {
-  const gender = useAppSelector(state => state.signUp.sex)
-  const name = useAppSelector(state => state.signUp.fullName)
-  console.log(gender)
+  const gender = useAppSelector(state => state.signUp.sex);
+  const name = useAppSelector(state => state.signUp.fullName);
+  const navigation = useNavigation();
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <View style={styles.infoContainer}>
+      <TouchableOpacity
+        style={styles.infoContainer}
+        onPress={() => navigation.navigate('UserInformationSpecified')}>
         <View style={styles.imageContainer}>
-  <Image style={styles.image} source={gender === 'M' ? userman : usergirl} />
-</View>
+          <Image
+            style={styles.image}
+            source={gender === 'M' ? userman : usergirl}
+          />
+        </View>
 
         <View style={styles.infoDesc}>
           <Text style={styles.infoName}>{name}</Text>
@@ -28,10 +42,7 @@ const ExtendedContent = () => {
           color="gray"
           style={styles.icon}
         />
-      </View>
-      {/* <ContentExtended name="Cài đặt" icon="gear" />
-      <ContentExtended name="Smart OTP" icon="cc-discover" /> */}
-
+      </TouchableOpacity>
 
       <ContentExtended name="Phiên bản" icon="wifi" />
 
@@ -53,7 +64,8 @@ const ExtendedContent = () => {
         style={{paddingVertical: 0}}
       /> */}
       <View style={styles.containerIconFooter}>
-        <TouchableOpacity onPress={() => Linking.openURL("https://vpbankonline.vpbank.com.vn")}>
+        <TouchableOpacity
+          onPress={() => Linking.openURL('https://vpbankonline.vpbank.com.vn')}>
           <FontAwesome
             name="globe"
             size={30}

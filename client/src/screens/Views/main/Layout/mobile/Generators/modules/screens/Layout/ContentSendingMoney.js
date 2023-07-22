@@ -32,7 +32,7 @@ import {
 import {fetchOtherBank} from '../../../../../../../../../slice/getOtherBankSlice';
 import axios from 'axios';
 
-const ContentSendingMoney = ({value = 0, account = 2342422,}) => {
+const ContentSendingMoney = () => {
   
   const navigation = useNavigation();
   const [inputValueOther, setInputValueOther] = useState('');
@@ -71,6 +71,12 @@ const ContentSendingMoney = ({value = 0, account = 2342422,}) => {
   );
   const NameOfSTKBankChoosingValue = useAppSelector(
     state => state.transfer.NameOfSTKBankChoosing,
+  );
+  const userSTK = useAppSelector(
+    state => state.signUp.newAccountSTK
+  );
+  const userBankMoney = useAppSelector(
+    state => state.credit.Balance,
   );
   const otherBank = useAppSelector(state => state.otherBank);
   const inputRef = useRef(null);
@@ -185,12 +191,12 @@ const ContentSendingMoney = ({value = 0, account = 2342422,}) => {
           </View>
           <View style={styles.contentMoneyDes}>
             <Text style={styles.moneyValueSpecified}>
-              {value} <Text style={styles.moneyValueSpecifiedCurrency}>đ</Text>
+              {userBankMoney} <Text style={styles.moneyValueSpecifiedCurrency}>đ</Text>
             </Text>
             <View style={styles.accountInfoDemo}>
               <Text style={styles.moneyValue}>Normal Account</Text>
               <Text style={styles.separate}>|</Text>
-              <Text style={styles.moneyValue}>{account}</Text>
+              <Text style={styles.moneyValue}>{userSTK}</Text>
             </View>
           </View>
           <View style={styles.contentIcon}>

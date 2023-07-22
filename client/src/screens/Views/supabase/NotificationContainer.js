@@ -1,38 +1,22 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import DiscountContainer from './Layout/DiscountContainer';
-import LetterContainer from './Layout/LetterContainer';
-import TransferContainer from './Layout/TransferContainer';
-const NotificationContainer = () => {
-  const Tab = createMaterialTopTabNavigator();
-  return (
-    <Tab.Navigator
-      screenOptions={({route}) => ({
-        headerShown: false,
-        tabBarActiveTintColor: 'blue',
-        tabBarInactiveTintColor: '#000000',
-        tabBarStyle: {
-          height: 55,
-        },
-        tabBarLabelStyle: {
-          fontSize: 13, // Kích thước của chữ
-          paddingBottom: 5,
-        },
-      })}>
-      
-      <Tab.Screen
-        name="LetterContainer"
-        component={LetterContainer}
-        options={{tabBarLabel: 'Biến động số dư'}}
-      />
+import { createStackNavigator } from '@react-navigation/stack';
+import LoanOfficialScreen from './Layout/loanOfficialScreen';
+import LoanSuccess from './Layout/LoanSuccess';
 
-      <Tab.Screen
-        name="TransferContainer"
-        component={TransferContainer}
-        options={{tabBarLabel: 'Hòm thư'}}
+const NotificationContainer = () => {
+  const Loaning = createStackNavigator()
+  return (
+    <Loaning.Navigator screenOptions={{headerShown: false}}>
+      <Loaning.Screen
+        name="LoanOfficialScreen"
+        component={LoanOfficialScreen}
       />
-    </Tab.Navigator>
+      <Loaning.Screen
+        name="LoanSuccess"
+        component={LoanSuccess}
+      />
+    </Loaning.Navigator>
   );
 };
 

@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import ExtendedMain from './Layout/ExtendedMain';
 import SettingExtendedContainer from './Layout/screens/SettingExtendedContainer';
 import GoogleMap from '../../../auth/Template/Interface/GoogleMap';
+import UserInformationSpecified from './Layout/screens/tasks/components/UserInformationSpecified';
 
 const ExtendedStack = createStackNavigator();
 
@@ -16,6 +17,8 @@ const ExtendedContainer = () => {
         component={SettingExtendedContainer}
       />
       <ExtendedStack.Screen name="GoogleMap" component={GoogleMap} />
+      
+      <ExtendedStack.Screen name="UserInformationSpecified" component={UserInformationSpecified} />
     </ExtendedStack.Navigator>
   );
 };

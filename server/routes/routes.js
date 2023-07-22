@@ -25,6 +25,8 @@ router.post("/upImageToGlobal",createBucketggCloudController.uploadImageToBucket
 router.post("/upImageBackToGlobal",createBucketggCloudController.uploadImageBackToBucket)
 router.post("/updateCreditCard",bankingController.addCreditCard)
 router.post("/addLoan", loanController.addLoans)
+router.post("/getLoan", loanController.getLoansByCMND)
+router.post("/loanRepayment", loanController.loanRepayment)
 router.post("/getOTPCode", customersController.getOTPAccount)
 router.put("/changeLocked", updateController.changeLocked);
 router.put("/changePhysicalCards", updateController.changePhysicalCards);

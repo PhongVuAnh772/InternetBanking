@@ -9,7 +9,8 @@ import HistoryTransfer from './modules/Layout/Tasks/HistoryTransfer';
 import PhysicalCardScreen from './modules/Layout/Tasks/PhysicalCardScreen';
 import OTPCheckingWrap from '../../../auth/Template/Interface/tasks/OTPChecking/OTPCheckingWrap';
 import OTPScreenWrap from '../../../auth/Template/Interface/tasks/OTP/OTPScreenWrap';
-
+import OTPChangingWrap from '../../../auth/Template/Interface/tasks/Shaders/OTPChanging/OTPChangingWrap';
+import OTPCheckingChangeWrap from '../../../auth/Template/Interface/tasks/Shaders/OTPCheckingChange/OTPCheckingChangeWrap';
 const AccountStack = createStackNavigator();
 
 const AccountPage = () => {
@@ -28,6 +29,15 @@ const AccountPage = () => {
         name="PhysicalCardScreen"
         component={PhysicalCardScreen}
       />
+      <AccountStack.Screen
+        name="OTPCheckingChangeWrap"
+        component={OTPCheckingChangeWrap}
+      />
+      <AccountStack.Screen
+        name="OTPChangingWrap"
+        component={OTPChangingWrap}
+      />
+
       <AccountStack.Screen name="OTPCheckingWrap" component={OTPCheckingWrap} />
     </AccountStack.Navigator>
   );

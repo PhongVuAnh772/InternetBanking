@@ -52,7 +52,7 @@ const HomeScreen = route => {
             iconName = focused ? 'more-horiz' : 'more-horiz';
             color = focused ? 'green' : 'gray';
           } else if (route.name === 'NotificationContainer') {
-            iconName = focused ? 'notifications-none' : 'notifications-none';
+            iconName = focused ? 'flare' : 'flare';
             color = focused ? 'green' : 'gray';
           }
 
@@ -90,7 +90,7 @@ const HomeScreen = route => {
       <Tab.Screen
         name="NotificationContainer"
         component={NotificationContainer}
-        options={{tabBarLabel: 'Thông báo'}}
+        options={{tabBarLabel: 'Cho vay'}}
       />
       <Tab.Screen
         name="ExtendedContainer"
