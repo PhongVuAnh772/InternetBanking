@@ -2,20 +2,21 @@ import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 
-const BankingContent = ({desc, icon, navigate}) => {
+const BankingContent = ({desc, icon, navigational}) => {
   const navigation = useNavigation();
   const handlePress = () => {
-    if (desc === 'Chuyển tiền') {
-      navigation.navigate('TransferMoney');
-    } else if ((desc = 'Tiền gửi')) {
-      navigation.navigate('SendingMoney');
-    } else if ((desc = 'Thẻ')) {
-      navigation.navigate('SendingMoney');
-    } else if ((desc = 'Khoản vay')) {
-      navigation.navigate('SendingMoney');
-    } else if ((desc = 'Đổi quà')) {
-      navigation.navigate('SendingMoney');
-    }
+    // if (desc === 'Chuyển tiền') {
+    //   navigation.navigate(navigational);
+    // } else if ((desc = 'Tiền gửi')) {
+    //   navigation.navigate(navigational);
+    // } else if ((desc = 'Thẻ')) {
+    //   navigation.navigate(navigational);
+    // } else if ((desc = 'Khoản vay')) {
+    //   navigation.navigate(navigational);
+    // } else if ((desc = 'Đổi quà')) {
+    //   navigation.navigate(navigational);
+    // }
+    navigation.navigate(navigational)
   };
   return (
     <TouchableOpacity style={styles.container} onPress={() => handlePress()}>

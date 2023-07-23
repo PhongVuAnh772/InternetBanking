@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
 
-const LoanSuccess = () => {
+const LoanRepaidSuccess = () => {
     const navigation = useNavigation();
     const showToast = (type, title, text) => {
     Toast.show({
@@ -13,17 +13,17 @@ const LoanSuccess = () => {
     });
   };
   useEffect(() => {
-     showToast('success', 'Vay thành công','');
+     showToast('success', 'Trả nợ thành công','');
       setTimeout(() => {
           navigation.navigate("LoanOverview")
-        }, 1500);
+        }, 3000);
   },[])
   return (
     
     <View style={styles.container}>
       <FastImage
-        style={{ width: 100, height: 100, marginTop: 20, borderRadius: 10 }}
-        source={require('../../../../assets/lottieBanking.gif')}
+        style={{ width: 150, height: 150, borderRadius: 10 }}
+        source={require('../../../../assets/lottieShaking.gif')}
         resizeMode={FastImage.resizeMode.contain}
       />
       <Text style={styles.text}>Chúc mừng bạn đã vay thành công</Text>
@@ -31,7 +31,7 @@ const LoanSuccess = () => {
   )
 }
 
-export default LoanSuccess
+export default LoanRepaidSuccess
 
 const styles = StyleSheet.create({
     container: {

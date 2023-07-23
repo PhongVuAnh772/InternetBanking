@@ -54,7 +54,7 @@ const LoanOverview = () => {
         <Text style={styles.textName}>{fullName}</Text>
         <View style={styles.overviewContentMoney}>
           <Text style={styles.overviewContentMoneyTitle}>Đang nợ</Text>
-          <Text style={styles.textMoney}>{loanTaken - loanRepaid} đ</Text>
+          <Text style={styles.textMoney}>{(loanTaken + (loanTaken * 1.6 / 100))  - loanRepaid} đ</Text>
         </View>
       </View>
       <TouchableOpacity style={styles.containerButton} onPress={() => clickHandler()}>
@@ -92,7 +92,7 @@ const LoanOverview = () => {
           style={styles.iconVersion}
           color="green"
         />
-      </View> : <TouchableOpacity style={styles.containerButton} onPress={() => clickHandler()}>
+      </View> : <TouchableOpacity style={styles.containerButton} onPress={() => {navigation.navigate("LoanSpecified")}}>
         <FontAwesome
           name="institution"
           size={20}

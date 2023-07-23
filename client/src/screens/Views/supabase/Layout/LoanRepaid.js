@@ -61,7 +61,7 @@ const LoanRepaid = () => {
         setTimeout(() => {
           setVisible(false);
           dispatch(setLoanRepaidTotal(loanRepaid + newFloatMoney))
-          navigation.navigate('LoanOverview');
+          navigation.navigate("RepaidSuccess");
         }, 3000);
       } else {
         setVisible(false);

@@ -6,6 +6,8 @@ import LoanSuccess from './Layout/LoanSuccess';
 import LoanGreeting from './Layout/LoanGreeting';
 import LoanOverview from './Layout/LoanOverview';
 import LoanRepaid from './Layout/LoanRepaid';
+import LoanRepaidSuccess from './Layout/LoanRepaidSuccess';
+import LoanSpecified from './Layout/LoanSpecified';
 
 const NotificationContainer = () => {
   const Loaning = createStackNavigator()
@@ -33,6 +35,8 @@ const NotificationContainer = () => {
         name="LoanRepaid"
         component={LoanRepaid}
       />
+                  <Loaning.Screen name="RepaidSuccess" component={LoanRepaidSuccess} />
+      <Loaning.Screen name="LoanSpecified" component={LoanSpecified} />
     </Loaning.Navigator>
   );
 };

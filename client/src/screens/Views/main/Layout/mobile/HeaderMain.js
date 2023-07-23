@@ -56,14 +56,14 @@ const HeaderMain = ({props = '10299200...', money = 14000}) => {
             </TouchableOpacity>
           </View>
           <View style={styles.bankingContainer}>
-            <BankingContent icon={b} desc="Chuyển tiền" />
-            <BankingContent icon={d} desc="Tiền gửi" />
+            <BankingContent icon={b} desc="Chuyển tiền" navigational="TransferMoney"/>
+            <BankingContent icon={d} desc="Tiền gửi" navigational="TransferMoney"/>
 
-            <BankingContent icon={e} desc="Thẻ" />
+            <BankingContent icon={e} desc="Thẻ" navigational="AccountPage" />
 
-            <BankingContent icon={a} desc="Khoản vay" />
+            <BankingContent icon={a} desc="Khoản vay" navigational="NotificationContainer"/>
 
-            <BankingContent icon={c} desc="Đổi quà" />
+            <BankingContent icon={c} desc="Đổi quà" navigational="TransferMoney"/>
           </View>
         </View>
       </View>
