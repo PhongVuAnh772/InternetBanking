@@ -37,7 +37,7 @@ import {
   setLocked,
   setCC_number,
   setPINCode,
-  setDateClosed
+  setDateClosed,
 } from '../../slice/creditSlice';
 
 const Content = ({isSignIn, setIsLoggedIn}) => {
@@ -86,7 +86,7 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
     setIsLogin(!isLogin);
     setMessage('');
   };
- 
+
   const dateValues = useAppSelector(state => state.signUp.DateValue);
   const onLoggedIn = async token => {
     try {
@@ -106,7 +106,7 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
       }
     } catch (err) {
       console.log(err);
-      return false; 
+      return false;
     }
   };
 
@@ -131,12 +131,12 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
       console.log(token);
       if (token) {
         if (await onLoggedIn(token)) {
-
           setIsError(false);
           dispatch(setLogin(true));
           dispatch(setToken(token));
           dispatch(setEmail(res.data.other.customerData.Email));
           dispatch(setpersonalIdNumber(res.data.other.customerData.CMND));
+          dispatch(setCMND(res.data.other.customerData.CMND));
           dispatch(setnewAccountSTK(res.data.data.Account_id));
           dispatch(setdateOfBirth(res.data.other.customerData.Date_of_Birth));
           dispatch(setSex(res.data.other.customerData.Sex));
@@ -151,8 +151,8 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
           );
           dispatch(setfullName(res.data.other.customerData.Full_Name));
           dispatch(setCC_number(res.data.credit_cards.CC_number));
-          dispatch(setPINCode(res.data.data.PINCode))          
-          dispatch(setDateClosed(res.data.credit_cards.Expiry_Date))
+          dispatch(setPINCode(res.data.data.PINCode));
+          dispatch(setDateClosed(res.data.credit_cards.Expiry_Date));
 
           setIsLoading(false);
           showToast();

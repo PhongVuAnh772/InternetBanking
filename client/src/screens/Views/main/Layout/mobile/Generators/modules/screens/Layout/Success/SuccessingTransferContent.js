@@ -178,18 +178,8 @@ const SuccessingTransferContent = () => {
     dispatch(setBankValueMoney(0));
     dispatch(setmessageTransfer(''));
     dispatch(settimeTransferBank(''));
-    if (
-      BankChoosingValue === '' &&
-      BankChoosingIconValue === '' &&
-      STKBankChoosingValue === '' &&
-      BankValueMoneyValue === 0 &&
-      messageTransferValue === '' &&
-      binBankChoosingValue === '' &&
-      longNameBankChoosingValue === '' &&
-      NameOfSTKBankChoosingValue === ''
-    ) {
-      navigation.navigate('');
-    }
+    navigation.navigate('SendingMoney');
+    
   };
   return (
     <>

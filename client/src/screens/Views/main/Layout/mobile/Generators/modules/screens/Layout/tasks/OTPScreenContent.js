@@ -12,9 +12,9 @@ import {
 import axios from 'axios';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import deleteIcon from '../../../../../../../../../../assets/delete.png';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
+import { useAppDispatch,useAppSelector } from '../../../../../../../../../../app/hooks/hooks';
 
 
 const OTPScreenContent = () => {
@@ -27,6 +27,7 @@ const OTPScreenContent = () => {
     false,
     false,
   ]);
+  const PINCode = useAppSelector(state => state.credit.PINCode)
   const showToast = (type, title,text) => {
     Toast.show({
       type: type,
@@ -34,6 +35,7 @@ const OTPScreenContent = () => {
       text2: text,
     });
   };
+  console.log(PINCode)
   const handleCodeChange = async newCode => {
     if (newCode.length <= 4) {
       setCode(newCode);
@@ -47,16 +49,18 @@ const OTPScreenContent = () => {
 
       if (newCode.length === 4) {
         try {
-          const response = await axios.get(
-            `http://localhost:5000/api/${newCode}`,
-          );
-          const result = response.data;
-          showToast('success', 'Thành công', 'Bạn có biến động số dư')
-          navigation.navigate('OTPCheckingWrap')
+          if (newCode === PINCode) {
+            showToast('success', 'Mã PIN đúng', '')
+
+            navigation.navigate('OTPCheckingWrap')
+          }
+          else {
+            showToast('error', 'Sai mã PIN', 'Vui lòng truy cập lại và nhập lại mã PIN')
+             navigation.navigate('SendingMoney')
+          }
 
         } catch (error) {
-          Alert.alert('Lỗi', 'Đã xảy ra lỗi khi gọi API');
-          showToast('error', 'Lỗi server', 'Vui lòng tạo lại phiếu chuyển khoản')
+          showToast('error', 'Lỗi server', 'Vui lòng tạo lại phiếu truy cập')
           navigation.navigate('OTPCheckingWrap')
 
         }
@@ -64,7 +68,6 @@ const OTPScreenContent = () => {
       }
     }
   };
-  console.log(code, circleStates);
 
   const handleNumberPress = number => {
     const newCode = code + number.toString();

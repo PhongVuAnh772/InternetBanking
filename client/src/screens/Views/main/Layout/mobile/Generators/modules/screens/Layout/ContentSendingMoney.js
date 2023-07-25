@@ -41,17 +41,6 @@ const ContentSendingMoney = () => {
   const [responseDataUser, setResponseDataUser] = useState([]);
   const [STKSendingPerson, setSTKSendingPerson] = useState('');
   const [onChangeMoney, setOnChangeMoney] = useState(0);
-  const [onChangeMessage, setOnChangeMessage] = useState(
-    'VU ANH PHONG chuyen khoan',
-  );
-  const handleInputChange = text => {
-    setInputValueOther(text);
-  };
-
-  const characterCount = inputValueOther.length;
-  const BankChoosingValue = useAppSelector(
-    state => state.transfer.BankChoosing,
-  );
   const BankChoosingIconValue = useAppSelector(
     state => state.transfer.BankChoosingIcon,
   );
@@ -73,10 +62,26 @@ const ContentSendingMoney = () => {
   const NameOfSTKBankChoosingValue = useAppSelector(
     state => state.transfer.NameOfSTKBankChoosing,
   );
+  const userNameLogined = useAppSelector(state => state.signUp.fullName)
+  const STKLogined = useAppSelector(state => state.signUp.newAccountSTK)
   const userSTK = useAppSelector(state => state.signUp.newAccountSTK);
   const userBankMoney = useAppSelector(state => state.credit.Balance);
   const otherBank = useAppSelector(state => state.otherBank);
   const inputRef = useRef(null);
+  const [onChangeMessage, setOnChangeMessage] = useState(
+    `${userNameLogined} chuyen khoan`,
+  );
+  
+  const handleInputChange = text => {
+    setInputValueOther(text);
+  };
+
+  const characterCount = inputValueOther.length;
+  const BankChoosingValue = useAppSelector(
+    state => state.transfer.BankChoosing,
+  );
+  
+  
 
   const dispatch = useAppDispatch();
   const handleFetchOtherBank = () => {
@@ -101,7 +106,7 @@ const ContentSendingMoney = () => {
   };
 
   const handleContinue = () => {
-    if (onChangeMessage || onChangeMoney) {
+    if (onChangeMessage && onChangeMoney) {
     }
     dispatch(setBankValueMoney(onChangeMoney));
     dispatch(setmessageTransfer(onChangeMessage));

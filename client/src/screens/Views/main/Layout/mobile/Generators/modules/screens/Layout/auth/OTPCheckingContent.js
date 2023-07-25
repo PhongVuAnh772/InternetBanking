@@ -1,8 +1,13 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {Text, View, StyleSheet, Animated, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, Animated, TouchableOpacity,ActivityIndicator} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {settimeTransferBank} from '../../../../../../../../../../slice/transferSlice';
-import {useAppDispatch} from '../../../../../../../../../../app/hooks/hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../../../../../../../../../app/hooks/hooks';
+import Toast from 'react-native-toast-message';
+import axios from 'axios';
 const TimerBar = () => {
   const dispatch = useAppDispatch();
   const [remainingSeconds, setRemainingSeconds] = useState(20);
@@ -14,6 +19,21 @@ const TimerBar = () => {
   const [isDateGenerated, setIsDateGenerated] = useState(false);
   const [serial, setSerial] = useState('');
   const [currentDate, setCurrentDate] = useState('');
+  const [visible, setVisible] = useState(false);
+  const STKBankChoosing = useAppSelector(
+    state => state.transfer.STKBankChoosing,
+  );
+  const BankValueMoney = useAppSelector(state => state.transfer.BankValueMoney);
+  const messageTransfer = useAppSelector(
+    state => state.transfer.messageTransfer,
+  );
+  const binBankChoosing = useAppSelector(
+    state => state.transfer.binBankChoosing,
+  );
+  const NameOfSTKBankChoosing = useAppSelector(
+    state => state.transfer.NameOfSTKBankChoosing,
+  );
+  const CMNDUser = useAppSelector(state => state.signUp.personalIdNumber);
   const navigation = useNavigation();
 
   const formatTime = seconds => {
@@ -51,10 +71,43 @@ const TimerBar = () => {
     // return date + '-' + month + '-' + year; //format: d-m-y;
     return new Date().toLocaleString();
   };
-  const handleContinue = () => {
-    dispatch(settimeTransferBank(currentDate));
 
-    navigation.navigate('SuccessingTransferWrap');
+  // const BankChoosingIcon
+const showToast = (type, title,text) => {
+    Toast.show({
+      type: type,
+      text1: title,
+      text2: text,
+    });
+  };
+  console.log(CMNDUser,binBankChoosing,messageTransfer,BankValueMoney,NameOfSTKBankChoosing,STKBankChoosing)
+  const handleContinue = async () => {
+    setVisible(true);
+
+    try {
+      const ress = await axios.post(
+        `http://192.168.100.6:5000/api/createSendingMoney`,
+        {
+          CMNDUser: CMNDUser,
+          BINCode: binBankChoosing,
+          Transaction_Type: 'Chuyển khoản',
+          Description: messageTransfer,
+          Amount: BankValueMoney,
+          Payee: NameOfSTKBankChoosing,
+          recipient_account_number: STKBankChoosing,
+        },
+      );  
+      if (ress.data.success === true) {
+        setTimeout(() => {
+          setVisible(false);
+          showToast('success', 'Bạn có biến động số dư mới', '');
+          navigation.navigate('SuccessingTransferWrap');
+        }, 3000);
+      }
+    } catch (err) {
+      console.log(err.message);
+      return false;
+    }
   };
   useEffect(() => {
     const animation = Animated.timing(progressAnimation, {
@@ -133,6 +186,13 @@ const TimerBar = () => {
             </Text>
           </View>
         </View>
+        {visible && (
+        <ActivityIndicator
+          size="large"
+          color="#00ff00"
+          style={{alignSelf: 'center'}}
+        />
+      )}
         <View style={styles.OTPCheckingSerial}>
           <Text style={styles.OTPCheckingSerialText}>Serial: {serial}</Text>
           <Text style={styles.OTPCheckingSerialText}>{currentDate}</Text>

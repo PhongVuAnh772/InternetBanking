@@ -24,7 +24,12 @@ const getData = async (req, res) => {
     .catch((error) => {
       // Xử lý lỗi
       console.log(error);
-      res.status(200).send({ success: false, error: "Server hiện tại bảo trì, vui lòng thử lại sau ít phút" });
+      res
+        .status(200)
+        .send({
+          success: false,
+          error: "Server hiện tại bảo trì, vui lòng thử lại sau ít phút",
+        });
     });
 };
 
@@ -32,27 +37,32 @@ const getOTPAccount = async (req, res) => {
   db.accounts
     .findOne({
       where: {
-        PINCode: req.body.PINCode,
+        Account_id: req.body.Account_id,
       },
     })
     .then((dbUser) => {
-      if (dbUser) {
+      if (dbUser.PINCode === req.body.PINCode) {
         return res.status(200).json({
           success: true,
 
           message: "OTP đúng",
-          data: dbUser
         });
       } else {
         return res.status(200).json({
           success: false,
-          message: "OTP không khớp, hãy thử lại",
+          message: "OTP sai",
         });
       }
     })
     .catch((error) => {
+      // Xử lý lỗi
       console.log(error);
-      res.status(200).send({ success: false, error: "Lỗi server" });
+      res
+        .status(200)
+        .send({
+          success: false,
+          error: "Server hiện tại bảo trì, vui lòng thử lại sau ít phút",
+        });
     });
 };
 
@@ -86,9 +96,8 @@ const createINickUser = (req, res) => {
     });
 };
 
-
 module.exports = {
   getData,
   getOTPAccount,
-  createINickUser
+  createINickUser,
 };

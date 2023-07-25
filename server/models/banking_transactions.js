@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       Description: DataTypes.INTEGER,
       Date: DataTypes.DATEONLY,
       Payee: DataTypes.STRING,
+      accept_Recharge: DataTypes.BOOLEAN,
       recipient_account_number: DataTypes.STRING,
       Customer_id: DataTypes.STRING,
       other_bank_id: DataTypes.INTEGER,
