@@ -33,7 +33,6 @@ import {fetchOtherBank} from '../../../../../../../../../slice/getOtherBankSlice
 import axios from 'axios';
 
 const ContentSendingMoney = () => {
-  
   const navigation = useNavigation();
   const [inputValueOther, setInputValueOther] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -42,7 +41,9 @@ const ContentSendingMoney = () => {
   const [responseDataUser, setResponseDataUser] = useState([]);
   const [STKSendingPerson, setSTKSendingPerson] = useState('');
   const [onChangeMoney, setOnChangeMoney] = useState(0);
-  const [onChangeMessage, setOnChangeMessage] = useState('VU ANH PHONG chuyen khoan');
+  const [onChangeMessage, setOnChangeMessage] = useState(
+    'VU ANH PHONG chuyen khoan',
+  );
   const handleInputChange = text => {
     setInputValueOther(text);
   };
@@ -72,12 +73,8 @@ const ContentSendingMoney = () => {
   const NameOfSTKBankChoosingValue = useAppSelector(
     state => state.transfer.NameOfSTKBankChoosing,
   );
-  const userSTK = useAppSelector(
-    state => state.signUp.newAccountSTK
-  );
-  const userBankMoney = useAppSelector(
-    state => state.credit.Balance,
-  );
+  const userSTK = useAppSelector(state => state.signUp.newAccountSTK);
+  const userBankMoney = useAppSelector(state => state.credit.Balance);
   const otherBank = useAppSelector(state => state.otherBank);
   const inputRef = useRef(null);
 
@@ -92,8 +89,7 @@ const ContentSendingMoney = () => {
     dispatch(setbinBankChoosing(bin));
     dispatch(setlongNameBankChoosing(longName));
     dispatch(setNameOfSTKBankChoosing(''));
-            dispatch(setSTKBankChoosing(''));
-
+    dispatch(setSTKBankChoosing(''));
 
     setModalVisible(false);
     console.log(
@@ -105,12 +101,11 @@ const ContentSendingMoney = () => {
   };
 
   const handleContinue = () => {
-    if(onChangeMessage || onChangeMoney) {
-      
+    if (onChangeMessage || onChangeMoney) {
     }
     dispatch(setBankValueMoney(onChangeMoney));
     dispatch(setmessageTransfer(onChangeMessage));
-               dispatch(setSTKBankChoosing(STKSendingPerson));
+    dispatch(setSTKBankChoosing(STKSendingPerson));
 
     navigation.navigate('ConfirmInformationSendingWrap');
   };
@@ -133,6 +128,15 @@ const ContentSendingMoney = () => {
     bin: binBankChoosingValue,
     accountNumber: STKSendingPerson,
   });
+  const handleCancelChooseBank = () => {
+    dispatch(setBankChoosing(''));
+    dispatch(setBankChoosingIcon(''));
+    dispatch(setbinBankChoosing(''));
+    dispatch(setlongNameBankChoosing(''));
+    dispatch(setNameOfSTKBankChoosing(''));
+    dispatch(setSTKBankChoosing(''));
+    setModalVisible(!modalVisible);
+  };
 
   const fetchDataUserSTK = async () => {
     try {
@@ -150,9 +154,9 @@ const ContentSendingMoney = () => {
       ) {
         dispatch(setNameOfSTKBankChoosing(responseDataUser.results.ownerName));
       } else {
-         await fetchDataUserSTK();
+        await fetchDataUserSTK();
       }
-      console.log(responseDataUser)
+      console.log(responseDataUser);
     } catch (error) {
       console.log(error);
     }
@@ -181,120 +185,142 @@ const ContentSendingMoney = () => {
 
   return (
     <>
-      <View style={styles.container}>
-        <View style={styles.headerMoneyInfo}>
-          <Text style={styles.textheaderMoneyInfo}>Tài khoản nguồn</Text>
-        </View>
-        <View style={styles.contentMoneyInfo}>
-          <View style={styles.contentIcon}>
-            <FontAwesome name="credit-card" size={20} color="rgb(0, 173, 83)" />
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.headerMoneyInfo}>
+            <Text style={styles.textheaderMoneyInfo}>Tài khoản nguồn</Text>
           </View>
-          <View style={styles.contentMoneyDes}>
-            <Text style={styles.moneyValueSpecified}>
-              {userBankMoney} <Text style={styles.moneyValueSpecifiedCurrency}>đ</Text>
-            </Text>
-            <View style={styles.accountInfoDemo}>
-              <Text style={styles.moneyValue}>Normal Account</Text>
-              <Text style={styles.separate}>|</Text>
-              <Text style={styles.moneyValue}>{userSTK}</Text>
-            </View>
-          </View>
-          <View style={styles.contentIcon}>
-            <MaterialIcons name="arrow-forward-ios" size={20} color="#909a9c" />
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.contentSendingMoneyBank}>
-        <View style={styles.headerMoneyInfo}>
-          <Text style={styles.textheaderMoneyInfo}>Thông tin người nhận</Text>
-        </View>
-        <View style={styles.contentMoneyInfo}>
-          <View style={styles.contentMoneyDes}>
-            <TouchableOpacity
-              style={styles.accountInfo}
-              onPress={() => {
-                setModalVisible(true);
-                handleFetchOtherBank();
-                fetchDataBanks();
-              }}>
-              <View style={styles.contentIcon}>
-                <Text style={styles.moneyValue}>Ngân hàng nhận</Text>
-                {BankChoosingValue === '' ? (
-                  <Text style={styles.moneyValueBank}>
-                    Hãy chọn ngân hàng thụ hưởng
-                  </Text>
-                ) : (
-                  <Text style={styles.moneyValueBank}>{BankChoosingValue}</Text>
-                )}
-              </View>
-              <MaterialIcons
-                name="arrow-forward-ios"
-                size={16}
-                color="#909a9c"
-              />
-            </TouchableOpacity>
-            <View style={styles.contentSTKInfoInput}>
-              <TextInput
-                style={styles.inputSTK}
-                placeholder="Số tài khoản/iNick"
-                placeholderTextColor="rgb(145, 154, 156)"
-                ref={inputRef}
-                onChangeText={setSTKSendingPerson}
-                value={STKBankChoosingValue ? STKBankChoosingValue : STKSendingPerson}
-                onBlur={() => {
-                  fetchDataUserSTK();
-                }}
-              />
-              <FontAwesome name="id-card-o" size={20} color="rgb(0, 173, 83)" />
-            </View>
-            {/* {messageError} */}
-            <View style={styles.contentSTKInfoInput}>
-              <TextInput
-                style={styles.inputSTK}
-                placeholder="Tên người dùng"
-                placeholderTextColor="rgb(145, 154, 156)"
-                value={NameOfSTKBankChoosingValue}
-              />
+          <View style={styles.contentMoneyInfo}>
+            <View style={styles.contentIcon}>
               <FontAwesome
-                name="street-view"
+                name="credit-card"
                 size={20}
                 color="rgb(0, 173, 83)"
               />
             </View>
-            <View style={styles.contentSTKInfoInput}>
-              <TextInput
-                style={styles.inputSTKValue}
-                placeholder="0"
-                placeholderTextColor="rgb(141, 152, 154)"
-                keyboardType="number-pad"
-                onChangeText={setOnChangeMoney}
-                // value={onChangeMoney}
-              />
-              <Text style={styles.inputSTKValueCurrencySpecified}>đ</Text>
+            <View style={styles.contentMoneyDes}>
+              <Text style={styles.moneyValueSpecified}>
+                {userBankMoney}{' '}
+                <Text style={styles.moneyValueSpecifiedCurrency}>đ</Text>
+              </Text>
+              <View style={styles.accountInfoDemo}>
+                <Text style={styles.moneyValue}>Normal Account</Text>
+                <Text style={styles.separate}>|</Text>
+                <Text style={styles.moneyValue}>{userSTK}</Text>
+              </View>
             </View>
-            <View style={styles.contentSTKInfoInputOther}>
-              <TextInput
-                style={styles.inputSTK}
-                placeholder="Nội dung (Không bắt buộc)"
-                placeholderTextColor="rgb(145, 154, 156)"
-                onChangeText={setOnChangeMessage}
+            <View style={styles.contentIcon}>
+              <MaterialIcons
+                name="arrow-forward-ios"
+                size={20}
+                color="#909a9c"
               />
-              <View style={styles.contentSTKInfoInputOtherCounting}>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.contentSendingMoneyBank}>
+          <View style={styles.headerMoneyInfo}>
+            <Text style={styles.textheaderMoneyInfo}>Thông tin người nhận</Text>
+          </View>
+          <View style={styles.contentMoneyInfo}>
+            <View style={styles.contentMoneyDes}>
+              <TouchableOpacity
+                style={styles.accountInfo}
+                onPress={() => {
+                  setModalVisible(true);
+                  handleFetchOtherBank();
+                  fetchDataBanks();
+                }}>
+                <View style={styles.contentIcon}>
+                  <Text style={styles.moneyValue}>Ngân hàng nhận</Text>
+                  {BankChoosingValue === '' ? (
+                    <Text style={styles.moneyValueBank}>
+                      Hãy chọn ngân hàng thụ hưởng
+                    </Text>
+                  ) : (
+                    <Text style={styles.moneyValueBank}>
+                      {BankChoosingValue}
+                    </Text>
+                  )}
+                </View>
+                <MaterialIcons
+                  name="arrow-forward-ios"
+                  size={16}
+                  color="#909a9c"
+                />
+              </TouchableOpacity>
+              <View style={styles.contentSTKInfoInput}>
+                <TextInput
+                  style={styles.inputSTK}
+                  placeholder="Số tài khoản/iNick"
+                  placeholderTextColor="rgb(145, 154, 156)"
+                  ref={inputRef}
+                  onChangeText={setSTKSendingPerson}
+                  value={
+                    STKBankChoosingValue
+                      ? STKBankChoosingValue
+                      : STKSendingPerson
+                  }
+                  onBlur={() => {
+                    fetchDataUserSTK();
+                  }}
+                />
                 <FontAwesome
-                  name="envelope-open"
+                  name="id-card-o"
                   size={20}
                   color="rgb(0, 173, 83)"
-                  style={{transform: [{rotate: '18deg'}]}}
                 />
-                <Text style={styles.contentSTKInfoInputOtherCountingSpecified}>
-                  {characterCount}/160
-                </Text>
+              </View>
+              {/* {messageError} */}
+              <View style={styles.contentSTKInfoInput}>
+                <TextInput
+                  style={styles.inputSTK}
+                  placeholder="Tên người dùng"
+                  placeholderTextColor="rgb(145, 154, 156)"
+                  value={NameOfSTKBankChoosingValue}
+                />
+                <FontAwesome
+                  name="street-view"
+                  size={20}
+                  color="rgb(0, 173, 83)"
+                />
+              </View>
+              <View style={styles.contentSTKInfoInput}>
+                <TextInput
+                  style={styles.inputSTKValue}
+                  placeholder="0"
+                  placeholderTextColor="rgb(141, 152, 154)"
+                  keyboardType="number-pad"
+                  onChangeText={setOnChangeMoney}
+                  // value={onChangeMoney}
+                />
+                <Text style={styles.inputSTKValueCurrencySpecified}>đ</Text>
+              </View>
+              <View style={styles.contentSTKInfoInputOther}>
+                <TextInput
+                  style={styles.inputSTK}
+                  placeholder="Nội dung (Không bắt buộc)"
+                  placeholderTextColor="rgb(145, 154, 156)"
+                  onChangeText={setOnChangeMessage}
+                />
+                <View style={styles.contentSTKInfoInputOtherCounting}>
+                  <FontAwesome
+                    name="envelope-open"
+                    size={20}
+                    color="rgb(0, 173, 83)"
+                    style={{transform: [{rotate: '18deg'}]}}
+                  />
+                  <Text
+                    style={styles.contentSTKInfoInputOtherCountingSpecified}>
+                    {characterCount}/160
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
       <View style={styles.footerContainer}>
         <TouchableOpacity
           style={styles.buttonFooter}
@@ -319,7 +345,7 @@ const ContentSendingMoney = () => {
                 borderBottomWidth: 1,
                 paddingVertical: 10,
               }}>
-              <Pressable onPress={() => setModalVisible(!modalVisible)}>
+              <Pressable onPress={() => handleCancelChooseBank()}>
                 <FontAwesome
                   name="close"
                   size={25}
@@ -346,12 +372,6 @@ const ContentSendingMoney = () => {
                 style={styles.searchIcon}
               />
             </View>
-
-            {/* {responseDataBanks && (
-              responseDataBanks.map((bank, index) => (
-                
-              ))
-            )} */}
             <FlatList
               data={responseDataBanks.data}
               renderItem={renderBankItem}
@@ -485,7 +505,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     paddingVertical: 10,
-    marginVertical: 5,
+    marginTop: 10,
   },
   buttonFooter: {
     backgroundColor: 'rgb(0, 173, 83)',

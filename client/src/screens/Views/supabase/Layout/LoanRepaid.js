@@ -36,15 +36,15 @@ const LoanRepaid = () => {
       text1: title,
     });
   };
-  console.log(loanTaken);
+  console.log((loanTaken + (loanTaken * 1.6 / 100))  - loanRepaid);
   console.log(loanRepaid -newFloatMoney);
   const handleNext = async () => {
     setVisible(true);
-    if (loanMoney > (loanTaken - loanRepaid)) {
+    if (newFloatMoney > ((loanTaken + (loanTaken * 1.6 / 100))  - loanRepaid)) {
         showToast('error', 'Số tiền bạn trả vượt quá số nợ')
         setVisible(false);
     }
-    else if ((loanTaken - loanRepaid - loanMoney) < 0) {
+    else if (((loanTaken + (loanTaken * 1.6 / 100))  - loanRepaid - newFloatMoney) < 0) {
         showToast('error', 'Số tiền bạn trả vượt quá số nợ')
         setVisible(false);
     }

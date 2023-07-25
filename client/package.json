@@ -57,6 +57,7 @@
     "react-native-vector-icons": "^9.2.0",
     "react-redux": "^8.0.7",
     "rn-fetch-blob": "^0.12.0",
+    "socket.io-client": "^4.7.1",
     "unidecode": "^0.1.8"
   },
   "devDependencies": {

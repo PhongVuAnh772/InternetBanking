@@ -56,9 +56,39 @@ const getOTPAccount = async (req, res) => {
     });
 };
 
+const createINickUser = (req, res) => {
+  db.accounts
+    .findOne({
+      where: {
+        Account_id: req.body.Account_id, // Invert the value of "locked" to find the opposite status
+      },
+    })
+    .then((dataAccount) => {
+      dataAccount
+        .update({ iNick: req.body.iNick })
+        .then((updatedInick) => {
+          return res.json({
+            success: true,
+            message: "Đổi thuộc tính lấy tên định danh thành công.",
+            updatedInick: updatedInick,
+          });
+        })
+        .catch((error) => {
+          return res
+            .status(500)
+            .json({ success: false, message: "Failed to update Inick." });
+        });
+    })
+    .catch((error) => {
+      return res
+        .status(500)
+        .json({ success: false, message: "Failed to find Inick." });
+    });
+};
 
 
 module.exports = {
   getData,
-  getOTPAccount
+  getOTPAccount,
+  createINickUser
 };

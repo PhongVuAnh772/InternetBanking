@@ -35,7 +35,11 @@ module.exports = {
       PINCode: {
         allowNull: false,
         type: Sequelize.STRING,
-      } 
+      },
+      iNick: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      }  
     });
   },
   async down(queryInterface, Sequelize) {

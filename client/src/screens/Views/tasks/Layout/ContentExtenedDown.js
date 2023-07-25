@@ -8,7 +8,7 @@ const ContentExtendedDown = ({name, icon}) => {
   const navigation = useNavigation();
   const clickHandler = () => {
     if (name == 'Tỷ giá ngoại tệ') {
-      navigation.navigate('SettingExtendedContainer');
+      navigation.navigate('CurrencyScreen');
     } else if (name == 'ATM và chi nhánh') {
       navigation.navigate('GoogleMap');
     } else if (name == 'Tới số tài khoản liên ngân hàng') {

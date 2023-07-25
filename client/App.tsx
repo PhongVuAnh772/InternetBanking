@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {Text, View, StyleSheet, BackHandler, Alert} from 'react-native';
+
 import HomeScreen from './src/screens/HomeScreen';
 import AuthScreen from './src/auth/AuthScreen';
 import GoogleMap from './src/auth/Template/Interface/GoogleMap';
@@ -21,6 +23,8 @@ import ConfirmCheckMicroBlink from './src/screens/Layout/ConfirmCheckMicroBlink'
 import CongratulationConfirm from './src/screens/Layout/CongratulationConfirm';
 import LastSuccessSignUpScreen from './src/screens/Layout/LastSuccessSignUpScreen';
 import PassChange from './src/auth/Template/Interface/tasks/Pass/PassChange';
+import { setLogin } from './src/slice/authSlice';
+
 import Toast from 'react-native-toast-message';
 
 // import {selectCount} from './src/slice/createSlice';
@@ -49,7 +53,18 @@ export default function App() {
     }
   };
   console.log(tokenFirebaseValue);
+  useEffect(() => {
+    const backAction = () => {
+      return true;
+    };
 
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
     const enabled =

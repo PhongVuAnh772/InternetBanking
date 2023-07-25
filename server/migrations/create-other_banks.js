@@ -9,14 +9,23 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      
+
       other_banks_name: {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      other_banks_longName: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+
       other_banks_icons: {
         allowNull: false,
         type: Sequelize.BLOB,
+      },
+      BINCode: {
+        allowNull: false,
+        type: Sequelize.STRING,
       },
     });
   },

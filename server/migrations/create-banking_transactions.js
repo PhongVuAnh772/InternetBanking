@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         autoIncrement: true,
       },
-      
+
       Transaction_Type: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -22,12 +22,24 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DECIMAL(10, 2),
       },
-
+      Payee: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      recipient_account_number: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
       Date: {
         allowNull: false,
         type: Sequelize.DATEONLY,
       },
       Customer_id: {
+        allowNull: false,
+        foreignKey: true,
+        type: Sequelize.INTEGER,
+      },
+      other_bank_id: {
         allowNull: false,
         foreignKey: true,
         type: Sequelize.INTEGER,

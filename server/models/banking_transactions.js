@@ -5,8 +5,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       banking_transactions.belongsTo(models.customers, {
         foreignKey: "Customer_id",
-        targetKey: "id",
         as: "bankingtransactionsData",
+      });
+      banking_transactions.belongsTo(models.customers, {
+        foreignKey: "other_bank_id",
+        as: "otherbankData",
       });
     }
   }
@@ -16,12 +19,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+                allowNull: false,
+
       },
       Amount: DataTypes.DECIMAL(10, 2),
       Transaction_Type: DataTypes.INTEGER,
       Description: DataTypes.INTEGER,
-      Date: DataTypes.STRING(20),
+      Date: DataTypes.DATEONLY,
+      Payee: DataTypes.STRING,
+      recipient_account_number: DataTypes.STRING,
       Customer_id: DataTypes.STRING,
+      other_bank_id: DataTypes.INTEGER,
     },
     {
       sequelize,

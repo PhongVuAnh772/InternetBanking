@@ -22,7 +22,7 @@ const LoanOverview = () => {
     });
   };
   const clickHandler = () => {
-    if ((loanTaken - loanRepaid) > 15000000) {
+    if (((loanTaken + (loanTaken * 1.6 / 100))  - loanRepaid) > 15000000) {
       showToast('error', 'Đã đến giới hạn vay, không thể vay')
     }
     else {
@@ -30,7 +30,7 @@ const LoanOverview = () => {
     }
   }
   const handleRepaid = () => {
-      if ((loanTaken - loanRepaid) <= 0) {
+      if (((loanTaken + (loanTaken * 1.6 / 100))  - loanRepaid) <= 0) {
       showToast('error', 'Số tiền vay nhỏ hơn 0, cấm truy cập')
     }
     else {
@@ -75,7 +75,7 @@ const LoanOverview = () => {
           color="green"
         />
       </TouchableOpacity>
-      {(loanTaken - loanRepaid) == 0.00 ? <View style={styles.containerButtonHide}>
+      {((loanTaken + (loanTaken * 1.6 / 100))  - loanRepaid) == 0.00 ? <View style={styles.containerButtonHide}>
         <FontAwesome
           name="institution"
           size={20}
@@ -110,7 +110,7 @@ const LoanOverview = () => {
           color="green"
         />
       </TouchableOpacity>}
-      {(loanTaken - loanRepaid) == 0.00 || 0 || 0.0 ? <View style={styles.containerButtonHide}>
+      {((loanTaken + (loanTaken * 1.6 / 100))  - loanRepaid) == 0.00 || 0 || 0.0 ? <View style={styles.containerButtonHide}>
         <FontAwesome
           name="institution"
           size={20}
