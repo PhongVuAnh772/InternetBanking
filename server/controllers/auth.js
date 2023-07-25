@@ -181,7 +181,6 @@ const signUp = (req, res) => {
                               });
                             })
                             .catch((error) => {
-                              // Xóa bỏ các bảng đã tạo nếu có lỗi
                               Promise.all([
                                 db.accounts.destroy({
                                   where: {

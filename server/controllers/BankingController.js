@@ -8,7 +8,7 @@ const multer = require("multer");
 const addCreditCard = (req, res) => {
   try {
     db.credit_cards
-      .max("id") // Lấy giá trị lớn nhất của CreditCard_id
+      .max("id") 
       .then((maxCreditCardId) => {
         const newCreditCardId = maxCreditCardId ? maxCreditCardId + 1 : 1;
         db.customers
@@ -65,13 +65,13 @@ const addCreditCard = (req, res) => {
   }
 };
 
-
-
 const createSendingMoney = (req, res) => {
   try {
-    db.customers.findOne({ where: { CMND: req.body.CMNDUser } })
+    db.customers
+      .findOne({ where: { CMND: req.body.CMNDUser } })
       .then((customer) => {
-        db.other_banks.findOne({ where: { BINCode: req.body.BINCode } })
+        db.other_banks
+          .findOne({ where: { BINCode: req.body.BINCode } })
           .then((other_banks) => {
             if (!other_banks) {
               return res.status(404).json({
@@ -80,60 +80,106 @@ const createSendingMoney = (req, res) => {
               });
             }
 
-            db.banking_transactions.max("id")
-              .then((maxBankingTransactionId) => {
-                const newBankingTransactionId = maxBankingTransactionId
-                  ? maxBankingTransactionId + 1
-                  : 1;
-
-                db.banking_transactions.create({
-                  id: newBankingTransactionId,
-                  Transaction_Type: req.body.Transaction_Type,
-                  Description: req.body.Description,
-                  Amount: req.body.Amount,
-                  Payee: req.body.Payee,
-                  recipient_account_number: req.body.recipient_account_number,
-                  Date: new Date(),
-                  Customer_id: customer.id,
-                  other_bank_id: other_banks.id,
-                })
-                .then((createdbankingtransactions) => {
-                  return res.status(200).json({
-                    success: true,
-                    message: "Tạo dữ liệu chuyển khoản thành công",
-                    createdbankingtransactions: createdbankingtransactions,
-                  });
-                })
-                .catch((error) => {
-                  return res.status(500).json({
-                    success: false,
-                    message: "Lỗi khi tạo dữ liệu chuyển khoản",
-                    error: error.message,
-                  });
-                });
+            db.accounts
+              .findOne({
+                where: {
+                  Account_id: req.body.Account_id,
+                },
               })
-              .catch((error) => {
+              .then((dataAccount) => {
+                const currentBalance = parseFloat(dataAccount.Account_Balance);
+                const amountToAdd = parseFloat(req.body.Account_Balance);
+
+                if (isNaN(currentBalance) || isNaN(amountToAdd)) {
+                  return res.status(400).json({
+                    success: false,
+                    message: "Invalid input for Account_Balance.",
+                  });
+                }
+
+                const updatedBalance = currentBalance - amountToAdd;
+
+                dataAccount
+                  .update({ Account_Balance: updatedBalance.toFixed(2) })
+                  .then(() => {
+                    db.banking_transactions
+                      .max("id")
+                      .then((maxBankingTransactionId) => {
+                        const newBankingTransactionId = maxBankingTransactionId
+                          ? maxBankingTransactionId + 1
+                          : 1;
+
+                        db.banking_transactions
+                          .create({
+                            id: newBankingTransactionId,
+                            Transaction_Type: "Chuyển khoản",
+                            Description: req.body.Description,
+                            Amount: amountToAdd,
+                            Payee: req.body.Payee,
+                            recipient_account_number:
+                              req.body.recipient_account_number,
+                            Date: new Date(),
+                            Customer_id: customer.id,
+                            other_bank_id: other_banks.id,
+                          })
+                          .then((createdbankingtransactions) => {
+                            return res.status(200).json({
+                              success: true,
+                              message: "Tạo dữ liệu chuyển khoản thành công",
+                              createdbankingtransactions:
+                                createdbankingtransactions,
+                            });
+                          })
+                          .catch((error) => {
+                            return res.status(500).json({
+                              success: false,
+                              message: "Lỗi khi tạo dữ liệu chuyển khoản",
+                              error: error.message,
+                            });
+                          });
+                      })
+                      .catch((error) => {
+                        return res.status(500).json({
+                          message:
+                            "Lỗi khi tìm giá trị lớn nhất của banking_transaction_id",
+                          error: error.message,
+                        });
+                      });
+                  })
+                  .catch((error) => {
+                    return res.status(500).json({
+                      success: false,
+                      message: "Lỗi khi cập nhật số dư tài khoản",
+                      error: error.message,
+                    });
+                  });
+              })
+              .catch((err) => {
                 return res.status(500).json({
-                  message: "Lỗi khi tìm giá trị lớn nhất của banking_transaction_id",
-                  error: error.message,
+                  success: false,
+                  message: "Lỗi khi tìm thông tin tài khoản",
+                  error: err.message,
                 });
               });
           })
           .catch((err) => {
             return res.status(500).json({
-              message: "Lỗi khi tìm ngân hàng",
+              success: false,
+              message: "Lỗi khi tìm thông tin ngân hàng",
               error: err.message,
             });
           });
       })
       .catch((err) => {
         return res.status(500).json({
-          message: "Lỗi khi tìm khách hàng",
+          success: false,
+          message: "Lỗi khi tìm thông tin khách hàng",
           error: err.message,
         });
       });
   } catch (err) {
     return res.status(500).json({
+      success: false,
       message: "Lỗi server",
       error: err.message,
     });
@@ -142,61 +188,105 @@ const createSendingMoney = (req, res) => {
 
 const createCreditCardTransaction = (req, res) => {
   try {
-    db.customers.findOne({ where: { CMND: req.body.CMNDUser } })
+    db.customers
+      .findOne({ where: { CMND: req.body.CMNDUser } })
       .then((customer) => {
-        db.credit_cards.findOne({ where: { Customer_id: customer.id } })
+        db.credit_cards
+          .findOne({ where: { Customer_id: customer.id } })
           .then((credit_cards) => {
-
-            db.cc_transactions.max("id")
-              .then((maxcc_transactionsId) => {
-                const newcc_transactionsId = maxcc_transactionsId
-                  ? maxcc_transactionsId + 1
-                  : 1;
-                db.cc_transactions.create({
-                  id: newcc_transactionsId,
-                  CC_number: credit_cards.CC_number,
-                  Transaction_Date: new Date(),
-                  Amount: req.body.Amount,
-                  Merchant_Details: req.body.Merchant_Details,
-                  
-                })
-                .then((createdcc_transactions) => {
-                  return res.status(200).json({
-                    success: true,
-                    message: "Tạo dữ liệu giao dịch thẻ thành công",
-                    createdcc_transactions: createdcc_transactions,
-                  });
-                })
-                .catch((error) => {
-                  return res.status(500).json({
-                    success: false,
-                    message: "Lỗi khi tạo dữ liệu chuyển khoản",
-                    error: error.message,
-                  });
-                });
+            db.accounts
+              .findOne({
+                where: {
+                  Account_id: req.body.Account_id,
+                },
               })
-              .catch((error) => {
+              .then((dataAccount) => {
+                const currentBalance = parseFloat(dataAccount.Account_Balance);
+                const amountToAdd = parseFloat(req.body.Account_Balance);
+
+                if (isNaN(currentBalance) || isNaN(amountToAdd)) {
+                  return res.status(400).json({
+                    success: false,
+                    message: "Invalid input for Account_Balance.",
+                  });
+                }
+
+                const updatedBalance = currentBalance - amountToAdd;
+
+                dataAccount
+                  .update({ Account_Balance: updatedBalance.toFixed(2) })
+                  .then(() => {
+                    db.cc_transactions
+                      .max("id")
+                      .then((maxCcTransactionsId) => {
+                        const newCcTransactionsId = maxCcTransactionsId
+                          ? maxCcTransactionsId + 1
+                          : 1;
+                        db.cc_transactions
+                          .create({
+                            id: newCcTransactionsId,
+                            CC_number: credit_cards.CC_number,
+                            Transaction_Date: new Date(),
+                            Amount: amountToAdd,
+                            Merchant_Details: req.body.Merchant_Details,
+                          })
+                          .then((createdCcTransaction) => {
+                            return res.status(200).json({
+                              success: true,
+                              message: "Tạo dữ liệu giao dịch thẻ thành công",
+                              createdCcTransaction: createdCcTransaction,
+                            });
+                          })
+                          .catch((error) => {
+                            return res.status(500).json({
+                              success: false,
+                              message: "Lỗi khi tạo dữ liệu giao dịch thẻ",
+                              error: error.message,
+                            });
+                          });
+                      })
+                      .catch((error) => {
+                        return res.status(500).json({
+                          message:
+                            "Lỗi khi tìm giá trị lớn nhất của cc_transactions_id",
+                          error: error.message,
+                        });
+                      });
+                  })
+                  .catch((error) => {
+                    return res.status(500).json({
+                      success: false,
+                      message: "Lỗi khi cập nhật số dư tài khoản",
+                      error: error.message,
+                    });
+                  });
+              })
+              .catch((err) => {
                 return res.status(500).json({
-                  message: "Lỗi khi tìm giá trị lớn nhất của cc_transactions_id",
-                  error: error.message,
+                  success: false,
+                  message: "Lỗi khi tìm thông tin tài khoản",
+                  error: err.message,
                 });
               });
           })
           .catch((err) => {
             return res.status(500).json({
-              message: "Lỗi khi tìm ngân hàng",
+              success: false,
+              message: "Lỗi khi tìm thông tin thẻ tín dụng",
               error: err.message,
             });
           });
       })
       .catch((err) => {
         return res.status(500).json({
-          message: "Lỗi khi tìm khách hàng",
+          success: false,
+          message: "Lỗi khi tìm thông tin khách hàng",
           error: err.message,
         });
       });
   } catch (err) {
     return res.status(500).json({
+      success: false,
       message: "Lỗi server",
       error: err.message,
     });
@@ -207,29 +297,29 @@ const createBank = (req, res) => {
   try {
     const storage = multer.diskStorage({
       destination: function (req, file, cb) {
-        cb(null, './models')
+        cb(null, "./models");
       },
       filename: function (req, file, cb) {
         const filename = file.originalname;
-        cb(null, filename)
-      }
-    })
+        cb(null, filename);
+      },
+    });
 
     const fileFilter = function (req, file, cb) {
       if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-        cb(new Error('Please upload a valid image file (jpg, jpeg, or png)'))
+        cb(new Error("Please upload a valid image file (jpg, jpeg, or png)"));
       } else {
-        cb(null, true)
+        cb(null, true);
       }
-    }
+    };
 
     const upload = multer({
       storage: storage,
       fileFilter: fileFilter,
       limits: {
-        fileSize: 5 * 1024 * 1024 // Giới hạn kích thước tệp tải lên (5MB)
-      }
-    }).single('image')
+        fileSize: 5 * 1024 * 1024, // Giới hạn kích thước tệp tải lên (5MB)
+      },
+    }).single("image");
 
     upload(req, res, (err) => {
       if (err) {
@@ -240,31 +330,33 @@ const createBank = (req, res) => {
       }
 
       // Sau khi xử lý tệp tải lên thành công, lưu thông tin vào cơ sở dữ liệu
-      db.other_banks.max("id")
+      db.other_banks
+        .max("id")
         .then((other_banksId) => {
           const newother_banksId = other_banksId ? other_banksId + 1 : 1;
 
-          db.other_banks.create({
-            id: newother_banksId,
-            other_banks_name: req.body.other_banks_name,
-            other_banks_longName: req.body.other_banks_longName,
-            other_banks_icons: req.file.filename, 
-            BINCode: req.body.BINCode
-          })
-          .then((createdother_banks) => {
-            return res.status(200).json({
-              success: true,
-              message: "Tạo dữ liệu ngân hàng thành công",
-              createdother_banks: createdother_banks,
+          db.other_banks
+            .create({
+              id: newother_banksId,
+              other_banks_name: req.body.other_banks_name,
+              other_banks_longName: req.body.other_banks_longName,
+              other_banks_icons: req.file.filename,
+              BINCode: req.body.BINCode,
+            })
+            .then((createdother_banks) => {
+              return res.status(200).json({
+                success: true,
+                message: "Tạo dữ liệu ngân hàng thành công",
+                createdother_banks: createdother_banks,
+              });
+            })
+            .catch((error) => {
+              return res.status(500).json({
+                success: false,
+                message: "Lỗi khi tạo dữ liệu ngân hàng",
+                error: error.message,
+              });
             });
-          })
-          .catch((error) => {
-            return res.status(500).json({
-              success: false,
-              message: "Lỗi khi tạo dữ liệu ngân hàng",
-              error: error.message,
-            });
-          });
         })
         .catch((error) => {
           return res.status(500).json({
@@ -283,9 +375,109 @@ const createBank = (req, res) => {
   }
 };
 
+const updateMoneySTK = (req, res) => {
+  db.accounts
+    .findOne({
+      where: {
+        Account_id: req.body.Account_id,
+      },
+    })
+    .then((dataAccount) => {
+      const currentBalance = parseFloat(dataAccount.Account_Balance);
+      const amountToAdd = parseFloat(req.body.Account_Balance);
+
+      // Check if the parsed values are valid numbers
+      if (isNaN(currentBalance) || isNaN(amountToAdd)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid input for Account_Balance.",
+        });
+      }
+
+      const updatedBalance = currentBalance + amountToAdd;
+
+      dataAccount
+        .update({ Account_Balance: updatedBalance.toFixed(2) }) // Limiting to 2 decimal places
+        .then((updatedAccount) => {
+          db.customers
+            .findOne({ where: { CMND: req.body.CMNDUser } })
+            .then((customer) => {
+              db.customers
+                .findOne({ where: { CMND: req.body.CMNDUser } })
+                .then((customer) => {
+                  db.banking_transactions
+                    .max("id")
+                    .then((maxBankingTransactionId) => {
+                      const newBankingTransactionId = maxBankingTransactionId
+                        ? maxBankingTransactionId + 1
+                        : 1;
+
+                      db.banking_transactions
+                        .create({
+                          id: newBankingTransactionId,
+                          Transaction_Type: "Gửi tiền",
+                          Amount: amountToAdd,
+                          accept_Recharge: false,
+                          Date: new Date(),
+                          Customer_id: customer.id,
+                        })
+                        .then((createdbankingtransactions) => {
+                          return res.status(200).json({
+                            success: true,
+                            message: "Tạo dữ liệu chuyển khoản thành công",
+                            createdbankingtransactions:
+                              createdbankingtransactions,
+                          });
+                        })
+                        .catch((error) => {
+                          return res.status(500).json({
+                            success: false,
+                            message: "Lỗi khi tạo dữ liệu chuyển khoản",
+                            error: error.message,
+                          });
+                        });
+                    })
+                    .catch((error) => {
+                      return res.status(500).json({
+                        message:
+                          "Lỗi khi tìm giá trị lớn nhất của banking_transaction_id",
+                        error: error.message,
+                      });
+                    });
+                })
+                .catch((err) => {
+                  return res.status(500).json({
+                    message: "Lỗi khi tìm khách hàng",
+                    error: err.message,
+                  });
+                });
+            })
+            .catch((err) => {
+              return res.status(500).json({
+                message: "Lỗi khi tìm khách hàng",
+                error: err.message,
+              });
+            });
+        })
+        .catch((error) => {
+          return res.status(500).json({
+            success: false,
+            message: "Thêm tiền thất bại.",
+            err: error.message,
+          });
+        });
+    })
+    .catch((error) => {
+      return res
+        .status(500)
+        .json({ success: false, message: "Lỗi server.", err: error.message });
+    });
+};
+
 module.exports = {
   addCreditCard,
   createSendingMoney,
   createBank,
-  createCreditCardTransaction
+  createCreditCardTransaction,
+  updateMoneySTK,
 };

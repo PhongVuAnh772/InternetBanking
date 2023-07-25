@@ -23,11 +23,11 @@ module.exports = {
         type: Sequelize.DECIMAL(10, 2),
       },
       Payee: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING,
       },
       recipient_account_number: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING,
       },
       Date: {
@@ -44,7 +44,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       other_bank_id: {
-        allowNull: false,
+        allowNull: true,
         foreignKey: true,
         type: Sequelize.INTEGER,
       },

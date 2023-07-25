@@ -55,7 +55,6 @@ const getOTPAccount = async (req, res) => {
       }
     })
     .catch((error) => {
-      // Xử lý lỗi
       console.log(error);
       res
         .status(200)

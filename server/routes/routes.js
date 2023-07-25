@@ -45,6 +45,11 @@ router.post("/createSendingMoney", bankingController.createSendingMoney);
 router.post("/createINickUser", customersController.createINickUser); //
 router.post("/createBank", bankingController.createBank); //
 router.post("/createCreditCardTransaction",bankingController.createCreditCardTransaction);
+router.post("/updateMoneySTK",bankingController.updateMoneySTK);
+
+
+
+
 router.use("/", (req, res, next) => {
   res.status(404).json({ error: "router không tồn tại" });
 });
