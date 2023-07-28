@@ -1,4 +1,5 @@
 const db = require("../models/index");
+const moment = require("moment");
 
 const changeLocked = (req, res) => {
   db.credit_cards
@@ -18,12 +19,10 @@ const changeLocked = (req, res) => {
           });
         })
         .catch((error) => {
-          res
-            .status(500)
-            .json({
-              success: false,
-              message: "Đổi thuộc tính khóa thẻ thất bại",
-            });
+          res.status(500).json({
+            success: false,
+            message: "Đổi thuộc tính khóa thẻ thất bại",
+          });
         });
     })
     .catch((error) => {
@@ -33,9 +32,7 @@ const changeLocked = (req, res) => {
         .json({ success: false, message: "Đổi thuộc tính khóa thẻ thất bại" });
     })
     .catch((error) => {
-      res
-        .status(500)
-        .json({ success: false, message: "Lấy dữ liệu thất bại" });
+      res.status(500).json({ success: false, message: "Lấy dữ liệu thất bại" });
     });
 };
 
@@ -70,11 +67,10 @@ const changePhysicalCards = (req, res) => {
 };
 
 const changeDataPINCode = (req, res) => {
-
   db.accounts
     .findOne({
       where: {
-        Account_id: req.body.Account_id, 
+        Account_id: req.body.Account_id,
       },
     })
     .then((dataAccountCustomer) => {
@@ -99,9 +95,110 @@ const changeDataPINCode = (req, res) => {
         .json({ success: false, message: "Lấy thông tin thất bại." });
     });
 };
+// 2027-07-25
+
+const updateCreditScore = (req, res) => {
+  db.account_customers
+    .findOne({
+      where: {
+        Account_id: req.body.Account_id,
+      },
+    })
+    .then((dataAccountCustomers) => {
+      db.customers
+        .findOne({
+          where: {
+            id: dataAccountCustomers.Customer_id,
+          },
+        })
+        .then((datacustomers) => {
+          db.credit_cards
+            .findOne({
+              where: {
+                Customer_id: datacustomers.id,
+              },
+            })
+            .then((dataCredit) => {
+              db.accounts
+                .findOne({
+                  where: {
+                    Account_id: dataAccountCustomers.Account_id,
+                  },
+                })
+                .then((dataAccounts) => {
+                  function calculateYearsFromDays(days) {
+                    return days / 365;
+                  }
+                  function updateCoinByYears(dateOpened, years) {
+                    const coinPerYear = 1;
+                    return years * coinPerYear;
+                  }
+                  const currentDate = moment();
+                  const daysSinceOpened = currentDate.diff(
+                    dataAccounts.Date_Opened,
+                    "days"
+                  );
+                  const yearsSinceOpened = calculateYearsFromDays(daysSinceOpened);
+                  let newDataCreditScore = updateCoinByYears(
+                    dataAccounts.Date_Opened,
+                    yearsSinceOpened
+                  );
+                  if (dataAccounts.Date_Opened) {
+
+                    dataCredit
+                      .update({ Credit_Score: newDataCreditScore })
+                      .then((updatedCreditScore) => {
+                        return res.json({
+                          success: true,
+                          message: "Đổi thuộc tính lấy điểm thẻ thành công.",
+                          updatedCreditScore: updatedCreditScore,
+                          datacustomers: datacustomers,
+                          dataAccounts: newDataCreditScore,
+                          defaultValue: dataCredit.Credit_Score
+                        });
+                      })
+                      .catch((error) => {
+                        return res.status(500).json({
+                          success: false,
+                          message: "Failed to update Credit_Score",
+                          error: error,
+                        });
+                      });
+                  }
+                })
+                .catch((error) => {
+                  return res.status(500).json({
+                    success: false,
+                    message: "Failed to find credit_cards",
+                  });
+                });
+            })
+            .catch((error) => {
+              return res.status(500).json({
+                success: false,
+                message: "Failed to find credit_cards",
+              });
+            });
+        })
+        .catch((error) => {
+          return res.status(500).json({
+            success: false,
+            message: "Failed to find customers.",
+            error: error,
+          });
+        });
+    })
+    .catch((error) => {
+      return res
+        .status(500)
+        .json({ success: false, message: "Đổi mã PIN thất bại" });
+    });
+};
+
 
 module.exports = {
   changeLocked,
   changePhysicalCards,
-  changeDataPINCode
+  changeDataPINCode,
+  updateCreditScore,
 };

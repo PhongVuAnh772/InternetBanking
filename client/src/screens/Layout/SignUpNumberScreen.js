@@ -24,7 +24,8 @@ const SignUpNumberScreen = () => {
 
   const regexEmail = /@gmail\.com$/;
   const dispatch = useAppDispatch();
-  
+          const networkState = useAppSelector(state => state.network.ipv4Address)
+
   const handleButton = async () => {
     if (!regexEmail.test(valueEmail)) {
       return seterrMessage('Email không đúng định dạng, vui lòng thử lại');
@@ -35,7 +36,7 @@ const SignUpNumberScreen = () => {
     }
     try {
       const res = await axios.post(
-        `http://192.168.100.6:5000/api/validateEmail`,
+        `${networkState}/api/validateEmail`,
         {
           Email: valueEmail,
           CMNDValue: valueCMND

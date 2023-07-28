@@ -46,7 +46,7 @@ router.post("/createINickUser", customersController.createINickUser); //
 router.post("/createBank", bankingController.createBank); //
 router.post("/createCreditCardTransaction",bankingController.createCreditCardTransaction);
 router.post("/updateMoneySTK",bankingController.updateMoneySTK);
-
+router.post("/updateCreditScore",updateController.updateCreditScore)
 
 
 

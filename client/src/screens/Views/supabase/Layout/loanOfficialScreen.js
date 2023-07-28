@@ -29,6 +29,7 @@ const LoanOfficialScreen = () => {
   const newLoanMoney = parseFloat(loanMoney)
   const newFloatMoney = parseFloat(newLoanMoney.toFixed(2))
   const oldLoan = useAppSelector(state => state.loan.loanTotal)
+        const networkState = useAppSelector(state => state.network.ipv4Address)
 
   const showToast = (type, title, text) => {
     Toast.show({
@@ -41,11 +42,11 @@ const LoanOfficialScreen = () => {
     setVisible(true);
     try {
       const res = await axios.post(
-        `http://192.168.100.6:5000/api/addLoan`,
+        `${networkState}/api/addLoan`,
         {
           LoanType: loanDiscription,
           CMNDUser: CMNDUser,
-          LoanAmountTaken: newFloatMoney
+          Account_Balance: newFloatMoney,
         },
       );
       if (res.data.success) {

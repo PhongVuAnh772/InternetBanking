@@ -15,7 +15,6 @@ import FourthSignUpNumberScreen from './src/screens/Layout/FourthSignUpNumberScr
 import {useAppSelector, useAppDispatch} from './src/app/hooks/hooks';
 import ForgotPasswordScreen from './src/auth/Template/Interface/ForgotPasswordScreen';
 import {NetworkInfo} from 'react-native-network-info';
-import {setIPv4Address} from './src/slice/networkSlice';
 import messaging from '@react-native-firebase/messaging';
 import {setfirebaseToken} from './src/slice/allTokenSlice';
 import BonusContinueSignUpNumberScreen from './src/screens/Layout/BonusContinueSignUpNumberScreen';
@@ -79,14 +78,6 @@ export default function App() {
     requestUserPermission();
   }, []);
 
-  useEffect(() => {
-    fetch('https://api.ipify.org/?format=json')
-      .then(response => response.json())
-      .then(data => dispatch(setIPv4Address(data.ip ?? '')))
-      .catch(error => console.log(error));
-  }, []);
-
-  console.log(ipv4Address);
   return (
     <>
       <NavigationContainer>

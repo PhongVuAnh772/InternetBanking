@@ -19,9 +19,11 @@ const LoanGreeting = () => {
   const navigation = useNavigation();
   const CMNDUser = useAppSelector(state => state.signUp.personalIdNumber);
   const dispatch = useAppDispatch()
+  const networkState = useAppSelector(state => state.network.ipv4Address)
+
   const handlePress = async () => {
     try {
-      const ress = await axios.post(`http://192.168.100.6:5000/api/getLoan`, {
+      const ress = await axios.post(`${networkState}/api/getLoan`, {
         CMNDUser: CMNDUser,
       });
       if (ress.data.success === true) {
@@ -33,13 +35,13 @@ const LoanGreeting = () => {
         const totalLoanAmountRepaid = ress.data.data.loanData.reduce((total, loan) => {
           return total + parseFloat(loan.Loan_Amount_Repaid);
         }, 0);
-        if (totalLoanAmountRepaid && totalLoanAmountTaken) {
         console.log(totalLoanAmountTaken, totalLoanAmountRepaid)
         dispatch(setLoanRepaidTotal(totalLoanAmountRepaid))
-        dispatch(setLoanTotal(totalLoanAmountTaken))
+        dispatch(setLoanTotal(totalLoanAmountTaken))    
+        console.log(totalLoanAmountRepaid, totalLoanAmountTaken)
+
         navigation.navigate('LoanOverview');
 
-        }
       } else {
         return;
       }

@@ -18,11 +18,13 @@ const CongratulationConfirm = () => {
   const dateOfBirth = useAppSelector(state => state.signUp.dateOfBirth);
   const CMND = useAppSelector(state => state.signUp.CMNDUser);
   const fullName = useAppSelector(state => state.signUp.fullName);
+        const networkState = useAppSelector(state => state.network.ipv4Address)
+
   const handleButton = async () => {
     try {
 
         const response = await axios.post(
-          'http://192.168.100.6:5000/api/signup',
+          `${networkState}/api/signup`,
           {
             gender: sex === 'male' || 'Nam' ? 'M' : 'F',
             region: region,

@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       account_customers.belongsTo(models.accounts, {
         foreignKey: "Account_id",
-        as: "accountData",
+        as: "accountsData",
       });
     }
   }

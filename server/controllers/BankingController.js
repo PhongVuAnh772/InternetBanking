@@ -8,7 +8,7 @@ const multer = require("multer");
 const addCreditCard = (req, res) => {
   try {
     db.credit_cards
-      .max("id") 
+      .max("id")
       .then((maxCreditCardId) => {
         const newCreditCardId = maxCreditCardId ? maxCreditCardId + 1 : 1;
         db.customers
@@ -401,57 +401,48 @@ const updateMoneySTK = (req, res) => {
         .then((updatedAccount) => {
           db.customers
             .findOne({ where: { CMND: req.body.CMNDUser } })
-            .then((customer) => {
-              db.customers
-                .findOne({ where: { CMND: req.body.CMNDUser } })
-                .then((customer) => {
-                  db.banking_transactions
-                    .max("id")
-                    .then((maxBankingTransactionId) => {
-                      const newBankingTransactionId = maxBankingTransactionId
-                        ? maxBankingTransactionId + 1
-                        : 1;
 
-                      db.banking_transactions
-                        .create({
-                          id: newBankingTransactionId,
-                          Transaction_Type: "Gửi tiền",
-                          Amount: amountToAdd,
-                          accept_Recharge: false,
-                          Date: new Date(),
-                          Customer_id: customer.id,
-                        })
-                        .then((createdbankingtransactions) => {
-                          return res.status(200).json({
-                            success: true,
-                            message: "Tạo dữ liệu chuyển khoản thành công",
-                            createdbankingtransactions:
-                              createdbankingtransactions,
-                          });
-                        })
-                        .catch((error) => {
-                          return res.status(500).json({
-                            success: false,
-                            message: "Lỗi khi tạo dữ liệu chuyển khoản",
-                            error: error.message,
-                          });
-                        });
+            .then((customer) => {
+              db.banking_transactions
+                .max("id")
+                .then((maxBankingTransactionId) => {
+                  const newBankingTransactionId = maxBankingTransactionId
+                    ? maxBankingTransactionId + 1
+                    : 1;
+
+                  db.banking_transactions
+                    .create({
+                      id: newBankingTransactionId,
+                      Transaction_Type: "Gửi tiền",
+                      Amount: amountToAdd,
+                      accept_Recharge: false,
+                      Date: new Date(),
+                      Customer_id: customer.id,
+                    })
+                    .then((createdbankingtransactions) => {
+                      return res.status(200).json({
+                        success: true,
+                        message: "Tạo dữ liệu chuyển khoản thành công",
+                        createdbankingtransactions: createdbankingtransactions,
+                      });
                     })
                     .catch((error) => {
                       return res.status(500).json({
-                        message:
-                          "Lỗi khi tìm giá trị lớn nhất của banking_transaction_id",
+                        success: false,
+                        message: "Lỗi khi tạo dữ liệu chuyển khoản",
                         error: error.message,
                       });
                     });
                 })
-                .catch((err) => {
+                .catch((error) => {
                   return res.status(500).json({
-                    message: "Lỗi khi tìm khách hàng",
-                    error: err.message,
+                    message:
+                      "Lỗi khi tìm giá trị lớn nhất của banking_transaction_id",
+                    error: error.message,
                   });
                 });
             })
+
             .catch((err) => {
               return res.status(500).json({
                 message: "Lỗi khi tìm khách hàng",

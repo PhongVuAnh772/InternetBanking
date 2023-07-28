@@ -3,18 +3,18 @@ import type {RootState} from '../../store/store';
 import { Reducer } from 'redux';
 
 interface NetworkState {
-    ipv4Address: string | null;
+    ipv4Address: string;
   }
 
 const NetworkInitialState: NetworkState = {
-    ipv4Address: null,
+    ipv4Address: 'http://192.168.100.3:5000',
   };
 
   export const networkSlice =  createSlice({
     name: 'network',
     initialState: NetworkInitialState,
     reducers: {
-      setIPv4Address: (state, action: PayloadAction<string | null>) => {
+      setIPv4Address: (state, action: PayloadAction<string>) => {
         state.ipv4Address = action.payload;
       },
     },

@@ -22,6 +22,7 @@ const App = () => {
   const [responseDataUser, setResponseDataUser] = useState([]);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
+          const networkState = useAppSelector(state => state.network.ipv4Address)
 
   const requestCameraPermission = async () => {
     if (Platform.OS === 'android') {
@@ -64,7 +65,7 @@ const App = () => {
     try {
       if (results) {
         const response = await axios.post(
-          'http://192.168.100.6:5000/api/upImageToGlobal',
+          `${networkState}/api/upImageToGlobal`,
           {
             filePathSpecified: results.assets[0].base64,
           },

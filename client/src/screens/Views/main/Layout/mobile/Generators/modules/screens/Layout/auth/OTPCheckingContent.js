@@ -35,6 +35,7 @@ const TimerBar = () => {
   );
   const CMNDUser = useAppSelector(state => state.signUp.personalIdNumber);
   const navigation = useNavigation();
+        const networkState = useAppSelector(state => state.network.ipv4Address)
 
   const formatTime = seconds => {
     const minutes = Math.floor(seconds / 60);
@@ -86,7 +87,7 @@ const showToast = (type, title,text) => {
 
     try {
       const ress = await axios.post(
-        `http://192.168.100.6:5000/api/createSendingMoney`,
+        `${networkState}/api/createSendingMoney`,
         {
           CMNDUser: CMNDUser,
           BINCode: binBankChoosing,

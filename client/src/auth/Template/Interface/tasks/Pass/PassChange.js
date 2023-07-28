@@ -30,12 +30,14 @@ const ForgotContent = () => {
       text1: text1,
     });
   };
+  const networkState = useAppSelector(state => state.network.ipv4Address)
   console.log(AccountChangePass)
   const handleForgetPass = async () => {
     try {
       if (name === phoneNum) {
         const ress = await axios.post(
-        `http://192.168.100.6:5000/api/changePassword`,
+
+        `${networkState}/api/changePassword`,
         {
           Account_id: AccountChangePass,
           password: name

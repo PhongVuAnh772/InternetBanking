@@ -86,12 +86,13 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
     setIsLogin(!isLogin);
     setMessage('');
   };
-
+  const networkState = useAppSelector(state => state.network.ipv4Address)
   const dateValues = useAppSelector(state => state.signUp.DateValue);
+
   const onLoggedIn = async token => {
     try {
       const ress = await axios.post(
-        `http://192.168.100.6:5000/api/private`,
+        `${networkState}/api/private`,
         null,
         {
           headers: {
@@ -118,8 +119,9 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
       password,
     };
     try {
+      console.log(`${networkState}/api/login`);
       const res = await axios.post(
-        `http://192.168.100.6:5000/api/login`,
+        `${networkState}/api/login`,
         payload,
         {
           headers: {

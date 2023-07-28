@@ -29,6 +29,7 @@ const ContentAccountPage = () => {
   const navigation = useNavigation();
   let formattedStr = '';
   const replacedStr = dateCreated.replace(/-/g, '/');
+        const networkState = useAppSelector(state => state.network.ipv4Address)
 
   for (let i = 0; i < numberCreditCard.length; i++) {
     formattedStr += numberCreditCard[i];
@@ -52,7 +53,7 @@ const ContentAccountPage = () => {
     setModalVisibleTicket(!modalVisibleTicket);
     try {
       const res = await axios.put(
-        `http://192.168.100.6:5000/api/changeLocked`,
+        `${networkState}/api/changeLocked`,
         {
           CC_number: numberCreditCard,
         },

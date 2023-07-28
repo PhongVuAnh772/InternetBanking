@@ -17,7 +17,7 @@ id: {
         autoIncrement: true,
       },
       Duration_in_Years: DataTypes.DECIMAL(4, 2),
-      Loan_Start_Date: DataTypes.DATEONLY,
+      Loan_Transaction_Date: DataTypes.DATEONLY,
       Interest_Rate: DataTypes.DECIMAL(4, 2),
       Loan_Amount_Taken: DataTypes.DECIMAL(10, 2),
       Loan_Amount_Repaid: DataTypes.DECIMAL(10, 2),

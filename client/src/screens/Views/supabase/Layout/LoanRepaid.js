@@ -30,6 +30,8 @@ const LoanRepaid = () => {
   const newFloatMoney = parseFloat(newLoanMoney.toFixed(2));
   const loanTaken = useAppSelector(state => state.loan.loanTotal);
   const loanRepaid = useAppSelector(state => state.loan.loanRepaidTotal);
+          const networkState = useAppSelector(state => state.network.ipv4Address)
+
   const showToast = (type, title, text) => {
     Toast.show({
       type: type,
@@ -51,10 +53,10 @@ const LoanRepaid = () => {
     else {
         try {
       const res = await axios.post(
-        `http://192.168.100.6:5000/api/loanRepayment`,
+        `${networkState}/api/loanRepayment`,
         {
           CMNDUser: CMNDUser,
-          Loan_Amount_Repaid: newFloatMoney,
+          Account_Balance: newFloatMoney,
         },
       );
       if (res.data.success) {

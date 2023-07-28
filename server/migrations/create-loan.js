@@ -11,16 +11,16 @@ module.exports = {
       },
       
       Duration_in_Years: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DECIMAL(4, 2),
       },
 
-      Loan_Start_Date: {
+      Loan_Transaction_Date: {
         allowNull: false,
         type: Sequelize.DATEONLY,
       },
       Interest_Rate: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DECIMAL(4, 2),
       },
       Loan_Amount_Taken: {

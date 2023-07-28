@@ -13,35 +13,86 @@ const addLoans = (req, res) => {
         db.customers
           .findOne({ where: { CMND: req.body.CMNDUser } })
           .then((customer) => {
-            db.loan
-              .create({
-                id: newLoanId,
-                Duration_in_Years: 1.6,
-                Maximum_Limit: 10000.0,
-                Loan_Start_Date: new Date(),
-                Interest_Rate: 1.4,
-                Loan_Amount_Taken: req.body.LoanAmountTaken,
-                Loan_Amount_Repaid: 0.0,
-                Loan_Type: req.body.LoanType,
-                Customer_id: customer.id,
+            db.account_customers
+              .findOne({
+                where: {
+                  Customer_id: customer.id,
+                },
               })
-              .then((createdLoanCard) => {
-                return res.status(200).json({
-                  success: true,
-                  message: "Tạo dữ liệu ghi nợ thành công",
-                  createdLoanCard: createdLoanCard,
-                });
+              .then((dataAccountcustomers) => {
+                db.accounts
+                  .findOne({
+                    where: {
+                      Account_id: dataAccountcustomers.Account_id,
+                    },
+                  })
+                  .then((dataAccounts) => {
+                    const currentBalance = parseFloat(
+                      dataAccounts.Account_Balance
+                    );
+                    const amountToAdd = parseFloat(req.body.Account_Balance);
+
+                    if (isNaN(currentBalance) || isNaN(amountToAdd)) {
+                      return res.status(400).json({
+                        success: false,
+                        message: "Invalid input for Account_Balance.",
+                      });
+                    }
+
+                    const updatedBalance = currentBalance + amountToAdd;
+
+                    dataAccounts
+                      .update({ Account_Balance: updatedBalance.toFixed(2) })
+                      .then(() => {
+                        db.loan
+                          .create({
+                            id: newLoanId,
+                            Loan_Transaction_Date: new Date(),
+                            Loan_Amount_Taken: amountToAdd,
+                            Loan_Amount_Repaid: 0.0,
+                            Loan_Type: "Ghi nợ",
+                            Customer_id: customer.id,
+                            Duration_in_Years: 2.0,
+                            Interest_Rate: 1.6
+                          })
+                          .then((createdLoanCard) => {
+                            return res.status(200).json({
+                              success: true,
+                              message: "Tạo dữ liệu ghi nợ thành công",
+                              createdLoanCard: createdLoanCard,
+                            });
+                          })
+                          .catch((error) => {
+                            return res.status(500).json({
+                              message: "Lỗi khi tạo bảng Loan",
+                              error: error.message,
+                            });
+                          });
+                      })
+                      .catch((error) => {
+                        return res.status(500).json({
+                          message: "Lỗi khi tìm Account_Balance",
+                          error: error.message,
+                        });
+                      });
+                  })
+                  .catch((error) => {
+                    return res.status(500).json({
+                      message: "Lỗi khi tìm giá trị account_customers",
+                      error: error.message,
+                    });
+                  });
               })
               .catch((error) => {
                 return res.status(500).json({
-                  message: "Lỗi khi tạo bảng Loan",
+                  message: "Lỗi khi tìm giá trị CMND khách hàng",
                   error: error.message,
                 });
               });
           })
           .catch((error) => {
             return res.status(500).json({
-              message: "Lỗi khi tìm giá trị CMND khách hàng",
+              message: "Lỗi khi tìm giá trị Account_id",
               error: error.message,
             });
           });
@@ -70,35 +121,84 @@ const loanRepayment = (req, res) => {
         db.customers
           .findOne({ where: { CMND: req.body.CMNDUser } })
           .then((customer) => {
-            db.loan
-              .create({
-                id: newLoanId,
-                Duration_in_Years: 1.6,
-                Maximum_Limit: 10000.0,
-                Loan_Start_Date: new Date(),
-                Interest_Rate: 1.4,
-                Loan_Amount_Taken: 0.0,
-                Loan_Amount_Repaid: req.body.Loan_Amount_Repaid,
-                Loan_Type: "Trả nợ",
-                Customer_id: customer.id,
+            db.account_customers
+              .findOne({
+                where: {
+                  Customer_id: customer.id,
+                },
               })
-              .then((createdLoanCard) => {
-                return res.status(200).json({
-                  success: true,
-                  message: "Tạo dữ liệu trả nợ thành công",
-                  createdLoanCard: createdLoanCard,
-                });
+              .then((dataAccountcustomers) => {
+                db.accounts
+                  .findOne({
+                    where: {
+                      Account_id: dataAccountcustomers.Account_id,
+                    },
+                  })
+                  .then((dataAccounts) => {
+                    const currentBalance = parseFloat(
+                      dataAccounts.Account_Balance
+                    );
+                    const amountToAdd = parseFloat(req.body.Account_Balance);
+
+                    if (isNaN(currentBalance) || isNaN(amountToAdd)) {
+                      return res.status(400).json({
+                        success: false,
+                        message: "Invalid input for Account_Balance.",
+                      });
+                    }
+
+                    const updatedBalance = currentBalance - amountToAdd;
+
+                    dataAccounts
+                      .update({ Account_Balance: updatedBalance.toFixed(2) })
+                      .then(() => {
+                        db.loan
+                          .create({
+                            id: newLoanId,
+                            Loan_Transaction_Date: new Date(),
+                            Loan_Amount_Taken: 0.0,
+                            Loan_Amount_Repaid: amountToAdd,
+                            Loan_Type: "Trả nợ",
+                            Customer_id: customer.id,
+                          })
+                          .then((createdLoanCard) => {
+                            return res.status(200).json({
+                              success: true,
+                              message: "Tạo dữ liệu trả nợ thành công",
+                              createdLoanCard: createdLoanCard,
+                            });
+                          })
+                          .catch((error) => {
+                            return res.status(500).json({
+                              message: "Lỗi khi tạo bảng Loan",
+                              error: error.message,
+                            });
+                          });
+                      })
+                      .catch((error) => {
+                        return res.status(500).json({
+                          message: "Lỗi khi tìm Account_Balance",
+                          error: error.message,
+                        });
+                      });
+                  })
+                  .catch((error) => {
+                    return res.status(500).json({
+                      message: "Lỗi khi tìm giá trị account_customers",
+                      error: error.message,
+                    });
+                  });
               })
               .catch((error) => {
                 return res.status(500).json({
-                  message: "Lỗi khi tạo bảng Loan",
+                  message: "Lỗi khi tìm giá trị CMND khách hàng",
                   error: error.message,
                 });
               });
           })
           .catch((error) => {
             return res.status(500).json({
-              message: "Lỗi khi tìm giá trị CMND khách hàng",
+              message: "Lỗi khi tìm giá trị Account_id",
               error: error.message,
             });
           });
@@ -135,11 +235,11 @@ const getLoansByCMND = (req, res) => {
       return res
         .status(400)
         .json({ success: false, message: "Có lỗi", error: error.message });
-    })
+    });
 };
 
 module.exports = {
   addLoans,
   loanRepayment,
-  getLoansByCMND
+  getLoansByCMND,
 };

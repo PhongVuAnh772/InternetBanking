@@ -33,6 +33,8 @@ const OTPScreenContent = () => {
     false,
     false,
   ]);
+    const networkState = useAppSelector(state => state.network.ipv4Address)
+
   const PINCode = useAppSelector(state => state.credit.PINCode);
   const AccountId = useAppSelector(state => state.signUp.newAccountSTK);
   const showToast = (type, title, text) => {
@@ -64,7 +66,8 @@ const OTPScreenContent = () => {
           setVisible(true);
           try {
             const res = await axios.put(
-              `http://192.168.100.6:5000/api/changeDataPINCode`,
+              
+              `${networkState}/api/changeDataPINCode`,
               {
                 Account_id: AccountId,
                 PINCode: newCode,

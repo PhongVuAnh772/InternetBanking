@@ -11,7 +11,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
-import {useAppDispatch} from '../../../../app/hooks/hooks';
+import {useAppDispatch, useAppSelector} from '../../../../app/hooks/hooks';
 import {setAccountChangePass} from '../../../../slice/changePassSlice';
 const ForgotContent = () => {
   const [name, setName] = useState('');
@@ -24,6 +24,7 @@ const ForgotContent = () => {
   const [dateOver, setDateOver] = useState('');
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const networkState = useAppSelector(state => state.network.ipv4Address)
   const showToast = (type, text1, tex2) => {
     Toast.show({
       type: type,
@@ -32,8 +33,9 @@ const ForgotContent = () => {
   };
   const handleForgetPass = async () => {
     try {
+
       const ress = await axios.post(
-        `http://192.168.100.6:5000/api/forgetPassword`,
+        `${networkState}/api/forgetPassword`,
         {
           Account_id: name,
           CC_number: card,

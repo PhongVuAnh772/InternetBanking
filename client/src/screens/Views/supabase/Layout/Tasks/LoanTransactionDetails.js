@@ -4,16 +4,17 @@ import {View, Text, StyleSheet} from 'react-native';
 const LoanTransactionDetails = ({transaction}) => {
   const daysInYear = 365;
   const multiplier = 1.4;
-  const originalDate = new Date(transaction.Loan_Start_Date);
+  const originalDate = new Date(transaction.Loan_Transaction_Date);
   const newDateMilliseconds =
     originalDate.getTime() + daysInYear * multiplier * 24 * 60 * 60 * 1000;
   const newDate = new Date(newDateMilliseconds);
   const newDateStr = newDate.toISOString().slice(0, 10);
+  console.log(transaction.Loan_Start_Date)
   return (
-    <View style={styles.container}>
+    <View style={styles.container}> 
       <View>
         <Text style={styles.textContentTitle}>Ngày giao dịch</Text>
-        <Text style={styles.textContent}>{transaction.Loan_Start_Date}</Text>
+        <Text style={styles.textContent}>{transaction.Loan_Transaction_Date}</Text>
       </View>
 
       {transaction.Loan_Amount_Taken > 0 ? (
@@ -28,7 +29,7 @@ const LoanTransactionDetails = ({transaction}) => {
         <View>
           <Text style={styles.textContentTitle}>Lãi suất</Text>
           <Text style={styles.textContent}>
-            {transaction.Duration_in_Years}
+            {transaction.Interest_Rate}
           </Text>
         </View>
       ) : (

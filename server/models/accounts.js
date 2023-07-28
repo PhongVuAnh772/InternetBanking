@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
 
       accounts.hasMany(models.account_customers, {
         foreignKey: "Account_id",
-        as: "accountData",
+        as: "accountsData",
         targetKey: "Account_id",
       });
     }

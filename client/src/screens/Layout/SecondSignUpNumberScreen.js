@@ -23,6 +23,8 @@ const SecondSignUpNumberScreen = ({route}) => {
   const [valueSTK, setValueSTK] = useState('');
   const [enabledErr, setenabledErr] = useState(false);
   const {email, CMND} = route.params;
+          const networkState = useAppSelector(state => state.network.ipv4Address)
+
   const valueSTKNotWant = CMNDReduxState.slice(-8);
   console.log(email, CMND);
   const handleButton = async () => {
@@ -32,7 +34,7 @@ const SecondSignUpNumberScreen = ({route}) => {
     } else {
       try {
         const res = await axios.post(
-          `http://192.168.100.6:5000/api/checkSTKBanks`,
+          `${networkState}/api/checkSTKBanks`,
           {
             Account_id: valueSTK,
           },
@@ -54,7 +56,7 @@ const SecondSignUpNumberScreen = ({route}) => {
   const handleButtonNotWant = async () => {
     try {
       const res = await axios.post(
-        `http://192.168.100.6:5000/api/checkSTKBanks`,
+        `${networkState}/api/checkSTKBanks`,
         {
           Account_id: valueSTKNotWant,
         },
