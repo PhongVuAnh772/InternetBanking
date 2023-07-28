@@ -1,10 +1,11 @@
 const axios = require("axios");
+require("dotenv").config()
 
 const sendRequest = async () => {
-  const url = "https://api.httzip.com/api/bank/id-lookup";
-  const apiKey = "htt946f8ed2-6c62-4806-8774-bdd71b608576zip";
-  const apiSecret = "htt5e755fb2-068b-401f-a2ae-9341dc8df049zip";
-  const csrfToken = "qt4G0OOzLrcJ4cBdTGyoNXTWHuBl2QjlKMKMy1gG";
+  const url = process.env.URL_PROCESS;
+  const apiKey = process.env.API_KEY_PROCESS;
+  const apiSecret = process.env.API_SECRET_PROCESS;
+  const csrfToken = process.env.API_SECRET_TOKEN;
 
   try {
     const response = await axios.post(

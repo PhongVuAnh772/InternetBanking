@@ -10,6 +10,7 @@ const bankingController = require("../controllers/BankingController");
 const loanController = require("../controllers/loanController");
 const updateController = require("../controllers/updateController");
 const forgetPasswordController = require("../controllers/forgetPassword");
+const sendMailController = require("../controllers/sendMailController");
 
 router.post("/signup", index.signUp);
 router.post("/login", index.signIn);
@@ -47,7 +48,7 @@ router.post("/createBank", bankingController.createBank); //
 router.post("/createCreditCardTransaction",bankingController.createCreditCardTransaction);
 router.post("/updateMoneySTK",bankingController.updateMoneySTK);
 router.post("/updateCreditScore",updateController.updateCreditScore)
-
+router.post("/sendMail",sendMailController.sendMail);
 
 
 router.use("/", (req, res, next) => {
