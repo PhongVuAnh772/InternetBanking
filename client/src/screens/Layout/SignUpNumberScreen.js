@@ -12,7 +12,7 @@ import image from '../../assets/components/image-openbank.jpg';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
-import { useAppDispatch } from '../../app/hooks/hooks';
+import { useAppDispatch,useAppSelector } from '../../app/hooks/hooks';
 import { setEmail,setCMND,setnewAccountSTK } from '../../slice/signUpSlice';
 import axios from 'axios';
 const SignUpNumberScreen = () => {

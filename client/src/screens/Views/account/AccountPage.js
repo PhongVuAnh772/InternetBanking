@@ -11,6 +11,8 @@ import OTPCheckingWrap from '../../../auth/Template/Interface/tasks/OTPChecking/
 import OTPScreenWrap from '../../../auth/Template/Interface/tasks/OTP/OTPScreenWrap';
 import OTPChangingWrap from '../../../auth/Template/Interface/tasks/Shaders/OTPChanging/OTPChangingWrap';
 import OTPCheckingChangeWrap from '../../../auth/Template/Interface/tasks/Shaders/OTPCheckingChange/OTPCheckingChangeWrap';
+import AddressSendCard from './modules/Layout/Tasks/Layout/AddressSendCard';
+import UsingCardSafety from './screens/UsingCardSafety';
 
 const AccountStack = createStackNavigator();
 
@@ -24,9 +26,6 @@ const AccountPage = () => {
 
       <AccountStack.Screen name="OTPScreen" component={OTPScreenWrap} />
       <AccountStack.Screen name="CVVScreen" component={CVVScreen} />
-
-
-
       <AccountStack.Screen name="HistoryTransfer" component={HistoryTransfer} />
       <AccountStack.Screen
         name="PhysicalCardScreen"
@@ -36,14 +35,10 @@ const AccountPage = () => {
         name="OTPCheckingChangeWrap"
         component={OTPCheckingChangeWrap}
       />
-      <AccountStack.Screen
-        name="OTPChangingWrap"
-        component={OTPChangingWrap}
-      />
-
+      <AccountStack.Screen name="OTPChangingWrap" component={OTPChangingWrap} />
+      <AccountStack.Screen name="AddressSendCard" component={AddressSendCard} />
       <AccountStack.Screen name="OTPCheckingWrap" component={OTPCheckingWrap} />
-
-
+      <AccountStack.Screen name="UsingCardSafety" component={UsingCardSafety} />
     </AccountStack.Navigator>
   );
 };

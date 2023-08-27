@@ -7,7 +7,7 @@ interface NetworkState {
   }
 
 const NetworkInitialState: NetworkState = {
-    ipv4Address: 'http://192.168.100.3:5000',
+    ipv4Address: 'http://192.168.0.101:5000',
   };
 
   export const networkSlice =  createSlice({

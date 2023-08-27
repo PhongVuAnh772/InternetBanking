@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch } from '../../app/hooks/hooks';
 import { setLogin } from '../../slice/authSlice';
-
+import Toast from 'react-native-toast-message';
 const LastSuccessSignUpScreen = () => {
     const navigation = useNavigation()
     const dispatch = useAppDispatch()

@@ -70,36 +70,36 @@ const SuccessingTransferContent = () => {
     return date + '-' + month + '-' + year; //format: d-m-y;
     // return new Date().toLocaleString();
   };
-  const sendNotification = async () => {
-    const message = {
-      to: firebaseTokenValue,
-      notification: {
-        title: 'VPBank: Thông báo',
-        body: 'Bạn có biến động số dư mới',
-        icon: logoSmall,
-      },
-    };
+  // const sendNotification = async () => {
+  //   const message = {
+  //     to: firebaseTokenValue,
+  //     notification: {
+  //       title: 'VPBank: Thông báo',
+  //       body: 'Bạn có biến động số dư mới',
+  //       icon: logoSmall,
+  //     },
+  //   };
 
-    try {
-      const response = await axios.post(
-        'https://fcm.googleapis.com/fcm/send',
-        message,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `key=${serverKeyValue}`,
-          },
-        },
-      );
+  //   try {
+  //     const response = await axios.post(
+  //       'https://fcm.googleapis.com/fcm/send',
+  //       message,
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `key=${serverKeyValue}`,
+  //         },
+  //       },
+  //     );
 
-      console.log('Notification sent successfully:', response.data);
-    } catch (error) {
-      console.error('Error sending notification:', error);
-    }
-  };
-  useEffect(() => {
-    sendNotification();
-  }, []);
+  //     console.log('Notification sent successfully:', response.data);
+  //   } catch (error) {
+  //     console.error('Error sending notification:', error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   sendNotification();
+  // }, []);
   function numberToWordsVi(number) {
     const units = [
       '',

@@ -18,7 +18,7 @@ const CongratulationConfirm = () => {
   const dateOfBirth = useAppSelector(state => state.signUp.dateOfBirth);
   const CMND = useAppSelector(state => state.signUp.CMNDUser);
   const fullName = useAppSelector(state => state.signUp.fullName);
-        const networkState = useAppSelector(state => state.network.ipv4Address)
+  const networkState = useAppSelector(state => state.network.ipv4Address)
 
   const handleButton = async () => {
     try {
@@ -34,13 +34,18 @@ const CongratulationConfirm = () => {
             CMNDUser: CMND,
             dateOfBirth: dateOfBirth,
             fullName: fullName,
+            PINCode: "0000",
+            CardNumber: "34583405345435",
+            CVCNumber: "150"
           },
         );
-          navigation.navigate('LastSuccessSignUpScreen')
+        if(response.data.success) {
+            navigation.navigate('LastSuccessSignUpScreen')
+        }
         
       
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   }
   return (

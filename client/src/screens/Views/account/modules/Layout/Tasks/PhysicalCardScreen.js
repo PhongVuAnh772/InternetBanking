@@ -7,31 +7,17 @@ import {
 } from '../../../../../../app/hooks/hooks';
 import SwiperPhysicalCard from './SwiperPhysicalCard';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { useNavigation } from '@react-navigation/native';
 
 const PhysicalCardScreen = () => {
   const email = useAppSelector(state => state.signUp.email);
   const numberCreditCard = useAppSelector(state => state.credit.CC_number);
   const Expiry_Date = useAppSelector(state => state.credit.DateClosed);
   const networkState = useAppSelector(state => state.network.ipv4Address);
+  const navigation = useNavigation()
   const handleNext = async () =>  {
-    try {
-      const res = await axios.post(
-        `${networkState}/api/changePhysicalCards`,
-        {
-          CC_number: numberCreditCard,
-        },
-      );
-      if (res.data.success) {
-        setTimeout(() => {
-          setVisible(false);
-          dispatch(setLocked(res.data.creditCard.locked));
-          showToast('success', 'Đổi trạng thái thẻ thành công');
-        }, 3000);
-      }
-    } catch (err) {
-      console.log('Co loi : ' + err);
-      console.log('Có lỗi server');
-    }
+    
+    navigation.navigate("AddressSendCard")
   }
   return (
     <View style={styles.container}>

@@ -14,9 +14,19 @@ const ButtonOtherCredit = ({name, icon}) => {
     } else if (name == 'Lịch sử giao dịch thẻ') {
       navigation.navigate('HistoryTransfer');
     } else if (name == 'Sử dụng thẻ an toàn') {
-      navigation.navigate('HistoryTransfer');
+      navigation.navigate('UsingCardSafety');
     } else if (name == "Thay đổi mã PIN") {
       navigation.navigate('OTPCheckingChangeWrap');
+    } else if (name == "Hướng dẫn giao dịch ATM an toàn") {
+      navigation.navigate("ATMSecurityScreen")
+    } else if (name == "Hướng dẫn giao dịch POS an toàn") {
+      navigation.navigate("POSSecurityScreen")
+    } else if (name == "Hướng dẫn giao dịch trực tuyến an toàn") {
+      navigation.navigate("OnlineBankingSecurity")
+    } else if (name == "Hướng dẫn bảo mật mã PIN") {
+      navigation.navigate("PinCodeSecurity")
+    } else if (name == "Hướng dẫn đảm bảo thông tin thẻ") {
+      navigation.navigate("CardInformationSecurity")
     }
   };
   return (

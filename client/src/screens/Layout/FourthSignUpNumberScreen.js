@@ -14,7 +14,7 @@ import iconMember from '../../assets/member-card.png';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
-import {useAppDispatch} from '../../app/hooks/hooks';
+import {useAppDispatch, useAppSelector} from '../../app/hooks/hooks';
 import {setimageBackURL, setimageFrontURL} from '../../slice/signUpSlice';
 
 const App = () => {
@@ -22,8 +22,8 @@ const App = () => {
   const [responseDataUser, setResponseDataUser] = useState([]);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-          const networkState = useAppSelector(state => state.network.ipv4Address)
-
+  const networkState = useAppSelector(state => state.network.ipv4Address);
+  const frontImage = useAppSelector(state => state.signUp.imageFrontURL);
   const requestCameraPermission = async () => {
     if (Platform.OS === 'android') {
       try {
@@ -70,11 +70,15 @@ const App = () => {
             filePathSpecified: results.assets[0].base64,
           },
         );
-        if (response.data.success) {
-          dispatch(setimageFrontURL(response.data.data));
-          console.log(response.data.data);
-          navigation.navigate('BonusContinueSignUpNumberScreen');
-        }
+          
+          if (response.data.success) {
+            dispatch(setimageFrontURL(response.data.signedUrl));
+            navigation.navigate('BonusContinueSignUpNumberScreen');
+          } else {
+            console.log('Upload not successful:', response.data);
+          }
+      } else {
+        console.log('Upload not successful:', response.data);
       }
     } catch (error) {
       console.log(error.response.data);

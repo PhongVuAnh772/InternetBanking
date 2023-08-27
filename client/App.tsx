@@ -15,7 +15,6 @@ import FourthSignUpNumberScreen from './src/screens/Layout/FourthSignUpNumberScr
 import {useAppSelector, useAppDispatch} from './src/app/hooks/hooks';
 import ForgotPasswordScreen from './src/auth/Template/Interface/ForgotPasswordScreen';
 import {NetworkInfo} from 'react-native-network-info';
-import messaging from '@react-native-firebase/messaging';
 import {setfirebaseToken} from './src/slice/allTokenSlice';
 import BonusContinueSignUpNumberScreen from './src/screens/Layout/BonusContinueSignUpNumberScreen';
 import ConfirmCheckMicroBlink from './src/screens/Layout/ConfirmCheckMicroBlink';
@@ -23,10 +22,7 @@ import CongratulationConfirm from './src/screens/Layout/CongratulationConfirm';
 import LastSuccessSignUpScreen from './src/screens/Layout/LastSuccessSignUpScreen';
 import PassChange from './src/auth/Template/Interface/tasks/Pass/PassChange';
 import { setLogin } from './src/slice/authSlice';
-
 import Toast from 'react-native-toast-message';
-
-// import {selectCount} from './src/slice/createSlice';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,20 +34,7 @@ export default function App() {
     state => state.allToken.firebaseToken,
   );
 
-  const getcmToken = async () => {
-    if (!tokenFirebaseValue) {
-      try {
-        const token = await messaging().getToken();
-        if (token) {
-          dispatch(setfirebaseToken(token));
-          console.log(tokenFirebaseValue);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  };
-  console.log(tokenFirebaseValue);
+  
   useEffect(() => {
     const backAction = () => {
       return true;
@@ -64,19 +47,7 @@ export default function App() {
 
     return () => backHandler.remove();
   }, []);
-  const requestUserPermission = async () => {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      messaging.AuthorizationStatus.PROVISIONAL;
-    if (enabled) {
-      getcmToken();
-    }
-    console.log(enabled);
-  };
-  useEffect(() => {
-    requestUserPermission();
-  }, []);
+  
 
   return (
     <>

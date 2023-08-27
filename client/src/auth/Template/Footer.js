@@ -114,7 +114,10 @@ const Footer = () => {
         visible={modalVisibleTicket}
         onRequestClose={() => {
           setModalVisibleTicket(!modalVisibleTicket);
-        }}>
+        }
+        }
+
+        >
         <View style={styles.centeredViewTicket}>
           <View style={styles.titleModalTicket}>
             <Text style={styles.titleContainerTicket}>Thông báo !</Text>

@@ -9,17 +9,20 @@ import {
   Image,
   Platform,
   PermissionsAndroid,
+  ActivityIndicator
 } from 'react-native';
 import iconMember from '../../assets/member-card.png';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
 import {setimageBackURL, setimageFrontURL} from '../../slice/signUpSlice';
-import {useAppDispatch} from '../../app/hooks/hooks';
+import {useAppDispatch,useAppSelector} from '../../app/hooks/hooks';
 
 const BonusContinueSignUpNumberScreen = () => {
   const [filePath, setFilePath] = useState([]);
   const [responseDataUser, setResponseDataUser] = useState([]);
+    const [visible, setVisible] = useState(false);
+
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
       const networkState = useAppSelector(state => state.network.ipv4Address)
@@ -73,10 +76,11 @@ const BonusContinueSignUpNumberScreen = () => {
           },
         );
         if (response.data.success) {
-          dispatch(setimageBackURL(response.data.data));
-          console.log(response.data.data);
-          navigation.navigate('ConfirmCheckMicroBlink');
-        }
+            dispatch(setimageBackURL(response.data.signedUrl));
+            navigation.navigate('ConfirmCheckMicroBlink');
+          } else {
+            console.log('Upload not successful:', response.data);
+          }
       }
     } catch (error) {
       console.log(error.response.data);
@@ -123,10 +127,11 @@ const BonusContinueSignUpNumberScreen = () => {
     }
   };
   return (
+    <>
     <View style={styles.container}>
-      <View style={styles.backContainer}>
+      <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
         <MaterialIcons name="arrow-back" size={20} color="white" />
-      </View>
+      </TouchableOpacity>
       <View style={styles.screenContainer}>
         <View style={styles.imageContainer}>
           <Image source={iconMember} style={styles.imageTitle} />
@@ -146,6 +151,12 @@ const BonusContinueSignUpNumberScreen = () => {
         <Text style={styles.textStyle}>Tiếp tục xác thực</Text>
       </TouchableOpacity>
     </View>
+    {visible && (
+        <ActivityIndicator
+          size="large"
+          color="#00ff00"
+          style={{alignSelf: 'center', position: 'absolute'}}
+        />)}</>
   );
 };
 

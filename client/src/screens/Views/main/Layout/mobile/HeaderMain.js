@@ -57,7 +57,7 @@ const HeaderMain = ({props = '10299200...', money = 14000}) => {
           </View>
           <View style={styles.bankingContainer}>
             <BankingContent icon={b} desc="Chuyển tiền" navigational="TransferMoney"/>
-            <BankingContent icon={d} desc="Tiền gửi" navigational="TransferMoney"/>
+            <BankingContent icon={d} desc="Tiền gửi" navigational="DepositMoney"/>
 
             <BankingContent icon={e} desc="Thẻ" navigational="AccountPage" />
 
