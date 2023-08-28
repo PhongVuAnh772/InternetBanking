@@ -92,6 +92,7 @@ function QRscanners({navigation}) {
   const fetchDataUserSTK = async () => {
     try {
       if (userBankState && bankCodeState) {
+        console.log(userBankState,bankCodeState)
         const config = {
           method: 'post',
           url: `https://dominhhai.com/api/acb/?accountNumber=${userBankState}&bankCode=${bankCodeState}`,
@@ -101,37 +102,19 @@ function QRscanners({navigation}) {
         setResponseDataUser(response.data);
 
         if (
-          responseDataUser.results &&
-          responseDataUser.results.ownerName !== undefined &&
-          responseDataUser.length !== 0
+          response.data.results &&
+          response.data.length != 0
         ) {
           dispatch(
-            setNameOfSTKBankChoosing(responseDataUser.results.ownerName),
+            setNameOfSTKBankChoosing(responseDataUser.results?.ownerName),
           );
           navigation.navigate('SendingMoney');
         } else {
           // processInput(qrValue);
           setIsLoading(true);
 
-          fetchDataUserSTK();
+          await fetchDataUserSTK();
         }
-      }
-      console.log('data user', responseDataUser);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const fetchDataBanks = async () => {
-    try {
-      const config = {
-        method: 'get',
-        url: 'https://api.vietqr.io/v2/banks',
-      };
-
-      const response = await axios(config);
-      if (response && response.data) {
-        setResponseDataBanks(response.data);
       }
     } catch (error) {
       console.log(error);
@@ -139,6 +122,21 @@ function QRscanners({navigation}) {
   };
 
   useEffect(() => {
+    const fetchDataBanks = async () => {
+      try {
+        const config = {
+          method: 'get',
+          url: 'https://api.vietqr.io/v2/banks',
+        };
+
+        const response = await axios(config);
+        if (response && response.data) {
+          setResponseDataBanks(response.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
     fetchDataBanks();
   }, []);
   useEffect(() => {
@@ -156,21 +154,20 @@ function QRscanners({navigation}) {
 
   useEffect(() => {
     const fetchDataAndNavigate = async () => {
-      if (
-        !isLoading &&
-        isQRValueSet &&
-        userBankValue &&
-        bankCodeValue &&
-        longNameBankChoosingValue &&
-        BankChoosingValue &&
-        BankChoosingIconValue
-        // &&
-        // NameOfSTKBankChoosingValue
-      ) {
-        const allDataAvailable = true; // Kiểm tra tất cả các biến đã có dữ liệu
+      // if (
+      //   userBankValue &&
+      //   bankCodeValue &&
+      //   longNameBankChoosingValue &&
+      //   BankChoosingValue &&
+      //   BankChoosingIconValue
+      //   // &&
+      //   // NameOfSTKBankChoosingValue
+      // ) {
+      //   const allDataAvailable = true; 
 
-        if (allDataAvailable) {
+      //   if (allDataAvailable) {
           try {
+            console.log("chạy hàm lấy thông tin")
             await fetchDataUserSTK();
           } catch (error) {
             console.log(
@@ -186,19 +183,17 @@ function QRscanners({navigation}) {
         console.log('BankChoosingValue ' + BankChoosingValue);
 
         // console.log('BankChoosingIconValue ' + BankChoosingIconValue);
-      }
-    };
+      // }
+    // };
 
     fetchDataAndNavigate();
   }, [
-    isLoading,
-    isQRValueSet,
     userBankValue,
     bankCodeValue,
     longNameBankChoosingValue,
     BankChoosingValue,
     BankChoosingIconValue,
-    // NameOfSTKBankChoosingValue,
+    NameOfSTKBankChoosingValue,
   ]);
 
   if (isLoading) {
@@ -224,7 +219,6 @@ function QRscanners({navigation}) {
             ? RNCamera.Constants.FlashMode.torch
             : RNCamera.Constants.FlashMode.auto
         }
-        
         style={styles.RNQRCode}
       />
     </View>

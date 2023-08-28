@@ -29,7 +29,8 @@ const LoanOfficialScreen = () => {
   const newLoanMoney = parseFloat(loanMoney)
   const newFloatMoney = parseFloat(newLoanMoney.toFixed(2))
   const oldLoan = useAppSelector(state => state.loan.loanTotal)
-        const networkState = useAppSelector(state => state.network.ipv4Address)
+  const networkState = useAppSelector(state => state.network.ipv4Address)
+  const oldBalance = useAppSelector(state => state.credit.Balance)
 
   const showToast = (type, title, text) => {
     Toast.show({
@@ -53,6 +54,7 @@ const LoanOfficialScreen = () => {
         setTimeout(() => {
           setVisible(false);
           dispatch(setLoanTotal(oldLoan + newFloatMoney))
+          dispatch(setBalance(oldBalance + newFloatMoney))
           navigation.navigate("LoanSuccess")
         }, 3000);
       }

@@ -63,11 +63,21 @@ export default function App() {
               <Stack.Screen
                 name="SignUpNumberScreen"
                 component={SignUpNumberScreen}
+                options={{
+                  presentation: 'modal',
+                  animationTypeForReplace: 'pop',
+                  animation: 'slide_from_right',
+                }}
               />
 
               <Stack.Screen
                 name="ForgotPasswordScreen"
                 component={ForgotPasswordScreen}
+                options={{
+                  presentation: 'modal',
+                  animationTypeForReplace: 'pop',
+                  animation: 'fade',
+                }}
               />
               <Stack.Screen
                 name="PassChange"
@@ -76,6 +86,11 @@ export default function App() {
               <Stack.Screen
                 name="SecondSignUpNumberScreen"
                 component={SecondSignUpNumberScreen}
+                options={{
+                  presentation: 'modal',
+                  animationTypeForReplace: 'pop',
+                  animation: 'slide_from_right',
+                }}
               />
 
               <Stack.Screen
@@ -85,14 +100,29 @@ export default function App() {
               <Stack.Screen
                 name="ThirdSignUpNumberScreen"
                 component={ThirdSignUpNumberScreen}
+                options={{
+                  presentation: 'modal',
+                  animationTypeForReplace: 'pop',
+                  animation: 'slide_from_right',
+                }}
               />
               <Stack.Screen
                 name="FourthSignUpNumberScreen"
                 component={FourthSignUpNumberScreen}
+                options={{
+                  presentation: 'modal',
+                  animationTypeForReplace: 'pop',
+                  animation: 'fade',
+                }}
               />
               <Stack.Screen
                 name="BonusContinueSignUpNumberScreen"
                 component={BonusContinueSignUpNumberScreen}
+                options={{
+                  presentation: 'modal',
+                  animationTypeForReplace: 'pop',
+                  animation: 'slide_from_right',
+                }}
               />
 
               <Stack.Screen
@@ -102,10 +132,20 @@ export default function App() {
               <Stack.Screen
                 name="ConfirmCheckMicroBlink"
                 component={ConfirmCheckMicroBlink}
+                options={{
+                  presentation: 'modal',
+                  animationTypeForReplace: 'pop',
+                  animation: 'flip',
+                }}
               />
               <Stack.Screen
                 name="LastSuccessSignUpScreen"
                 component={LastSuccessSignUpScreen}
+                options={{
+                  presentation: 'modal',
+                  animationTypeForReplace: 'pop',
+                  animation: 'fade',
+                }}
               />
             </>
           )}

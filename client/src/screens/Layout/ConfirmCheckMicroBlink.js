@@ -94,41 +94,41 @@ const ConfirmCheckMicroBlink = () => {
           navigation.navigate('ThirdSignUpNumberScreen');
         } else if (response.data.result.processingStatus === 'SUCCESS') {
           const resultDateOfBirth = `${
-            response.data.result.dateOfBirth.day ||
-            response.data.result.mrzData.dateOfBirth.day
+            response.data.result.mrzData.dateOfBirth.day ||
+            response.data.result.dateOfBirth.day
           } - ${
-            response.data.result.dateOfBirth.month ||
-            response.data.result.mrzData.dateOfBirth.month
+            response.data.result.mrzData.dateOfBirth.month ||
+            response.data.result.dateOfBirth.month
           } - ${
-            response.data.result.dateOfBirth.year ||
-            response.data.result.mrzData.dateOfBirth.year
+            response.data.result.mrzData.dateOfBirth.year ||
+            response.data.result.dateOfBirth.year
           }`;
 
           const fullName = unidecode(
             `${
-              response.data.result.fullName ||
-              response.data.result.mrzData.fullName
+              response.data.result.mrzData.fullName ||
+              response.data.result.fullName
             }`,
           );
           const personalIdNumberRes = `${
-            response.data.result.personalIdNumber ||
-            response.data.result.mrzData.personalIdNumber
+            response.data.result.mrzData.personalIdNumber ||
+            response.data.result.personalIdNumber
           }`;
           const sex = `${
-            response.data.result.sex || response.data.result.mrzData.sex
+            response.data.result.mrzData.sex || response.data.result.sex
           }`;
           const region = `${response.data.result.classInfo.countryName}`;
 
           console.log(
             `${
-              response.data.result.dateOfBirth.day ||
-              response.data.result.mrzData.dateOfBirth.day
+              response.data.result.mrzData.dateOfBirth.day ||
+              response.data.result.dateOfBirth.day
             } - ${
-              response.data.result.dateOfBirth.month ||
-              response.data.result.mrzData.dateOfBirth.month
+              response.data.result.mrzData.dateOfBirth.month ||
+              response.data.result.dateOfBirth.month
             } - ${
-              response.data.result.dateOfBirth.year ||
-              response.data.result.mrzData.dateOfBirth.year
+              response.data.result.mrzData.dateOfBirth.year ||
+              response.data.result.dateOfBirth.year
             }`,
           );
           console.log(fullName);

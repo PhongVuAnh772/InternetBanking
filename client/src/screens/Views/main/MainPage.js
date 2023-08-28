@@ -23,16 +23,39 @@ const MainPage = () => {
   return (
     <MainStack.Navigator screenOptions={{headerShown: false}}>
       <MainStack.Screen name="MainIndex" component={MainIndex} />
-      <MainStack.Screen name="TransferMoney" component={TransferMoney} />
-      <MainStack.Screen name="OTPScreen" component={OTPScreenWrap}/>
-      <MainStack.Screen name="ConfirmInformationSendingWrap" component={ConfirmInformationSendingWrap} />
+      <MainStack.Screen
+        name="TransferMoney"
+        component={TransferMoney}
+        options={{
+          presentation: 'modal',
+          animationTypeForReplace: 'pop',
+          animation: 'slide_from_bottom',
+        }}
+      />
+      <MainStack.Screen name="OTPScreen" component={OTPScreenWrap} options={{
+          presentation: 'modal',
+          animationTypeForReplace: 'pop',
+          animation: 'slide_from_right',
+        }}/>
+      <MainStack.Screen
+        name="ConfirmInformationSendingWrap"
+        component={ConfirmInformationSendingWrap}
+      />
       <MainStack.Screen name="OTPCheckingWrap" component={OTPCheckingWrap} />
-      <MainStack.Screen name="SuccessingTransferWrap" component={SuccessingTransferWrap} />
+      <MainStack.Screen
+        name="SuccessingTransferWrap"
+        component={SuccessingTransferWrap}
+      />
       <MainStack.Screen name="SendingMoney" component={SendingMoney} />
       <MainStack.Screen name="DepositMoney" component={DepositMoney} />
       <MainStack.Screen
         name="SendingMoneyByCredits"
         component={SendingMoneyByCredits}
+        options={{
+          presentation: 'modal',
+          animationTypeForReplace: 'pop',
+          animation: 'slide_from_bottom',
+        }}
       />
       <MainStack.Screen
         name="AdvertiseMentSpecified"

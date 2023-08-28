@@ -32,6 +32,10 @@ const AccountPage = () => {
         component={PhysicalCardScreen}
       />
       <AccountStack.Screen
+        name="QRgenerator"
+        component={QRgenerator}
+      />
+      <AccountStack.Screen
         name="OTPCheckingChangeWrap"
         component={OTPCheckingChangeWrap}
       />

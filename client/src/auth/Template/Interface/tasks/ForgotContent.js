@@ -35,7 +35,7 @@ const ForgotContent = () => {
     try {
 
       const ress = await axios.post(
-        `https:localhost:5000/api/forgetPassword`,
+        `${networkState}/api/forgetPassword`,
         {
           Account_id: name,
           CC_number: card,

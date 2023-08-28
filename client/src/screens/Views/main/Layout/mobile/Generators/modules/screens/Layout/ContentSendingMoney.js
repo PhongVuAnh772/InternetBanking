@@ -308,6 +308,7 @@ const ContentSendingMoney = () => {
                   placeholder="Nội dung (Không bắt buộc)"
                   placeholderTextColor="rgb(145, 154, 156)"
                   onChangeText={setOnChangeMessage}
+                  value={onChangeMessage}
                 />
                 <View style={styles.contentSTKInfoInputOtherCounting}>
                   <FontAwesome
