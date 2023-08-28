@@ -15,8 +15,6 @@ const forgetPassword = (req, res) => {
       },
     })
     .then((customer) => {
-      
-
       db.credit_cards
         .findOne({
           where: {
@@ -33,7 +31,7 @@ const forgetPassword = (req, res) => {
           }
           db.accounts.findOne({
             where: {
-              Account_id: Account_id,
+              Account_id: req.body.name,
             },
           })
           .then((accounts) => {
@@ -43,7 +41,7 @@ const forgetPassword = (req, res) => {
           db.account_customers.findOne({
             where: {
               Account_id: accounts.Account_id,
-              Customer_id: customer.id,
+              Customer_id: customer.Customer_id,
             },
           })
           .then(data => {

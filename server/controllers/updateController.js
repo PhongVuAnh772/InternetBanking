@@ -138,24 +138,27 @@ const updateCreditScore = (req, res) => {
                     dataAccounts.Date_Opened,
                     "days"
                   );
-                  const yearsSinceOpened = calculateYearsFromDays(daysSinceOpened);
+                  const yearsSinceOpened =
+                    calculateYearsFromDays(daysSinceOpened);
                   let newDataCreditScore = updateCoinByYears(
                     dataAccounts.Date_Opened,
                     yearsSinceOpened
                   );
                   if (dataAccounts.Date_Opened) {
-
                     dataCredit
                       .update({ Credit_Score: newDataCreditScore })
                       .then((updatedCreditScore) => {
-                        return res.json({
-                          success: true,
-                          message: "Đổi thuộc tính lấy điểm thẻ thành công.",
-                          updatedCreditScore: updatedCreditScore,
-                          datacustomers: datacustomers,
-                          dataAccounts: newDataCreditScore,
-                          defaultValue: dataCredit.Credit_Score
-                        });
+                          
+                          return res.json({
+                            success: true,
+                            message: "Đổi thuộc tính lấy điểm thẻ thành công.",
+                            updatedCreditScore: updatedCreditScore,
+                            datacustomers: datacustomers,
+                            dataCreditScoreMoneyToSTK: Math.floor(dataAccounts.Account_Balance) + (Math.floor(newDataCreditScore) * 10000.00),
+                            dataCreditScoreMoney: Math.floor(newDataCreditScore) * 10000.00,
+                            defaultCreditScore: dataCredit.Credit_Score,
+                          });
+                        
                       })
                       .catch((error) => {
                         return res.status(500).json({
@@ -194,7 +197,6 @@ const updateCreditScore = (req, res) => {
         .json({ success: false, message: "Đổi mã PIN thất bại" });
     });
 };
-
 
 module.exports = {
   changeLocked,
