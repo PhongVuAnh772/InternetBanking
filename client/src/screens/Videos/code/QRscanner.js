@@ -92,7 +92,7 @@ function QRscanners({navigation}) {
   const fetchDataUserSTK = async () => {
     try {
       if (userBankState && bankCodeState) {
-        console.log(userBankState,bankCodeState)
+        console.log(userBankState, bankCodeState);
         const config = {
           method: 'post',
           url: `https://dominhhai.com/api/acb/?accountNumber=${userBankState}&bankCode=${bankCodeState}`,
@@ -101,10 +101,7 @@ function QRscanners({navigation}) {
         const response = await axios(config);
         setResponseDataUser(response.data);
 
-        if (
-          response.data.results &&
-          response.data.length != 0
-        ) {
+        if (response.data.results && response.data.length != 0) {
           dispatch(
             setNameOfSTKBankChoosing(responseDataUser.results?.ownerName),
           );
@@ -154,37 +151,21 @@ function QRscanners({navigation}) {
 
   useEffect(() => {
     const fetchDataAndNavigate = async () => {
-      // if (
-      //   userBankValue &&
-      //   bankCodeValue &&
-      //   longNameBankChoosingValue &&
-      //   BankChoosingValue &&
-      //   BankChoosingIconValue
-      //   // &&
-      //   // NameOfSTKBankChoosingValue
-      // ) {
-      //   const allDataAvailable = true; 
+      try {
+        console.log('chạy hàm lấy thông tin');
+        await fetchDataUserSTK();
+      } catch (error) {
+        console.log(
+          'Error occurred while fetching or dispatching data:',
+          error,
+        );
+      }
+    };
 
-      //   if (allDataAvailable) {
-          try {
-            console.log("chạy hàm lấy thông tin")
-            await fetchDataUserSTK();
-          } catch (error) {
-            console.log(
-              'Error occurred while fetching or dispatching data:',
-              error,
-            );
-          }
-        }
-
-        console.log('userBankValue ' + userBankValue);
-        console.log('bankCodeValue ' + bankCodeValue);
-        console.log('longNameBankChoosingValue ' + longNameBankChoosingValue);
-        console.log('BankChoosingValue ' + BankChoosingValue);
-
-        // console.log('BankChoosingIconValue ' + BankChoosingIconValue);
-      // }
-    // };
+    console.log('userBankValue ' + userBankValue);
+    console.log('bankCodeValue ' + bankCodeValue);
+    console.log('longNameBankChoosingValue ' + longNameBankChoosingValue);
+    console.log('BankChoosingValue ' + BankChoosingValue);
 
     fetchDataAndNavigate();
   }, [
