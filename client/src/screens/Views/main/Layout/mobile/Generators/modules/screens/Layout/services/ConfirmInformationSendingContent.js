@@ -1,11 +1,20 @@
-import {StyleSheet, Text, View,TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
-import { useAppDispatch,useAppSelector } from '../../../../../../../../../../app/hooks/hooks';
+import {useNavigation} from '@react-navigation/native';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../../../../../../../../../app/hooks/hooks';
 
 const ConfirmInformationSendingContent = () => {
-  const navigation =useNavigation();
+  const navigation = useNavigation();
   const BankChoosingValue = useAppSelector(
     state => state.transfer.BankChoosing,
   );
@@ -30,6 +39,12 @@ const ConfirmInformationSendingContent = () => {
   const NameOfSTKBankChoosingValue = useAppSelector(
     state => state.transfer.NameOfSTKBankChoosing,
   );
+  const userNameBankingDetails = useAppSelector(state => state.signUp.fullName);
+  const userSTKBankingDetails = useAppSelector(
+    state => state.signUp.newAccountSTK,
+  );
+  const userBalanceDetails = useAppSelector(state => state.credit.Balance)
+
   function numberToWordsVi(number) {
     const units = [
       '',
@@ -94,106 +109,114 @@ const ConfirmInformationSendingContent = () => {
 
     return words.trim();
   }
-  console.log(STKBankChoosingValue)
+  console.log(STKBankChoosingValue);
   return (
     // onPress={() => navigation.navigate('OTPScreen')
     <>
-      <View style={styles.container}>
-      <View style={styles.sendingContentUser}>
-        <View style={styles.sendingContentUserNow}>
-          <Text style={styles.sendingContentUserNowTitle}>Tài khoản nguồn</Text>
-          <View style={styles.sendingContentUserNowContent}>
-            <View style={styles.sendingContentUserNowIconContainer}>
-              <MaterialIcons
-                name="credit-card"
-                size={20}
-                color="rgb(64, 163, 119)"
-                style={styles.sendingContentUserNowIcon}
-              />
-            </View>
-            <View style={styles.sendingContentUserNowInformation}>
-              <Text style={styles.sendingContentUserNowInformationName}>
-                {'hax3'}
-              </Text>
+      <ScrollView style={styles.container}>
+        <View style={styles.sendingContentUser}>
+          <View style={styles.sendingContentUserNow}>
+            <Text style={styles.sendingContentUserNowTitle}>
+              Tài khoản nguồn
+            </Text>
+            <View style={styles.sendingContentUserNowContent}>
+              <View style={styles.sendingContentUserNowIconContainer}>
+                <MaterialIcons
+                  name="credit-card"
+                  size={20}
+                  color="rgb(64, 163, 119)"
+                  style={styles.sendingContentUserNowIcon}
+                />
+              </View>
+              <View style={styles.sendingContentUserNowInformation}>
+                <Text style={styles.sendingContentUserNowInformationName}>
+                  {userNameBankingDetails}
+                </Text>
 
-              <Text style={styles.sendingContentUserNowInformationSTK}>
-                {'0812945269'}
-              </Text>
-            </View>
-            <Text style={styles.sendingContentUserNowTitle}>{47} đ</Text>
-          </View>
-        </View>
-        <View style={styles.sendingContentUserNow}>
-          <Text style={styles.sendingContentUserNowTitle}>Tới tài khoản</Text>
-          <View style={styles.sendingContentUserNowContent}>
-            <View style={styles.sendingContentUserNowIcon}>
-              <MaterialIcons
-                name="credit-card"
-                size={20}
-                color="rgb(64, 163, 119)"
-              />
-            </View>
-            <View style={styles.sendingContentUserNowInformation}>
-              <Text style={styles.sendingContentUserNowInformationName}>
-                {`${BankChoosingValue} - ${longNameBankChoosingValue}`}
-              </Text>
-
-              <Text style={styles.sendingContentUserNowInformationSTK}>
-                {STKBankChoosingValue}
-              </Text>
+                <Text style={styles.sendingContentUserNowInformationSTK}>
+                  {userSTKBankingDetails}
+                </Text>
+              </View>
+              <Text style={styles.sendingContentUserNowTitle}>{userBalanceDetails} đ</Text>
             </View>
           </View>
+          <View style={styles.sendingContentUserNow}>
+            <Text style={styles.sendingContentUserNowTitle}>Tới tài khoản</Text>
+            <View style={styles.sendingContentUserNowContent}>
+              <View style={styles.sendingContentUserNowIcon}>
+                <MaterialIcons
+                  name="credit-card"
+                  size={20}
+                  color="rgb(64, 163, 119)"
+                />
+              </View>
+              <View style={styles.sendingContentUserNowInformation}>
+                <Text style={styles.sendingContentUserNowInformationName}>
+                  {`${BankChoosingValue} - ${longNameBankChoosingValue}`}
+                </Text>
+
+                <Text style={styles.sendingContentUserNowInformationSTK}>
+                  {STKBankChoosingValue}
+                </Text>
+              </View>
+            </View>
+          </View>
         </View>
-      </View>
-      <View style={styles.VPBankSendingInforContainer}>
-        <View style={styles.VPBankSendingInfor}>
-          <Text style={styles.VPBankSendingInforTitle}>Tên người nhận</Text>
-          <Text style={styles.VPBankSendingInforContent}>
-            {NameOfSTKBankChoosingValue}
-          </Text>
+        <View style={styles.VPBankSendingInforContainer}>
+          <View style={styles.VPBankSendingInfor}>
+            <Text style={styles.VPBankSendingInforTitle}>Tên người nhận</Text>
+            <Text style={styles.VPBankSendingInforContent}>
+              {NameOfSTKBankChoosingValue}
+            </Text>
+          </View>
+          <View style={styles.VPBankSendingInfor}>
+            <Text style={styles.VPBankSendingInforTitle}>Tài khoản nhận</Text>
+            <Text style={styles.VPBankSendingInforContent}>
+              {STKBankChoosingValue}
+            </Text>
+          </View>
+          <View style={[styles.VPBankSendingInfor]}>
+            <Text style={styles.VPBankSendingInforTitle}>Số tiền chuyển</Text>
+            <Text style={styles.VPBankSendingInforContentValue}>
+              {BankValueMoneyValue}{' '}
+              <Text style={styles.VPBankSendingInforContentCurrency}>đ</Text>
+            </Text>
+            <Text style={styles.VPBankSendingInforTitleVN}>
+              {`${numberToWordsVi(BankValueMoneyValue)} việt nam đồng`}
+            </Text>
+          </View>
+          <View style={styles.VPBankSendingInfor}>
+            <Text style={styles.VPBankSendingInforTitle}>
+              Phí (không gồm VAT)
+            </Text>
+            <Text style={styles.VPBankSendingInforContentValueFee}>
+              {0}{' '}
+              <Text style={styles.VPBankSendingInforContentCurrencyFee}>đ</Text>
+            </Text>
+          </View>
+          <View style={styles.VPBankSendingInfor}>
+            <Text style={styles.VPBankSendingInforTitle}>Nội dung</Text>
+            <Text style={styles.VPBankSendingInforContent}>
+              {messageTransferValue}
+            </Text>
+          </View>
+          <View style={styles.VPBankSendingInfor}>
+            <Text style={styles.VPBankSendingInforTitle}>
+              Phương thức chuyển khoản
+            </Text>
+            <Text style={styles.VPBankSendingInforContent}>
+              Chuyển nhanh Napas 247
+            </Text>
+          </View>
+          <View style={styles.contentFooter}>
+            <TouchableOpacity
+              style={styles.buttonNext}
+              onPress={() => navigation.navigate('OTPScreen')}>
+              <Text style={styles.buttonNextText}>Xác nhận</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.VPBankSendingInfor}>
-          <Text style={styles.VPBankSendingInforTitle}>Tài khoản nhận</Text>
-          <Text style={styles.VPBankSendingInforContent}>{STKBankChoosingValue}</Text>
-        </View>
-        <View style={[styles.VPBankSendingInfor]}>
-          <Text style={styles.VPBankSendingInforTitle}>Số tiền chuyển</Text>
-          <Text style={styles.VPBankSendingInforContentValue}>
-            {BankValueMoneyValue} <Text style={styles.VPBankSendingInforContentCurrency}>đ</Text>
-          </Text>
-          <Text style={styles.VPBankSendingInforTitleVN}>
-            {`${numberToWordsVi(BankValueMoneyValue)} việt nam đồng`}
-          </Text>
-        </View>
-        <View style={styles.VPBankSendingInfor}>
-          <Text style={styles.VPBankSendingInforTitle}>
-            Phí (không gồm VAT)
-          </Text>
-          <Text style={styles.VPBankSendingInforContentValueFee}>
-            {0}{' '}
-            <Text style={styles.VPBankSendingInforContentCurrencyFee}>đ</Text>
-          </Text>
-        </View>
-        <View style={styles.VPBankSendingInfor}>
-          <Text style={styles.VPBankSendingInforTitle}>Nội dung</Text>
-          <Text style={styles.VPBankSendingInforContent}>{messageTransferValue}</Text>
-        </View>
-        <View style={styles.VPBankSendingInfor}>
-          <Text style={styles.VPBankSendingInforTitle}>
-            Phương thức chuyển khoản
-          </Text>
-          <Text style={styles.VPBankSendingInforContent}>
-            Chuyển nhanh Napas 247
-          </Text>
-        </View>
-        <View style={styles.contentFooter}>
-        <TouchableOpacity style={styles.buttonNext} onPress={() => navigation.navigate('OTPScreen')}>
-          <Text style={styles.buttonNextText}>Xác nhận</Text>
-        </TouchableOpacity>
-      </View>
-      </View>
-    </View>
-    
+      </ScrollView>
     </>
   );
 };
@@ -259,6 +282,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 20,
     paddingVertical: 10,
+    paddingBottom: '20%'
   },
   VPBankSendingInfor: {
     borderBottomColor: 'rgb(251, 250, 252)',
@@ -293,24 +317,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
   },
-  VPBankSendingInforContentValueFee: {    color: 'black',fontSize: 17
-},
+  VPBankSendingInforContentValueFee: {color: 'black', fontSize: 17},
   VPBankSendingInforContentCurrencyFee: {
     textDecorationLine: 'underline',
-    color: 'black'
+    color: 'black',
   },
-  contentFooter: {
-    
-        
-  },
+  contentFooter: {},
   buttonNext: {
     backgroundColor: 'rgb(1, 173, 83)',
     alignItems: 'center',
     paddingVertical: 10,
     borderRadius: 5,
     position: 'absolute',
-            width: '100%',
-    bottom: -60,
+    width: '100%',
   },
   buttonNextText: {
     color: 'white',

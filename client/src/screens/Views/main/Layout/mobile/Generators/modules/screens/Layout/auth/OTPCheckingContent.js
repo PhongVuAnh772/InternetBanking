@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {Text, View, StyleSheet, Animated, TouchableOpacity,ActivityIndicator} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {settimeTransferBank} from '../../../../../../../../../../slice/transferSlice';
+import { settimeTransferBank } from '../../../../../../../../../../slice/transferSlice';
 import {
   useAppDispatch,
   useAppSelector,
@@ -33,6 +33,7 @@ const TimerBar = () => {
   const NameOfSTKBankChoosing = useAppSelector(
     state => state.transfer.NameOfSTKBankChoosing,
   );
+  const accountID = useAppSelector(state => state.signUp.newAccountSTK)
   const CMNDUser = useAppSelector(state => state.signUp.personalIdNumber);
   const navigation = useNavigation();
         const networkState = useAppSelector(state => state.network.ipv4Address)
@@ -84,28 +85,31 @@ const showToast = (type, title,text) => {
   console.log(CMNDUser,binBankChoosing,messageTransfer,BankValueMoney,NameOfSTKBankChoosing,STKBankChoosing)
   const handleContinue = async () => {
     setVisible(true);
-
     try {
       const ress = await axios.post(
         `${networkState}/api/createSendingMoney`,
         {
           CMNDUser: CMNDUser,
-          BINCode: binBankChoosing,
-          Transaction_Type: 'Chuyển khoản',
-          Description: messageTransfer,
-          Amount: BankValueMoney,
-          Payee: NameOfSTKBankChoosing,
-          recipient_account_number: STKBankChoosing,
+        BINCode:binBankChoosing,
+        Transaction_Type: "Chuyển khoản",
+        Description: messageTransfer,
+        Account_Balance: BankValueMoney,
+        Payee: NameOfSTKBankChoosing,
+        recipient_account_number: STKBankChoosing,
+        Account_id: accountID
         },
       );  
       if (ress.data.success === true) {
         setTimeout(() => {
           setVisible(false);
+          dispatch(settimeTransferBank(currentDate))
           showToast('success', 'Bạn có biến động số dư mới', '');
           navigation.navigate('SuccessingTransferWrap');
         }, 3000);
       }
     } catch (err) {
+                setVisible(false);
+
       console.log(err.message);
       return false;
     }

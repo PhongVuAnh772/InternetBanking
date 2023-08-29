@@ -113,14 +113,20 @@ const ContentSendingMoney = () => {
   const handleContinue = () => {
     if (onChangeMoney.length === 0) {
       showToast('error', 'Bạn phải nhập số tiền cần chuyển');
-    } else if (onChangeMoney > userBankMoney) {
+    } else if (onChangeMoney > parseFloat(userBankMoney)) {
       showToast('error', 'Số tiền chuyển lớn hơn số tiền trong tài khoản');
     } else {
       dispatch(setBankValueMoney(onChangeMoney));
       dispatch(setmessageTransfer(onChangeMessage));
-      dispatch(setSTKBankChoosing(STKSendingPerson));
+      if (STKSendingPerson != null && STKSendingPerson) {
+          dispatch(setSTKBankChoosing(STKSendingPerson));
+
+      }
       navigation.navigate('ConfirmInformationSendingWrap');
     }
+    console.log(typeof(onChangeMoney))
+        console.log(typeof(parseFloat(userBankMoney)))
+
   };
   const fetchDataBanks = async () => {
     try {

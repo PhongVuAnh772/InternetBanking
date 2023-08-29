@@ -22,8 +22,10 @@ import {
   setBankValueMoney,
   setmessageTransfer,
   settimeTransferBank,
+  
 } from '../../../../../../../../../../slice/transferSlice';
 import axios from 'axios';
+import { setBalance } from '../../../../../../../../../../slice/creditSlice';
 const SuccessingTransferContent = () => {
   const navigation = useNavigation();
   const [currentDate, setCurrentDate] = useState('');
@@ -59,6 +61,8 @@ const SuccessingTransferContent = () => {
   const firebaseTokenValue = useAppSelector(
     state => state.allToken.firebaseToken,
   );
+    const userBalanceDetails = useAppSelector(state => state.credit.Balance)
+
 
   const getCurrentDate = () => {
     var date = new Date().getDate();
@@ -178,6 +182,7 @@ const SuccessingTransferContent = () => {
     dispatch(setBankValueMoney(0));
     dispatch(setmessageTransfer(''));
     dispatch(settimeTransferBank(''));
+    dispatch(setBalance(parseFloat(userBalanceDetails) - parseFloat(BankValueMoneyValue)));
     navigation.navigate('SendingMoney');
     
   };
@@ -270,7 +275,7 @@ const SuccessingTransferContent = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.BankTransferBottomContainer}>
-        <TouchableOpacity style={styles.BankTransferBottomContent}>
+        <TouchableOpacity style={styles.BankTransferBottomContent} onPress={() => Linking}>
           <FontAwesome
             name="paper-plane-o"
             size={20}
