@@ -19,161 +19,19 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '../../../../../../../../../app/hooks/hooks';
-import {
-  setBankChoosingInternal,
-  setBankChoosingIconInternal,
-  setSTKBankChoosingInternal,
-  setBankValueMoneyInternal,
-  setmessageTransferInternal,
-  setlongNameBankChoosingInternal,
-  setbinBankChoosingInternal,
-  setNameOfSTKBankChoosingInternal,
-} from '../../../../../../../../../slice/transferInternalSlice.ts';
+
 import axios from 'axios';
 
-const ContentSendingMoney = ({value = 0, account = 2342422,}) => {
+const ContentSendingMoney = () => {
   
   const navigation = useNavigation();
-  const [inputValueOther, setInputValueOther] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
-  const [valueSearch, setvalueSearch] = useState('');
-  const [responseDataBanks, setResponseDataBanks] = useState([]);
-  const [responseDataUser, setResponseDataUser] = useState([]);
-  const [STKSendingPerson, setSTKSendingPerson] = useState('');
-  const [onChangeMoney, setOnChangeMoney] = useState(0);
-  const [onChangeMessage, setOnChangeMessage] = useState('VU ANH PHONG chuyen khoan');
-  const handleInputChange = text => {
-    setInputValueOther(text);
-  };
-
-  const characterCount = inputValueOther.length;
-  const BankChoosingValue = useAppSelector(
-    state => state.transferInternal.BankChoosingInternal,
-  );
-  const BankChoosingIconValue = useAppSelector(
-    state => state.transferInternal.BankChoosingIconInternal,
-  );
-  const binBankChoosingValue = useAppSelector(
-    state => state.transferInternal.binBankChoosingInternal,
-  );
-  const STKBankChoosingValue = useAppSelector(
-    state => state.transferInternal.STKBankChoosing,
-  );
-  const BankValueMoneyValue = useAppSelector(
-    state => state.transferInternal.BankValueMoney,
-  );
-  const messagetransferInternalValue = useAppSelector(
-    state => state.transferInternal.messageTransferInternal,
-  );
-  const longNameBankChoosingValue = useAppSelector(
-    state => state.transferInternal.longNameBankChoosingInternal,
-  );
-  const NameOfSTKBankChoosingValue = useAppSelector(
-    state => state.transferInternal.NameOfSTKBankChoosingInternal,
-  );
-  const inputRef = useRef(null);
-
-  const dispatch = useAppDispatch();
- 
-
-  const handlePressOneBank = (logo, bin, shortName, longName) => {
-    dispatch(setBankChoosingInternal(shortName));
-    dispatch(setBankChoosingIconInternal(logo));
-    dispatch(setbinBankChoosingInternal(bin));
-    dispatch(setlongNameBankChoosingInternal(longName));
-    dispatch(setNameOfSTKBankChoosingInternal(''));
-            dispatch(setSTKBankChoosingInternal(''));
-
-
-    setModalVisible(false);
-    console.log(
-      BankChoosingIconValue,
-      binBankChoosingValue,
-      BankChoosingValue,
-      longNameBankChoosingValue,
-    );
-  };
-
-  const handleContinue = () => {
-    if(onChangeMessage || onChangeMoney) {
-      
-    }
-    dispatch(setBankValueMoneyInternal(onChangeMoney));
-    dispatch(setmessageTransferInternal(onChangeMessage));
-               dispatch(setSTKBankChoosingInternal(STKSendingPerson));
-
-    navigation.navigate('ConfirmInformationSendingWrap');
-  };
-  const fetchDataBanks = async () => {
-    try {
-      const config = {
-        method: 'get',
-        url: 'https://api.vietqr.io/v2/banks',
-      };
-
-      const response = await axios(config);
-      if (response && response.data) {
-        setResponseDataBanks(response.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  var data = JSON.stringify({
-    bin: binBankChoosingValue,
-    accountNumber: STKSendingPerson,
-  });
-
-  const fetchDataUserSTK = async () => {
-    try {
-      const config = {
-        method: 'post',
-        url: ``,
-      };
-
-      const response = await axios(config);
-      setResponseDataUser(response.data);
-
-      if (
-        responseDataUser.results &&
-        responseDataUser.results.ownerName !== undefined
-      ) {
-        dispatch(setNameOfSTKBankChoosingInternal(responseDataUser.results.ownerName));
-      } else {
-         await fetchDataUserSTK();
-      }
-      console.log(responseDataUser)
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const renderBankItem = ({item}) => (
-    <TouchableOpacity
-      style={styles.otherBankContainer}
-      onPress={() =>
-        handlePressOneBank(item.logo, item.bin, item.shortName, item.name)
-      }>
-      <Image
-        source={{
-          uri: item.logo,
-        }}
-        style={styles.bankLogo}
-      />
-      <View style={styles.otherBankText}>
-        <Text style={styles.otherBankName}>{item.shortName}</Text>
-
-        <Text style={styles.otherBankName}>
-          {item.shortName} - {item.name}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  );
-
+  
+  
   return (
     <>
       <View style={styles.container}>
         <View style={styles.headerMoneyInfo}>
-          <Text style={styles.textheaderMoneyInfo}>Tài khoản nguồn</Text>
+          <Text style={styles.textheaderMoneyInfo}>Tài khoản thẻ</Text>
         </View>
         <View style={styles.contentMoneyInfo}>
           <View style={styles.contentIcon}>
@@ -181,7 +39,7 @@ const ContentSendingMoney = ({value = 0, account = 2342422,}) => {
           </View>
           <View style={styles.contentMoneyDes}>
             <Text style={styles.moneyValueSpecified}>
-              {value} <Text style={styles.moneyValueSpecifiedCurrency}>đ</Text>
+              <Text style={styles.moneyValueSpecifiedCurrency}>đ</Text>
             </Text>
             <View style={styles.accountInfoDemo}>
               <Text style={styles.moneyValue}>Normal Account</Text>
@@ -206,10 +64,7 @@ const ContentSendingMoney = ({value = 0, account = 2342422,}) => {
               <TextInput
                 style={styles.inputSTK}
                 placeholder="Số tài khoản/iNick"
-                placeholderTextColor="rgb(145, 154, 156)"
-                ref={inputRef}
-                onChangeText={setSTKSendingPerson}
-                value={STKSendingPerson}
+                placeholderTextColor="rgb(145, 154, 156)"                
                 onBlur={() => {
                   fetchDataUserSTK();
                 }}
@@ -222,7 +77,6 @@ const ContentSendingMoney = ({value = 0, account = 2342422,}) => {
                 style={styles.inputSTK}
                 placeholder="Tên người dùng"
                 placeholderTextColor="rgb(145, 154, 156)"
-                value={NameOfSTKBankChoosingValue}
               />
               <FontAwesome
                 name="street-view"
@@ -236,8 +90,6 @@ const ContentSendingMoney = ({value = 0, account = 2342422,}) => {
                 placeholder="0"
                 placeholderTextColor="rgb(141, 152, 154)"
                 keyboardType="number-pad"
-                onChangeText={setOnChangeMoney}
-                // value={onChangeMoney}
               />
               <Text style={styles.inputSTKValueCurrencySpecified}>đ</Text>
             </View>
@@ -246,7 +98,6 @@ const ContentSendingMoney = ({value = 0, account = 2342422,}) => {
                 style={styles.inputSTK}
                 placeholder="Nội dung (Không bắt buộc)"
                 placeholderTextColor="rgb(145, 154, 156)"
-                onChangeText={setOnChangeMessage}
               />
               <View style={styles.contentSTKInfoInputOtherCounting}>
                 <FontAwesome
@@ -300,7 +151,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentSTKInfoInput: {
-    // paddingHorizontal: 5,
     backgroundColor: 'white',
     borderBottomWidth: 1,
     borderBottomColor: 'rgb(237, 238, 239)',

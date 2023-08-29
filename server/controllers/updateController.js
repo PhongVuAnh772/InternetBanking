@@ -157,6 +157,7 @@ const updateCreditScore = (req, res) => {
                             dataCreditScoreMoneyToSTK: Math.floor(dataAccounts.Account_Balance) + (Math.floor(newDataCreditScore) * 10000.00),
                             dataCreditScoreMoney: Math.floor(newDataCreditScore) * 10000.00,
                             defaultCreditScore: dataCredit.Credit_Score,
+                            dataAccounts: dataAccounts
                           });
                         
                       })

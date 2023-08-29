@@ -57,7 +57,7 @@ export const flatIndex = [
     icon: 'pagelines',
 
     title: 'Cộng đồng VP',
-    screen: 'CommunityComponent',
+    screen: "MainIndex"
   },
   
 ];

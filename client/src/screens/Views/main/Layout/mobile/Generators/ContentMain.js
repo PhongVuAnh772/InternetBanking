@@ -6,6 +6,7 @@ import {
   ScrollView,
   Pressable,
   TouchableOpacity,
+  Linking
 } from 'react-native';
 import React, {useState} from 'react';
 import {flatIndex} from '../data/index';
@@ -16,10 +17,17 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 const ContentMainIcon = () => {
   const navigation = useNavigation();
   const numColumns = Math.ceil(flatIndex.length / 2);
+  const handlePress = (item) => {
+    if (item.title == "Cộng đồng VP") {
+      Linking.openURL("https://www.vpbank.com.vn/ve-chung-toi/hoat-dong-csr");
+
+    }
+    navigation.navigate(`${item.screen}`)
+  }
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={styles.container}
-      // onPress={navigation.navigate(`${item.screen}`)}
+      onPress={() => handlePress(item)}
     >
       <View style={styles.iconContainer}>
         <FontAwesome name={item.icon} size={16} color="rgb(16, 143, 87)" />

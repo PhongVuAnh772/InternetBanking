@@ -16,7 +16,7 @@ const SendingMoneyByCreditsHeader = () => {
         />
       </TouchableOpacity>
       <View style={{flex: 1, alignItems: 'center'}}>
-        <Text style={styles.Text}>Chuyển đến số tài khoản nội bộ</Text>
+        <Text style={styles.Text}>Chuyển đến số thẻ nội bộ</Text>
       </View>
     </View>
   );

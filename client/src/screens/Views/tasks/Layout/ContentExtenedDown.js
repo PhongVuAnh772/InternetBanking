@@ -16,14 +16,10 @@ const ContentExtendedDown = ({name, icon}) => {
     } else if (name == 'Tới số tài khoản nội bộ') {
       navigation.navigate('SendingMoneyByCredits');
     } else if (name == 'Tới số thẻ nội bộ') {
-      navigation.navigate('SendingMoneyByCustomer');
+      navigation.navigate('SendingMoneyByCredits');
     } else if (name == 'Danh sách lịch sử giao dịch') {
       navigation.navigate('ListOfTransfer');
-    } else if (name == 'Giao dịch đặt lịch') {
-      navigation.navigate('SendingMoneyOrderCalendar');
-    } else if (name == 'Tặng quà') {
-      navigation.navigate('SendingGift');
-    }
+    } 
   };
   return (
     <TouchableOpacity style={styles.container} onPress={clickHandler}>

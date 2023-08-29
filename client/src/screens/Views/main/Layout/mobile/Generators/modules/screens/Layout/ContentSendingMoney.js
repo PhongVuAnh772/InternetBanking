@@ -31,6 +31,7 @@ import {
 } from '../../../../../../../../../slice/transferSlice';
 import {fetchOtherBank} from '../../../../../../../../../slice/getOtherBankSlice';
 import axios from 'axios';
+import Toast from 'react-native-toast-message';
 
 const ContentSendingMoney = () => {
   const navigation = useNavigation();
@@ -44,6 +45,12 @@ const ContentSendingMoney = () => {
   const BankChoosingIconValue = useAppSelector(
     state => state.transfer.BankChoosingIcon,
   );
+  const showToast = (type, message) => {
+    Toast.show({
+      type: type,
+      text1: message,
+    });
+  };
   const binBankChoosingValue = useAppSelector(
     state => state.transfer.binBankChoosing,
   );
@@ -62,8 +69,8 @@ const ContentSendingMoney = () => {
   const NameOfSTKBankChoosingValue = useAppSelector(
     state => state.transfer.NameOfSTKBankChoosing,
   );
-  const userNameLogined = useAppSelector(state => state.signUp.fullName)
-  const STKLogined = useAppSelector(state => state.signUp.newAccountSTK)
+  const userNameLogined = useAppSelector(state => state.signUp.fullName);
+  const STKLogined = useAppSelector(state => state.signUp.newAccountSTK);
   const userSTK = useAppSelector(state => state.signUp.newAccountSTK);
   const userBankMoney = useAppSelector(state => state.credit.Balance);
   const otherBank = useAppSelector(state => state.otherBank);
@@ -71,7 +78,7 @@ const ContentSendingMoney = () => {
   const [onChangeMessage, setOnChangeMessage] = useState(
     `${userNameLogined} chuyen khoan`,
   );
-  
+
   const handleInputChange = text => {
     setInputValueOther(text);
   };
@@ -80,8 +87,6 @@ const ContentSendingMoney = () => {
   const BankChoosingValue = useAppSelector(
     state => state.transfer.BankChoosing,
   );
-  
-  
 
   const dispatch = useAppDispatch();
   const handleFetchOtherBank = () => {
@@ -106,13 +111,16 @@ const ContentSendingMoney = () => {
   };
 
   const handleContinue = () => {
-    if (onChangeMessage && onChangeMoney) {
+    if (onChangeMoney.length === 0) {
+      showToast('error', 'Bạn phải nhập số tiền cần chuyển');
+    } else if (onChangeMoney > userBankMoney) {
+      showToast('error', 'Số tiền chuyển lớn hơn số tiền trong tài khoản');
+    } else {
+      dispatch(setBankValueMoney(onChangeMoney));
+      dispatch(setmessageTransfer(onChangeMessage));
+      dispatch(setSTKBankChoosing(STKSendingPerson));
+      navigation.navigate('ConfirmInformationSendingWrap');
     }
-    dispatch(setBankValueMoney(onChangeMoney));
-    dispatch(setmessageTransfer(onChangeMessage));
-    dispatch(setSTKBankChoosing(STKSendingPerson));
-
-    navigation.navigate('ConfirmInformationSendingWrap');
   };
   const fetchDataBanks = async () => {
     try {

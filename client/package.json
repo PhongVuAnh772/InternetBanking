@@ -12,6 +12,7 @@
   "dependencies": {
     "@alessiocancian/react-native-actionsheet": "^3.2.0",
     "@react-native-clipboard/clipboard": "^1.11.2",
+    "@react-native-community/geolocation": "^3.0.6",
     "@react-native-masked-view/masked-view": "^0.2.9",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/material-top-tabs": "^6.6.2",

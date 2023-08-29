@@ -13,6 +13,7 @@ import OTPChangingWrap from '../../../auth/Template/Interface/tasks/Shaders/OTPC
 import OTPCheckingChangeWrap from '../../../auth/Template/Interface/tasks/Shaders/OTPCheckingChange/OTPCheckingChangeWrap';
 import AddressSendCard from './modules/Layout/Tasks/Layout/AddressSendCard';
 import UsingCardSafety from './screens/UsingCardSafety';
+import SuccessShippingCard from './modules/Layout/Tasks/Layout/SuccessShippingCard';
 
 const AccountStack = createStackNavigator();
 
@@ -27,14 +28,17 @@ const AccountPage = () => {
       <AccountStack.Screen name="OTPScreen" component={OTPScreenWrap} />
       <AccountStack.Screen name="CVVScreen" component={CVVScreen} />
       <AccountStack.Screen name="HistoryTransfer" component={HistoryTransfer} />
+
+      <AccountStack.Screen
+        name="SuccessShippingCard"
+        component={SuccessShippingCard}
+      />
+
       <AccountStack.Screen
         name="PhysicalCardScreen"
         component={PhysicalCardScreen}
       />
-      <AccountStack.Screen
-        name="QRgenerator"
-        component={QRgenerator}
-      />
+      <AccountStack.Screen name="QRgenerator" component={QRgenerator} />
       <AccountStack.Screen
         name="OTPCheckingChangeWrap"
         component={OTPCheckingChangeWrap}

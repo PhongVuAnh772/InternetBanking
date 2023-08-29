@@ -11,6 +11,7 @@ const loanController = require("../controllers/loanController");
 const updateController = require("../controllers/updateController");
 const forgetPasswordController = require("../controllers/forgetPassword");
 const sendMailController = require("../controllers/sendMailController");
+const transactionCreditController = require("../controllers/creditController");
 
 router.post("/signup", index.signUp);
 router.post("/login", index.signIn);
@@ -45,11 +46,10 @@ router.post("/changePassword", forgetPasswordController.changePassWord);
 router.post("/createSendingMoney", bankingController.createSendingMoney);
 router.post("/createINickUser", customersController.createINickUser); //
 router.post("/createBank", bankingController.createBank); //
-router.post("/createCreditCardTransaction",bankingController.createCreditCardTransaction);
 router.post("/updateMoneySTK",bankingController.updateMoneySTK);
 router.post("/updateCreditScore",updateController.updateCreditScore)
 router.post("/sendMail",sendMailController.sendMail);
-
+router.post("/transactionCredit",transactionCreditController.transactionCredit)
 
 router.use("/", (req, res, next) => {
   res.status(404).json({ error: "router không tồn tại" });
