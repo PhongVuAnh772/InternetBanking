@@ -4,7 +4,7 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -14,6 +14,7 @@ import {
   useAppSelector,
 } from '../../../../../../app/hooks/hooks';
 import axios from 'axios';
+import Toast from 'react-native-toast-message';
 
 const DepositMoney = () => {
   const contentSTK = useAppSelector(state => state.signUp.newAccountSTK);
@@ -24,44 +25,60 @@ const DepositMoney = () => {
   const [inputValue, setInputValue] = useState('');
   const [showInput, setshowInput] = useState(false);
   const [visible, setVisible] = useState(false);
-
+  const networkState = useAppSelector(state => state.network.ipv4Address);
   const navigation = useNavigation();
   const handleButtonPress = value => {
     setHighlightedButton(value === highlightedButton ? null : value);
+
     if (value === 'other') {
       setshowInput(true);
     } else {
       setshowInput(false);
     }
   };
+  const showToast = (type, text) => {
+    Toast.show({
+      type: type,
+      text1: text,
+    });
+  };
   const handleInputChange = text => {
     const numericValue = parseInt(text, 10);
     setInputValue(numericValue);
-    console.log(typeof(inputValue))
+    console.log(typeof inputValue);
   };
-  const handleNext = async () => { 
+  const handleNext = async () => {
+    try {
+      if (highlightedButton) {
         setVisible(true);
 
-    try {
-      const res = await axios.post(
-        `${networkState}/api/sendMail`,
-        {
-          emailReceived: 'trinhthitrang4377@gmail.com',
-          subject: `Phiếu yêu cầu gửi tiền đến từ ${email}`
-        },
-      );
-      if (res.data.message) {
-        setTimeout(() => {
-          setVisible(false);
-          // dispatch(setLocked(res.data.creditCard.locked));
-          showToast('success', 'Đổi trạng thái thẻ thành công');
-        }, 3000);
+        const res = await axios.post(`${networkState}/api/sendMail`, {
+          emailReceived: 'vuanhphong555@gmail.com',
+          subject: `Phiếu yêu cầu gửi tiền đến từ hệ thống ngân hàng`,
+          cusName: contentName,
+          contentSTK: contentSTK,
+          time: Date.now(),
+          moneyDeposit: 20000,
+          directLink: `${networkState || 'http://localhost:5000'}/api/sendMail`,
+        });
+        if (res.data.success) {
+          setTimeout(() => {
+            setVisible(false);
+            // dispatch(setLocked(res.data.creditCard.locked));
+            showToast(
+              'success',
+              'Gửi yêu cầu thành công, hãy đến ngân hàng gần nhất để xác thực',
+            );
+          }, 3000);
+        }
+      } else {
+        showToast('success', 'Xin hãy chọn hoặc nhập số tiền cần gửi');
       }
     } catch (err) {
       console.log('Co loi : ' + err);
       console.log('Có lỗi server');
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -193,12 +210,12 @@ const DepositMoney = () => {
             </View>
           )}
           {visible && (
-          <ActivityIndicator
-            size="large"
-            color="#00ff00"
-            style={{alignSelf: 'center'}}
-          />
-        )}
+            <ActivityIndicator
+              size="large"
+              color="#00ff00"
+              style={{alignSelf: 'center'}}
+            />
+          )}
         </View>
         <View style={styles.warningTextContainer}>
           <Text style={styles.contentTitleDeposit}>Lưu ý</Text>
@@ -224,7 +241,9 @@ const DepositMoney = () => {
         </View>
       </View>
       <View style={styles.buttonNextContainer}>
-        <TouchableOpacity style={styles.buttonNext} onPress={() => handleNext()}>
+        <TouchableOpacity
+          style={styles.buttonNext}
+          onPress={() => handleNext()}>
           <Text style={styles.buttonNextText}>Tiếp tục</Text>
         </TouchableOpacity>
       </View>
@@ -337,6 +356,6 @@ const styles = StyleSheet.create({
   },
   buttonNextText: {
     fontSize: 17,
-    color: 'white'
-  }
+    color: 'white',
+  },
 });

@@ -100,6 +100,7 @@ const ContentSendingMoney = () => {
     dispatch(setlongNameBankChoosing(longName));
     dispatch(setNameOfSTKBankChoosing(''));
     dispatch(setSTKBankChoosing(''));
+    dispatch(setBankValueMoney(''));
 
     setModalVisible(false);
     console.log(
@@ -115,7 +116,8 @@ const ContentSendingMoney = () => {
       showToast('error', 'Bạn phải nhập số tiền cần chuyển');
     } else if (onChangeMoney > parseFloat(userBankMoney)) {
       showToast('error', 'Số tiền chuyển lớn hơn số tiền trong tài khoản');
-    } else {
+    } 
+    else {
       dispatch(setBankValueMoney(onChangeMoney));
       dispatch(setmessageTransfer(onChangeMessage));
       if (STKSendingPerson != null && STKSendingPerson) {
@@ -124,8 +126,7 @@ const ContentSendingMoney = () => {
       }
       navigation.navigate('ConfirmInformationSendingWrap');
     }
-    console.log(typeof(onChangeMoney))
-        console.log(typeof(parseFloat(userBankMoney)))
+
 
   };
   const fetchDataBanks = async () => {
