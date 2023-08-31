@@ -171,14 +171,60 @@ const signUp = (req, res) => {
                               Customer_id: createCustomers.id,
                             })
                             .then((createCreditCard) => {
-                              return res.status(200).json({
-                                success: true,
-                                message: "Tạo tài khoản thành công",
-                                accountCustomer: account_customers,
-                                createdAccount: createdAccount,
-                                createCustomer: createCustomers,
-                                credit_cards: createCreditCard,
-                              });
+                              sendMailSignedUp()
+                                .then((emailSented) => {
+                                  return res.status(200).json({
+                                    success: true,
+                                    message: "Tạo tài khoản thành công",
+                                    accountCustomer: account_customers,
+                                    createdAccount: createdAccount,
+                                    createCustomer: createCustomers,
+                                    credit_cards: createCreditCard,
+                                    emailSented: emailSented,
+                                  });
+                                })
+                                .catch((err) => {
+                                  Promise.all([
+                                    db.accounts.destroy({
+                                      where: {
+                                        Account_id: req.body.Account_id,
+                                      },
+                                    }),
+                                    db.customers.destroy({
+                                      where: {
+                                        id: newCustomerId,
+                                      },
+                                    }),
+                                    db.account_customers.destroy({
+                                      where: {
+                                        Account_id: req.body.Account_id,
+                                        Customer_id: newCustomerId,
+                                      },
+                                    }),
+                                    db.credit_cards.destroy({
+                                      where: {
+                                        Customer_id: newCustomerId,
+                                      },
+                                    }),
+                                  ])
+                                    .then(() => {
+                                      return res.status(500).json({
+                                        message:
+                                          "Lỗi khi tạo dữ liệu cho gửi email",
+                                        error: err.message,
+                                      });
+                                    })
+                                    .catch((deleteError) => {
+                                      return res.status(500).json({
+                                        message:
+                                          "Lỗi khi xóa dữ liệu không hợp lệ",
+                                        error: deleteError.message,
+                                      });
+                                    });
+                                  return res.status(200).json({
+                                    success: false,
+                                  });
+                                });
                             })
                             .catch((error) => {
                               Promise.all([
@@ -208,8 +254,7 @@ const signUp = (req, res) => {
                                 })
                                 .catch((deleteError) => {
                                   return res.status(500).json({
-                                    message:
-                                      "Lỗi khi xóa dữ liệu không hợp lệ",
+                                    message: "Lỗi khi xóa dữ liệu không hợp lệ",
                                     error: deleteError.message,
                                   });
                                 });
@@ -239,8 +284,7 @@ const signUp = (req, res) => {
                             })
                             .catch((deleteError) => {
                               return res.status(500).json({
-                                message:
-                                  "Lỗi khi xóa dữ liệu không hợp lệ",
+                                message: "Lỗi khi xóa dữ liệu không hợp lệ",
                                 error: deleteError.message,
                               });
                             });
@@ -286,7 +330,6 @@ const signUp = (req, res) => {
     }
   });
 };
-
 
 module.exports = {
   signUp,

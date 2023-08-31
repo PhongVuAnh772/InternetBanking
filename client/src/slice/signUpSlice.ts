@@ -13,7 +13,7 @@ interface signUpState {
   personalIdNumber: string;
   regionName: string;
   fullName: string;
-  
+  iNick: string;
 }
 
 const initialState: signUpState = {
@@ -27,7 +27,7 @@ const initialState: signUpState = {
   personalIdNumber: '',
   regionName: '',
   fullName: '',
-  
+  iNick: ''
 };
 
 export const signUpSlice = createSlice({
@@ -67,6 +67,9 @@ export const signUpSlice = createSlice({
     setpersonalIdNumber : (state, action: PayloadAction<string>) => {
       state.personalIdNumber = action.payload;
     },
+    setINick : (state, action: PayloadAction<string>) => {
+      state.iNick = action.payload;
+    },
   },
 });
 
@@ -80,7 +83,8 @@ export const {
   setSex,
   setregionName,
   setfullName,
-  setpersonalIdNumber
+  setpersonalIdNumber,
+  setINick
 } = signUpSlice.actions;
 // export const selectCount = (state: RootState) => state.login.loggedIn;
 export default signUpSlice.reducer;

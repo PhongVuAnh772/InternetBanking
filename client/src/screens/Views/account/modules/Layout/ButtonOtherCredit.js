@@ -3,30 +3,52 @@ import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
+import {useAppDispatch, useAppSelector} from '../../../../../app/hooks/hooks';
+import Toast from 'react-native-toast-message';
 
 const ButtonOtherCredit = ({name, icon}) => {
+  const getPhysicalCard = useAppSelector(state => state.credit.getPhysicalCard);
+  const lockCard = useAppSelector(state => state.credit.locked)
+  const showToast = (type, text1) => {
+    Toast.show({
+      type: type,
+      text1: text1,
+    });
+  };
   const navigation = useNavigation();
   const clickHandler = () => {
     if (name == 'Phát hành thẻ vật lý') {
-      navigation.navigate('PhysicalCardScreen');
+      if (getPhysicalCard) {
+        showToast('error', 'Hệ thống ghi nhận bạn đã nhận đặt thẻ');
+      } else {
+        navigation.navigate('PhysicalCardScreen');
+      }
     } else if (name == 'Xem thông tin số thẻ - CVV') {
       navigation.navigate('OTPScreen');
     } else if (name == 'Lịch sử giao dịch thẻ') {
+      if (lockCard) {
+        showToast('error', 'Bạn phải mở khóa thẻ mới truy cập được');
+      } else {
       navigation.navigate('HistoryTransfer');
+      }
     } else if (name == 'Sử dụng thẻ an toàn') {
       navigation.navigate('UsingCardSafety');
-    } else if (name == "Thay đổi mã PIN") {
+    } else if (name == 'Thay đổi mã PIN') {
+      if (lockCard) {
+        showToast('error', 'Bạn phải mở khóa thẻ mới truy cập được');
+      } else {
       navigation.navigate('OTPCheckingChangeWrap');
-    } else if (name == "Hướng dẫn giao dịch ATM an toàn") {
-      navigation.navigate("ATMSecurityScreen")
-    } else if (name == "Hướng dẫn giao dịch POS an toàn") {
-      navigation.navigate("POSSecurityScreen")
-    } else if (name == "Hướng dẫn giao dịch trực tuyến an toàn") {
-      navigation.navigate("OnlineBankingSecurity")
-    } else if (name == "Hướng dẫn bảo mật mã PIN") {
-      navigation.navigate("PinCodeSecurity")
-    } else if (name == "Hướng dẫn đảm bảo thông tin thẻ") {
-      navigation.navigate("CardInformationSecurity")
+      }
+    } else if (name == 'Hướng dẫn giao dịch ATM an toàn') {
+      navigation.navigate('ATMSecurityScreen');
+    } else if (name == 'Hướng dẫn giao dịch POS an toàn') {
+      navigation.navigate('POSSecurityScreen');
+    } else if (name == 'Hướng dẫn giao dịch trực tuyến an toàn') {
+      navigation.navigate('OnlineBankingSecurity');
+    } else if (name == 'Hướng dẫn bảo mật mã PIN') {
+      navigation.navigate('PinCodeSecurity');
+    } else if (name == 'Hướng dẫn đảm bảo thông tin thẻ') {
+      navigation.navigate('CardInformationSecurity');
     }
   };
   return (

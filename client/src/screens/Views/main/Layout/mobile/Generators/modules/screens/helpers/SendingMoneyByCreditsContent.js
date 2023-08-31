@@ -44,7 +44,7 @@ const ContentSendingMoney = () => {
             <View style={styles.accountInfoDemo}>
               <Text style={styles.moneyValue}>Normal Account</Text>
               <Text style={styles.separate}>|</Text>
-              <Text style={styles.moneyValue}>{account}</Text>
+              <Text style={styles.moneyValue}></Text>
             </View>
           </View>
           <View style={styles.contentIcon}>
@@ -63,7 +63,7 @@ const ContentSendingMoney = () => {
             <View style={styles.contentSTKInfoInput}>
               <TextInput
                 style={styles.inputSTK}
-                placeholder="Số tài khoản/iNick"
+                placeholder="Số thẻ"
                 placeholderTextColor="rgb(145, 154, 156)"                
                 onBlur={() => {
                   fetchDataUserSTK();
@@ -72,18 +72,7 @@ const ContentSendingMoney = () => {
               <FontAwesome name="id-card-o" size={20} color="rgb(0, 173, 83)" />
             </View>
             {/* {messageError} */}
-            <View style={styles.contentSTKInfoInput}>
-              <TextInput
-                style={styles.inputSTK}
-                placeholder="Tên người dùng"
-                placeholderTextColor="rgb(145, 154, 156)"
-              />
-              <FontAwesome
-                name="street-view"
-                size={20}
-                color="rgb(0, 173, 83)"
-              />
-            </View>
+            
             <View style={styles.contentSTKInfoInput}>
               <TextInput
                 style={styles.inputSTKValue}
@@ -107,7 +96,7 @@ const ContentSendingMoney = () => {
                   style={{transform: [{rotate: '18deg'}]}}
                 />
                 <Text style={styles.contentSTKInfoInputOtherCountingSpecified}>
-                  {characterCount}/160
+                  {/* {characterCount}/160 */}
                 </Text>
               </View>
             </View>

@@ -3,9 +3,17 @@ import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
-
+import {useAppDispatch, useAppSelector} from '../../../../app/hooks/hooks';
+import Toast from 'react-native-toast-message';
 const ContentExtendedDown = ({name, icon}) => {
   const navigation = useNavigation();
+  const lockedCredit = useAppSelector(state => state.credit.locked);
+  const showToast = (type, mess) => {
+    Toast.show({
+      type: type,
+      text1: mess,
+    });
+  };
   const clickHandler = () => {
     if (name == 'Tỷ giá ngoại tệ') {
       navigation.navigate('CurrencyScreen');
@@ -14,12 +22,16 @@ const ContentExtendedDown = ({name, icon}) => {
     } else if (name == 'Tới số tài khoản liên ngân hàng') {
       navigation.navigate('SendingMoney');
     } else if (name == 'Tới số tài khoản nội bộ') {
-      navigation.navigate('SendingMoneyByCredits');
+      navigation.navigate('SendingMoneyByCustomer');
     } else if (name == 'Tới số thẻ nội bộ') {
-      navigation.navigate('SendingMoneyByCredits');
+      if (lockedCredit) {
+        showToast('error', 'Bạn hãy mở khóa thẻ trước');
+      } else {
+        navigation.navigate('SendingMoneyByCredits');
+      }
     } else if (name == 'Danh sách lịch sử giao dịch') {
       navigation.navigate('ListOfTransfer');
-    } 
+    }
   };
   return (
     <TouchableOpacity style={styles.container} onPress={clickHandler}>

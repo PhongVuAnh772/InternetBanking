@@ -27,6 +27,7 @@ import {
   setregionName,
   setfullName,
   setpersonalIdNumber,
+  setINick
 } from '../../slice/signUpSlice';
 import {
   setCVVNumber,
@@ -82,6 +83,7 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
   const [isLogin, setIsLogin] = useState(true);
   const ipv4Address = useAppSelector(state => state.network.ipv4Address);
   const tokenString = useAppSelector(state => state.login.token);
+  const iNick = useAppSelector(state => state.signUp.iNick);
   const onChangeHandler = () => {
     setIsLogin(!isLogin);
     setMessage('');
@@ -155,7 +157,9 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
           dispatch(setCC_number(res.data.credit_cards.CC_number));
           dispatch(setPINCode(res.data.data.PINCode));
           dispatch(setDateClosed(res.data.credit_cards.Expiry_Date));
-
+          if (res.data.data.iNick !== '') {
+            dispatch(setINick(res.data.data.iNick));
+          }
           setIsLoading(false);
           showToast();
           navigation.navigate('MainPage');
