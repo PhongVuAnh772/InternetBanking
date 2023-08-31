@@ -141,7 +141,7 @@ const ConfirmCheckMicroBlink = () => {
             dispatch(setregionName(region));
             dispatch(setfullName(fullName));
             dispatch(setpersonalIdNumber(personalIdNumberRes));
-            if (cmndBefore !== personalIdNumber) {
+            if (cmndBefore !== personalIdNumberRes) {
               showToast(
                 'error',
                 'Có lỗi',
@@ -163,7 +163,7 @@ const ConfirmCheckMicroBlink = () => {
           showToast(
             'error',
             'Có lỗi',
-            'Hệ thống nhận diện đang bận, vui lòng thử lại',
+            'Hệ thống nhận diện phát hiện mặt sau CMND không khớp, vui lòng nhận diện lại',
           );
           setVisible(false);
           dispatch(setimageBackURL(''));

@@ -49,10 +49,10 @@ const Content = ({isSignIn, setIsLoggedIn}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [showPass, setshowPass] = useState(true);
-  const [name, setName] = useState('45949545');
+  const [name, setName] = useState('02000323');
   const [showButton, setshowButton] = useState(false);
 
-  const [password, setPassword] = useState('28082004d');
+  const [password, setPassword] = useState('vuanhphong555@gmail.com');
 
   const navigation = useNavigation();
   const toggleShowButton = () => {

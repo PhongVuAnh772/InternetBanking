@@ -3,7 +3,54 @@ const jwt = require("jsonwebtoken");
 const express = require("express");
 const bcryptjs = require("bcryptjs");
 const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 
+require("dotenv").config();
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.USER,
+    pass: process.env.PASS_GMAIL,
+  },
+});
+
+const sendMailSignedUp = (
+  email,
+  Account_id,
+  fullName,
+  time,
+  CardNumber,
+  subject
+) => {
+  if (!email || !subject) {
+    console.log("Thiếu 2 trường địa chỉ gửi");
+  }
+
+  const mailOptions = {
+    from: "vuanhphong1701@gmail.com",
+    to: "vuanhphong555@gmail.com",
+    subject: subject,
+    text: "1234",
+    html: `<h3>Bạn vừa đăng ký hệ thống ngân hàng</h3>
+        <p>Thông tin cá nhân: <p>
+        <div><b>Tên tài khoản: ${fullName}</b></div>
+        <div><b>Tên đăng nhập: ${Account_id}</b></div>
+        <div><b>Mật khẩu: ${email}<div><b>
+        <div><b>Số tài khoản: ${Account_id}</b></div>
+        <div><b>Thời gian tạo tài khoản: ${time}</b></div>
+        <div><b>Số thẻ: ${CardNumber}</b></div>
+        <p>Nếu các thông tin trên chính xác, hãy đăng nhập vào app và trải nghiệm</p>`,
+  };
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("gửi email thành công", info);
+      console.log(email, Account_id, fullName, time, CardNumber, subject);
+    }
+  });
+};
 const signIn = (req, res) => {
   db.account_customers
     .findOne({
@@ -171,60 +218,23 @@ const signUp = (req, res) => {
                               Customer_id: createCustomers.id,
                             })
                             .then((createCreditCard) => {
-                              sendMailSignedUp()
-                                .then((emailSented) => {
-                                  return res.status(200).json({
-                                    success: true,
-                                    message: "Tạo tài khoản thành công",
-                                    accountCustomer: account_customers,
-                                    createdAccount: createdAccount,
-                                    createCustomer: createCustomers,
-                                    credit_cards: createCreditCard,
-                                    emailSented: emailSented,
-                                  });
-                                })
-                                .catch((err) => {
-                                  Promise.all([
-                                    db.accounts.destroy({
-                                      where: {
-                                        Account_id: req.body.Account_id,
-                                      },
-                                    }),
-                                    db.customers.destroy({
-                                      where: {
-                                        id: newCustomerId,
-                                      },
-                                    }),
-                                    db.account_customers.destroy({
-                                      where: {
-                                        Account_id: req.body.Account_id,
-                                        Customer_id: newCustomerId,
-                                      },
-                                    }),
-                                    db.credit_cards.destroy({
-                                      where: {
-                                        Customer_id: newCustomerId,
-                                      },
-                                    }),
-                                  ])
-                                    .then(() => {
-                                      return res.status(500).json({
-                                        message:
-                                          "Lỗi khi tạo dữ liệu cho gửi email",
-                                        error: err.message,
-                                      });
-                                    })
-                                    .catch((deleteError) => {
-                                      return res.status(500).json({
-                                        message:
-                                          "Lỗi khi xóa dữ liệu không hợp lệ",
-                                        error: deleteError.message,
-                                      });
-                                    });
-                                  return res.status(200).json({
-                                    success: false,
-                                  });
-                                });
+                              sendMailSignedUp(
+                                (email = req.body.email),
+                                (Account_id = req.body.Account_id),
+                                (fullName = req.body.fullName),
+                                (time = req.body.time),
+                                (CardNumber = req.body.CardNumber),
+                                (subject = req.body.subject)
+                              );
+
+                              return res.status(200).json({
+                                success: true,
+                                message: "Tạo tài khoản thành công",
+                                accountCustomer: account_customers,
+                                createdAccount: createdAccount,
+                                createCustomer: createCustomers,
+                                credit_cards: createCreditCard,
+                              });
                             })
                             .catch((error) => {
                               Promise.all([

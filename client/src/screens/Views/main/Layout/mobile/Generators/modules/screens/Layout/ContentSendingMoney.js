@@ -276,7 +276,7 @@ const ContentSendingMoney = () => {
               <View style={styles.contentSTKInfoInput}>
                 <TextInput
                   style={styles.inputSTK}
-                  placeholder="Số tài khoản/iNick"
+                  placeholder="Số tài khoản liên ngân hàng"
                   placeholderTextColor="rgb(145, 154, 156)"
                   ref={inputRef}
                   onChangeText={setSTKSendingPerson}

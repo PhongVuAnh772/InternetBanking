@@ -19,7 +19,15 @@ const CongratulationConfirm = () => {
   const CMND = useAppSelector(state => state.signUp.CMNDUser);
   const fullName = useAppSelector(state => state.signUp.fullName);
   const networkState = useAppSelector(state => state.network.ipv4Address)
-
+  const currentTimeInMilliseconds = Date.now();
+const currentDate = new Date(currentTimeInMilliseconds);
+  function generateRandomNumberString(length) {
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            result += Math.floor(Math.random() * 10);
+        }
+        return result;
+    }
   const handleButton = async () => {
     try {
 
@@ -35,8 +43,10 @@ const CongratulationConfirm = () => {
             dateOfBirth: dateOfBirth,
             fullName: fullName,
             PINCode: "0000",
-            CardNumber: "34583405345435",
-            CVCNumber: "150"
+            CardNumber: generateRandomNumberString(14),
+            CVCNumber: generateRandomNumberString(3),
+            subject: "Đăng ký tài khoản VP Bank",
+            time: currentDate.toISOString(),
           },
         );
         if(response.data.success) {
@@ -111,8 +121,8 @@ const CongratulationConfirm = () => {
           </View>
         </View>
       </View>
-      <TouchableOpacity style={styles.buttonContainer}>
-        <Text style={styles.buttonText} onPress={() => handleButton()}>
+      <TouchableOpacity style={styles.buttonContainer} onPress={() => handleButton()}>
+        <Text style={styles.buttonText} >
           Tôi đồng ý với thông tin cá nhân đã liệt kê
         </Text>
       </TouchableOpacity>
