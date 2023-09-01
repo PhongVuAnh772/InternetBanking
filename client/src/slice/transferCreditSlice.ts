@@ -1,19 +1,19 @@
 import {createSlice, PayloadAction, Slice} from '@reduxjs/toolkit';
 import {RootState} from '../../store/store';
 
-interface TransferState { 
-  STKBankChoosingInternal: string;
-  NameOfSTKBankChoosingInternal: string;
+interface TransferState {
+  cardNumberInternal: string;
+  NameOfCardNumberInternal: string;
   BankValueMoneyInternal: number;
   messageTransferInternal: string;
   timeTransferBankInternal: string;
 }
 
 const transferInitialState: TransferState = {
-  STKBankChoosingInternal: '',
+  cardNumberInternal: '',
   BankValueMoneyInternal: 0,
   messageTransferInternal: '',
-  NameOfSTKBankChoosingInternal: '',
+  NameOfCardNumberInternal: '',
   timeTransferBankInternal: '',
 };
 
@@ -24,11 +24,8 @@ const transferSlice: Slice<TransferState> = createSlice({
     settimeTransferBankInternal: (state, action: PayloadAction<string>) => {
       state.timeTransferBankInternal = action.payload;
     },  
-    setNameOfSTKBankChoosingInternal: (state, action: PayloadAction<string>) => {
-      state.NameOfSTKBankChoosingInternal = action.payload;
-    },
-    setSTKBankChoosingInternal: (state, action: PayloadAction<string>) => {
-      state.STKBankChoosingInternal = action.payload;
+    setNameOfCardNumberInternal: (state, action: PayloadAction<string>) => {
+      state.NameOfCardNumberInternal = action.payload;
     },
     setBankValueMoneyInternal: (state, action: PayloadAction<number>) => {
       state.BankValueMoneyInternal = action.payload;
@@ -36,12 +33,15 @@ const transferSlice: Slice<TransferState> = createSlice({
     setmessageTransferInternal: (state, action: PayloadAction<string>) => {
       state.messageTransferInternal = action.payload;
     },
+    setcardNumberInternal: (state, action: PayloadAction<string>) => {
+      state.cardNumberInternal = action.payload;
+    },
   },
 });
 
 export const {
-  setNameOfSTKBankChoosingInternal,
-  setSTKBankChoosingInternal,
+  setNameOfCardNumberInternal,
+  setcardNumberInternal,
   setBankValueMoneyInternal,
   setmessageTransferInternal,
   settimeTransferBankInternal

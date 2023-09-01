@@ -38,8 +38,7 @@ const transactionCredit = (req, res) => {
                     .then((ccTransactionCreated) => {
                       db.accounts
                         .update({
-                          Account_Balance:
-                            currentBalance + amountToAdd,
+                          Account_Balance: currentBalance + amountToAdd,
                         })
                         .then((AccountBalanceUpdated) => {
                           return res.status(200).json({
@@ -107,6 +106,55 @@ const transactionCredit = (req, res) => {
     });
 };
 
+const checkCreditExist = (req, res) => {
+  db.credit_cards
+    .findOne({
+      where: { CC_number: req.body.CC_number }
+    })
+    .then((databaseCreditCard) => {
+      if (databaseCreditCard) {
+        
+            db.customers
+              .findOne({
+                where: {
+                  id: databaseCreditCard.Customer_id,
+                },
+              })
+              .then((dbCustomers) => {
+                return res.status(200).json({
+                  success: true,
+
+                  message: "Tài khoản đã tìm thấy",
+                  dbCustomers: dbCustomers,
+                  databaseCreditCard: databaseCreditCard
+                });
+              })
+              .catch((error) => {
+                // Xử lý lỗi
+                console.log(error);
+                res.status(200).send({
+                  success: false,
+                  error: "Lỗi khi tìm dữ liệu bảng customer",
+                });
+              })
+      } else {
+        return res.status(200).json({
+          success: false,
+          message: "Không tìm thấy người dùng",
+        });
+      }
+    })
+    .catch((error) => {
+      return res.status(200).json({
+        success: false,
+        message: "Lỗi khi tìm thấy giá trị trong bảng credit_cards",
+        error: error.message,
+      });
+    });
+};
+
+
 module.exports = {
   transactionCredit,
+  checkCreditExist
 };

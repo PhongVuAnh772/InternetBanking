@@ -16,7 +16,8 @@ import ConfirmInformationSendingWrap from './Layout/mobile/Generators/modules/sc
 import OTPCheckingWrap from './Layout/mobile/Generators/modules/screens/Layout/auth/OTPCheckingWrap';
 import SuccessingTransferWrap from './Layout/mobile/Generators/modules/screens/Layout/Success/SuccessingTransferWrap';
 import DepositMoney from './Layout/mobile/Generators/DepositMoney';
-
+import ConfirmInformationTransferCreditWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-credit/ConfirmInformationTransferCreditWrap';
+import ConfirmInformationInternalWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-internal/ConfirmInformationTransferInternalWrap';
 const MainStack = createStackNavigator();
 
 const MainPage = () => {
@@ -71,6 +72,14 @@ const MainPage = () => {
         component={SendingMoneyOrderCalendar}
       />
       <MainStack.Screen name="SendingGift" component={SendingGift} />
+      <MainStack.Screen
+        name="ConfirmInformationTransferCreditWrap"
+        component={ConfirmInformationTransferCreditWrap}
+      />
+      <MainStack.Screen
+        name="ConfirmInformationInternalWrap"
+        component={ConfirmInformationInternalWrap}
+      />
     </MainStack.Navigator>
   );
 };

@@ -3,8 +3,8 @@ import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 
-const SendingMoneyByCustomerHeader = () => {
-    const navigation = useNavigation();
+const ConfirmInformationCreditHeader = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -16,27 +16,41 @@ const SendingMoneyByCustomerHeader = () => {
         />
       </TouchableOpacity>
       <View style={{flex: 1, alignItems: 'center'}}>
-        <Text style={styles.Text}>Chuyển đến số tài khoản nội bộ</Text>
+        <Text style={styles.Text}>Chuyển đến số tài khoản</Text>
       </View>
+      <TouchableOpacity onPress={() => navigation.navigate('MainIndex')}>
+        <Text style={styles.TextCanceled}>Hủy</Text>
+      </TouchableOpacity>
     </View>
   );
-  
-}
+};
 
-export default SendingMoneyByCustomerHeader
+export default ConfirmInformationCreditHeader;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.17,
+    paddingVertical: 15,
     backgroundColor: 'white',
+    justifyContent: 'center',
     paddingHorizontal: 10,
     flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgb(245, 245, 245)',
   },
+  TouchableOpacity: {},
   Text: {
     fontSize: 17,
     color: 'black',
-    fontWeight: '500',
+    fontWeight: '600',
   },
-})
+  TextCanceled: {
+    fontSize: 18,
+    color: 'rgb(61, 134, 98)',
+    fontWeight: '600',
+  }
+});

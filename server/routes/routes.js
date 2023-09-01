@@ -46,10 +46,17 @@ router.post("/changePassword", forgetPasswordController.changePassWord);
 router.post("/createSendingMoney", bankingController.createSendingMoney);
 router.post("/createINickUser", customersController.createINickUser); //
 router.post("/createBank", bankingController.createBank); //
-router.post("/updateMoneySTK",bankingController.updateMoneySTK);
-router.post("/updateCreditScore",updateController.updateCreditScore)
-router.post("/sendMail",sendMailController.sendMail);
-router.post("/transactionCredit",transactionCreditController.transactionCredit)
+router.post("/updateMoneySTK", bankingController.updateMoneySTK);
+router.post("/updateCreditScore", updateController.updateCreditScore);
+router.post("/sendMail", sendMailController.sendMail);
+router.post(
+  "/transactionCredit",
+  transactionCreditController.transactionCredit
+);
+router.post("/checkINickBank", checkSTKBanksController.checkINickBank);
+router.post("/checkCreditExist", transactionCreditController.checkCreditExist);
+// router.post
+
 
 router.use("/", (req, res, next) => {
   res.status(404).json({ error: "router không tồn tại" });

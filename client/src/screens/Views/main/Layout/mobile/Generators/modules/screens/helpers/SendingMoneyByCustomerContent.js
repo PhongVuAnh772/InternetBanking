@@ -19,14 +19,67 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '../../../../../../../../../app/hooks/hooks';
-
+import Toast from 'react-native-toast-message';
 import axios from 'axios';
+import {
+  setBankValueMoneyInternal,
+  setmessageTransferInternal,
+  setcardNumberInternal,
+} from '../../../../../../../../../slice/transferCreditSlice';
 
 const ContentSendingMoney = () => {
-  
   const navigation = useNavigation();
-  
-  
+  const CardNumber = useAppSelector(state => state.credit.CC_number);
+  const Balance = useAppSelector(state => state.credit.Balance);
+  const networkState = useAppSelector(state => state.network.ipv4Address);
+  const accountNumber = useAppSelector(state => state.signUp.newAccountSTK)
+  const [creditSending, setCreditSending] = useState('');
+  const [valueMess, setValueMess] = useState('');
+  const [valueMoney, setValueMoney] = useState(0);
+  const dispatch = useAppDispatch();
+  const showToast = (type, mess) => {
+    Toast.show({
+      type: type,
+      text1: mess,
+    });
+  };
+  const handleContinue = async () => {
+    if (creditSending == '' && valueMoney == '') {
+      showToast('error', 'Bạn chưa nhập đủ trường');
+    }  else if (valueMoney < 10000) {
+      showToast('error', 'Số tiền chuyển phải bằng 10.000 đồng');
+    } else if (valueMoney > parseFloat(Balance)) {
+      showToast('error', 'Số tiền chuyển lớn hơn số tiền trong tài khoản');
+    } else if (creditSending == CardNumber) {
+      showToast('error', 'Bạn không thể chuyển về tài khoản bạn được');
+    } else {
+      try {
+        const response = await axios.post(
+          `${networkState}/api/checkCreditExist`,
+          {
+            CC_number: creditSending,
+          },
+        );
+        if (response.data.success === false) {
+          showToast(
+            'error',
+            'Số thẻ không có trong hệ thống, vui lòng thử lại',
+          );
+        } else {
+          console.log(creditSending);
+
+          dispatch(setBankValueMoneyInternal(valueMoney));
+          dispatch(setcardNumberInternal(creditSending));
+          if (valueMess !== '' && valueMess !== undefined) {
+            dispatch(setmessageTransferInternal(valueMess));
+          }
+          navigation.navigate('ConfirmInformationTransferCreditWrap');
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+  };
   return (
     <>
       <View style={styles.container}>
@@ -39,12 +92,13 @@ const ContentSendingMoney = () => {
           </View>
           <View style={styles.contentMoneyDes}>
             <Text style={styles.moneyValueSpecified}>
+              {Balance}{' '}
               <Text style={styles.moneyValueSpecifiedCurrency}>đ</Text>
             </Text>
             <View style={styles.accountInfoDemo}>
-              <Text style={styles.moneyValue}>Normal Account</Text>
+              <Text style={styles.moneyValue}>Normal Credit</Text>
               <Text style={styles.separate}>|</Text>
-              <Text style={styles.moneyValue}></Text>
+              <Text style={styles.moneyValue}>{accountNumber}</Text>
             </View>
           </View>
           <View style={styles.contentIcon}>
@@ -59,26 +113,25 @@ const ContentSendingMoney = () => {
         </View>
         <View style={styles.contentMoneyInfo}>
           <View style={styles.contentMoneyDes}>
-            
             <View style={styles.contentSTKInfoInput}>
               <TextInput
                 style={styles.inputSTK}
-                placeholder="Số tài khoản/ INick"
-                placeholderTextColor="rgb(145, 154, 156)"                
-                onBlur={() => {
-                  fetchDataUserSTK();
-                }}
+                placeholder="Số tài khoản nội bộ"
+                placeholderTextColor="rgb(145, 154, 156)"
+                onChangeText={setCreditSending}
+                maxLength={20}
               />
               <FontAwesome name="id-card-o" size={20} color="rgb(0, 173, 83)" />
             </View>
             {/* {messageError} */}
-            
+
             <View style={styles.contentSTKInfoInput}>
               <TextInput
                 style={styles.inputSTKValue}
                 placeholder="0"
                 placeholderTextColor="rgb(141, 152, 154)"
                 keyboardType="number-pad"
+                onChangeText={setValueMoney}
               />
               <Text style={styles.inputSTKValueCurrencySpecified}>đ</Text>
             </View>
@@ -87,6 +140,8 @@ const ContentSendingMoney = () => {
                 style={styles.inputSTK}
                 placeholder="Nội dung (Không bắt buộc)"
                 placeholderTextColor="rgb(145, 154, 156)"
+                value={valueMess}
+                onChangeText={setValueMess}
               />
               <View style={styles.contentSTKInfoInputOtherCounting}>
                 <FontAwesome
@@ -110,7 +165,6 @@ const ContentSendingMoney = () => {
           <Text style={styles.buttonFooterText}>Tiếp tục</Text>
         </TouchableOpacity>
       </View>
-      
     </>
   );
 };

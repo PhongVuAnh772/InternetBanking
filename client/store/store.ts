@@ -10,6 +10,7 @@ import creditReducer from '../src/slice/creditSlice';
 import passReducer  from '../src/slice/changePassSlice';
 import loanReducer from '../src/slice/loanSlice';
 import addressLocationReducer from '../src/slice/addressLocationSlice';
+import transferCreditReducer from '../src/slice/transferCreditSlice';
 
 
 const store = configureStore({
@@ -23,7 +24,8 @@ const store = configureStore({
     credit: creditReducer,
     pass: passReducer,
     loan: loanReducer,
-    location: addressLocationReducer
+    location: addressLocationReducer,
+    transferCredit: transferCreditReducer
   },
   middleware: [thunk]
 

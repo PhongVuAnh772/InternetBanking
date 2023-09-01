@@ -19,14 +19,89 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '../../../../../../../../../app/hooks/hooks';
-
+import Toast from 'react-native-toast-message';
 import axios from 'axios';
+import {
+  setSTKBankChoosingInternal,
+  setmessageTransferInternal,
+  setBankValueMoneyInternal,
+  setNameOfSTKBankChoosingInternal,
+} from '../../../../../../../../../slice/transferInternalSlice.ts';
 
 const ContentSendingMoney = () => {
-  
   const navigation = useNavigation();
-  
-  
+  const CardNumber = useAppSelector(state => state.credit.CC_number);
+  const Balance = useAppSelector(state => state.credit.Balance);
+  const networkState = useAppSelector(state => state.network.ipv4Address);
+  const [creditSending, setCreditSending] = useState('');
+  const [valueMess, setValueMess] = useState('');
+  const [valueMoney, setValueMoney] = useState(0);
+  const dispatch = useAppDispatch();
+  const showToast = (type, mess) => {
+    Toast.show({
+      type: type,
+      text1: mess,
+    });
+  };
+  const handleContinue = async () => {
+    if (creditSending == '' && valueMoney == '') {
+      showToast('error', 'Bạn chưa nhập đủ trường');
+    } else if (creditSending.length < 14) {
+      showToast('error', 'Số thẻ phải là dãy có 14 kí tự, vui lòng nhập lại');
+    } else if (valueMoney < 10000) {
+      showToast('error', 'Số tiền chuyển phải bằng 10.000 đồng');
+    } else if (valueMoney > parseFloat(Balance)) {
+      showToast('error', 'Số tiền chuyển lớn hơn số tiền trong thẻ');
+    } else if (creditSending == CardNumber) {
+      showToast('error', 'Bạn không thể chuyển về thẻ bạn được');
+    } else {
+      try {
+        const response = await axios.post(`${networkState}/api/checkSTKBanks`, {
+          Account_id: creditSending,
+        });
+
+        if (response.data.success) {
+          console.log(creditSending);
+
+          dispatch(setBankValueMoneyInternal(valueMoney));
+          dispatch(setSTKBankChoosingInternal(creditSending));
+          dispatch(
+            setNameOfSTKBankChoosingInternal(
+              response.data.dbCustomers.Full_Name,
+            ),
+          );
+
+          if (valueMess !== '' && valueMess !== undefined) {
+            dispatch(setmessageTransferInternal(valueMess));
+          }
+          navigation.navigate('ConfirmInformationTransferCreditWrap');
+        } else {
+          const response2 = await axios.post(
+            `${networkState}/api/checkINickBank`,
+            {iNick: creditSending},
+          );
+
+          if (response2.data && response2.data.success) {
+            dispatch(setBankValueMoneyInternal(valueMoney));
+            dispatch(setSTKBankChoosingInternal(creditSending));
+            dispatch(
+              setNameOfSTKBankChoosingInternal(
+                response2.data.dbCustomers.Full_Name,
+              ),
+            );
+            if (valueMess !== '' && valueMess !== undefined) {
+              dispatch(setmessageTransferInternal(valueMess));
+            }
+            navigation.navigate('ConfirmInformationTransferCreditWrap');
+          } else {
+            showToast('error', 'Không tìm thấy số tài khoản hoặc iNick bất kì');
+          }
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+  };
   return (
     <>
       <View style={styles.container}>
@@ -39,12 +114,13 @@ const ContentSendingMoney = () => {
           </View>
           <View style={styles.contentMoneyDes}>
             <Text style={styles.moneyValueSpecified}>
+              {Balance}{' '}
               <Text style={styles.moneyValueSpecifiedCurrency}>đ</Text>
             </Text>
             <View style={styles.accountInfoDemo}>
-              <Text style={styles.moneyValue}>Normal Account</Text>
+              <Text style={styles.moneyValue}>Normal Credit</Text>
               <Text style={styles.separate}>|</Text>
-              <Text style={styles.moneyValue}></Text>
+              <Text style={styles.moneyValue}>{CardNumber}</Text>
             </View>
           </View>
           <View style={styles.contentIcon}>
@@ -59,26 +135,25 @@ const ContentSendingMoney = () => {
         </View>
         <View style={styles.contentMoneyInfo}>
           <View style={styles.contentMoneyDes}>
-            
             <View style={styles.contentSTKInfoInput}>
               <TextInput
                 style={styles.inputSTK}
                 placeholder="Số thẻ"
-                placeholderTextColor="rgb(145, 154, 156)"                
-                onBlur={() => {
-                  fetchDataUserSTK();
-                }}
+                placeholderTextColor="rgb(145, 154, 156)"
+                onChangeText={setCreditSending}
+                maxLength={14}
               />
               <FontAwesome name="id-card-o" size={20} color="rgb(0, 173, 83)" />
             </View>
             {/* {messageError} */}
-            
+
             <View style={styles.contentSTKInfoInput}>
               <TextInput
                 style={styles.inputSTKValue}
                 placeholder="0"
                 placeholderTextColor="rgb(141, 152, 154)"
                 keyboardType="number-pad"
+                onChangeText={setValueMoney}
               />
               <Text style={styles.inputSTKValueCurrencySpecified}>đ</Text>
             </View>
@@ -87,6 +162,8 @@ const ContentSendingMoney = () => {
                 style={styles.inputSTK}
                 placeholder="Nội dung (Không bắt buộc)"
                 placeholderTextColor="rgb(145, 154, 156)"
+                value={valueMess}
+                onChangeText={setValueMess}
               />
               <View style={styles.contentSTKInfoInputOtherCounting}>
                 <FontAwesome
@@ -110,7 +187,6 @@ const ContentSendingMoney = () => {
           <Text style={styles.buttonFooterText}>Tiếp tục</Text>
         </TouchableOpacity>
       </View>
-      
     </>
   );
 };
