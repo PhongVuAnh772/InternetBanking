@@ -22,11 +22,11 @@ import {
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 import {
-  setSTKBankChoosingInternal,
-  setmessageTransferInternal,
   setBankValueMoneyInternal,
-  setNameOfSTKBankChoosingInternal,
-} from '../../../../../../../../../slice/transferInternalSlice.ts';
+  setmessageTransferInternal,
+  setcardNumberInternal,
+  setNameOfCardNumberInternal
+} from '../../../../../../../../../slice/transferCreditSlice';
 
 const ContentSendingMoney = () => {
   const navigation = useNavigation();
@@ -52,50 +52,33 @@ const ContentSendingMoney = () => {
       showToast('error', 'Số tiền chuyển phải bằng 10.000 đồng');
     } else if (valueMoney > parseFloat(Balance)) {
       showToast('error', 'Số tiền chuyển lớn hơn số tiền trong thẻ');
-    } else if (creditSending == CardNumber) {
-      showToast('error', 'Bạn không thể chuyển về thẻ bạn được');
-    } else {
+    } 
+    // else if (creditSending == CardNumber) {
+    //   showToast('error', 'Bạn không thể chuyển về thẻ bạn được');
+    // } 
+    else {
       try {
-        const response = await axios.post(`${networkState}/api/checkSTKBanks`, {
-          Account_id: creditSending,
-        });
-
-        if (response.data.success) {
+        const response = await axios.post(
+          `${networkState}/api/checkCreditExist`,
+          {
+            CC_number: creditSending,
+          },
+        );
+        if (response.data.success === false) {
+          showToast(
+            'error',
+            'Số thẻ không có trong hệ thống, vui lòng thử lại',
+          );
+        } else {
           console.log(creditSending);
 
           dispatch(setBankValueMoneyInternal(valueMoney));
-          dispatch(setSTKBankChoosingInternal(creditSending));
-          dispatch(
-            setNameOfSTKBankChoosingInternal(
-              response.data.dbCustomers.Full_Name,
-            ),
-          );
-
+          dispatch(setcardNumberInternal(creditSending));
+                    dispatch(setNameOfCardNumberInternal(response.data.dbCustomers.Full_Name));
           if (valueMess !== '' && valueMess !== undefined) {
             dispatch(setmessageTransferInternal(valueMess));
           }
           navigation.navigate('ConfirmInformationTransferCreditWrap');
-        } else {
-          const response2 = await axios.post(
-            `${networkState}/api/checkINickBank`,
-            {iNick: creditSending},
-          );
-
-          if (response2.data && response2.data.success) {
-            dispatch(setBankValueMoneyInternal(valueMoney));
-            dispatch(setSTKBankChoosingInternal(creditSending));
-            dispatch(
-              setNameOfSTKBankChoosingInternal(
-                response2.data.dbCustomers.Full_Name,
-              ),
-            );
-            if (valueMess !== '' && valueMess !== undefined) {
-              dispatch(setmessageTransferInternal(valueMess));
-            }
-            navigation.navigate('ConfirmInformationTransferCreditWrap');
-          } else {
-            showToast('error', 'Không tìm thấy số tài khoản hoặc iNick bất kì');
-          }
         }
       } catch (error) {
         console.log(error.message);

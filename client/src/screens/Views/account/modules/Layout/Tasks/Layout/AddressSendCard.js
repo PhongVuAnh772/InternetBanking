@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,9 @@ import {
   TouchableHighlight,
   Modal,
   ActivityIndicator,
+  TouchableWithoutFeedback,
+  Pressable,
+  ScrollView,
 } from 'react-native';
 import MapView, {Callout, Marker} from 'react-native-maps';
 import axios from 'axios';
@@ -22,8 +25,9 @@ import {setgetPhysicalCard} from '../../../../../../../slice/creditSlice';
 
 const GoogleMap = () => {
   const [isLoading, setIsLoading] = useState(false);
-
+  const mapRef = useRef(null);
   const navigation = useNavigation();
+  const [visible, setVisible] = useState(true);
   const HANOI_COORDINATE = {
     latitude: 21.029045,
     longitude: 105.806627,
@@ -31,13 +35,16 @@ const GoogleMap = () => {
   const [selectedCoordinate, setSelectedCoordinate] = useState({
     latitude: 21.0010423,
     longitude: 105.8443824,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
   });
+  const [locationInput, setLocationInput] = useState([]);
   const [locationString, setLocationString] = useState('');
   const [modalVisibleTicket, setModalVisibleTicket] = useState(false);
   const networkState = useAppSelector(state => state.network.ipv4Address);
   const CCNumber = useAppSelector(state => state.credit.CC_number);
   const getPhysicalCard = useAppSelector(state => state.credit.getPhysicalCard);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const handleClickGetLocationDefault = async () => {
     Geolocation.getCurrentPosition(info => {
@@ -45,15 +52,59 @@ const GoogleMap = () => {
       setSelectedCoordinate({
         latitude: info.coords.latitude,
         longitude: info.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
       });
+      if (mapRef.current) {
+        mapRef.current.animateToRegion(selectedCoordinate, 1000);
+      }
     });
   };
+  const handleChoosingLocation = locations => {
+    console.log(locations?.point);
+    setSelectedCoordinate({
+      latitude: locations?.point?.lat,
+      longitude: locations?.point?.lng,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    });
+    setVisible(false);
+    mapRef.current.animateToRegion(selectedCoordinate, 1000);
+  };
+  useEffect(() => {
+    if (locationString == '') {
+      console.log('Chưa có gì');
+      setLocationInput([]);
+    } else {
+      const handleInputChange = async () => {
+        setVisible(true);
+
+        try {
+          const resp = await axios.get(
+            `https://graphhopper.com/api/1/geocode?key=1cf0d74f-6e4c-4761-a9a3-0b64c4e011f1&q=${locationString}&limit=10`,
+          );
+
+          setLocationInput(resp.data.hits);
+
+          if (locationString == '') {
+            console.log('Chưa có gì');
+            setLocationInput([]);
+          }
+        } catch (err) {
+          console.log('Co loi : ' + err);
+          console.log('Có lỗi server');
+        }
+      };
+
+      handleInputChange();
+    }
+  }, [locationString]);
   const handleSubmit = async () => {
     // setModalVisibleTicket(false);
     // setIsLoading(true);
 
     try {
-      console.log(CCNumber)
+      console.log(CCNumber);
       const response = await axios.put(
         `${networkState}/api/changePhysicalCards`,
         {
@@ -63,7 +114,7 @@ const GoogleMap = () => {
       if (response.data.success) {
         dispatch(setgetPhysicalCard(true));
         navigation.navigate('SuccessShippingCard');
-        console.log(response.data)
+        console.log(response.data);
       }
     } catch (error) {
       setIsLoading(false);
@@ -96,12 +147,8 @@ const GoogleMap = () => {
     <>
       <MapView
         style={{flex: 1}}
-        initialRegion={{
-          latitude: selectedCoordinate.latitude,
-          longitude: selectedCoordinate.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
+        ref={mapRef}
+        initialRegion={selectedCoordinate}
         // showsBuildings={true}
         // mapType="satellite"
         showsUserLocation={true}
@@ -120,11 +167,32 @@ const GoogleMap = () => {
         onChangeText={setLocationString}
       />
 
-      <TouchableHighlight
+      <Pressable
         style={styles.iconSearch}
         onPress={() => handlePlaceSelected()}>
         <MaterialIcons name="search" size={30} color="black" />
-      </TouchableHighlight>
+      </Pressable>
+      <ScrollView
+        style={[visible ? styles.resultInputContainer : {display: 'none'}]}
+        showsVerticalScrollIndicator>
+        {locationInput.map((locations, index) => {
+          return (
+            <Pressable
+              key={index}
+              style={styles.resultInputItem}
+              onPress={() => handleChoosingLocation(locations)}>
+              <Text style={styles.resultLocationName}>{locations.name}</Text>
+              <Text style={styles.resultLocationDes}>{locations.country}</Text>
+
+              {locations.street != undefined && (
+                <Text style={styles.resultLocationDes}>
+                  {locations?.street}
+                </Text>
+              )}
+            </Pressable>
+          );
+        })}
+      </ScrollView>
       <TouchableOpacity
         style={[styles.getlocationButton, styles.elevationModal]}
         onPress={() => handleClickGetLocationDefault()}>
@@ -197,6 +265,29 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 40,
     margin: 10,
+  },
+  resultInputContainer: {
+    position: 'absolute',
+    width: '80%',
+    height: '60%',
+    top: '11.1%',
+    right: '3%',
+    backgroundColor: 'white',
+  },
+  resultInputItem: {
+    paddingVertical: 10,
+    width: '100%',
+    borderBottomWidth: 0.5,
+    borderBottomColor: 'gray',
+  },
+  resultLocationName: {
+    fontSize: 16,
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  resultLocationDes: {
+    fontSize: 16,
+    color: 'black',
   },
   map: {
     width: '100%',

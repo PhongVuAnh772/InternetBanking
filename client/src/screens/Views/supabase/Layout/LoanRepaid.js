@@ -14,10 +14,11 @@ import {useAppSelector, useAppDispatch} from '../../../../app/hooks/hooks';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
-import { setLoanRepaidTotal } from '../../../../slice/loanSlice';
+import {setLoanRepaidTotal} from '../../../../slice/loanSlice';
+import {setBalance} from '../../../../slice/creditSlice';
 
 const LoanRepaid = () => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const fullName = useAppSelector(state => state.signUp.fullName);
   const Email = useAppSelector(state => state.signUp.email);
   const region = useAppSelector(state => state.signUp.regionName);
@@ -30,51 +31,53 @@ const LoanRepaid = () => {
   const newFloatMoney = parseFloat(newLoanMoney.toFixed(2));
   const loanTaken = useAppSelector(state => state.loan.loanTotal);
   const loanRepaid = useAppSelector(state => state.loan.loanRepaidTotal);
-          const networkState = useAppSelector(state => state.network.ipv4Address)
-
+  const networkState = useAppSelector(state => state.network.ipv4Address);
+  const oldBalance = useAppSelector(state => state.credit.Balance);
+  const newOldBalance = parseFloat(oldBalance);
   const showToast = (type, title, text) => {
     Toast.show({
       type: type,
       text1: title,
     });
   };
-  console.log((loanTaken + (loanTaken * 1.6 / 100))  - loanRepaid);
-  console.log(loanRepaid -newFloatMoney);
+  // console.log(loanTaken + (loanTaken * 1.6) / 100 - loanRepaid);
+  // console.log(loanRepaid - newFloatMoney);
   const handleNext = async () => {
     setVisible(true);
-    if (newFloatMoney > ((loanTaken + (loanTaken * 1.6 / 100))  - loanRepaid)) {
-        showToast('error', 'Số tiền bạn trả vượt quá số nợ')
-        setVisible(false);
-    }
-    else if (((loanTaken + (loanTaken * 1.6 / 100))  - loanRepaid - newFloatMoney) < 0) {
-        showToast('error', 'Số tiền bạn trả vượt quá số nợ')
-        setVisible(false);
-    }
-    else {
-        try {
-      const res = await axios.post(
-        `${networkState}/api/loanRepayment`,
-        {
+    if (newFloatMoney > loanTaken + (parseFloat(loanTaken) * 1.6) / 100 - parseFloat(loanRepaid)) {
+      showToast('error', 'Số tiền bạn trả vượt quá số nợ');
+      setVisible(false);
+    } else if (
+      parseFloat(loanTaken) + (parseFloat(loanTaken) * 1.6) / 100 - parseFloat(loanRepaid) - newFloatMoney <
+      0
+    ) {
+      showToast('error', 'Số tiền bạn trả vượt quá số nợ');
+      setVisible(false);
+    } else {
+      try {
+        const res = await axios.post(`${networkState}/api/loanRepayment`, {
           CMNDUser: CMNDUser,
           Account_Balance: newFloatMoney,
-        },
-      );
-      if (res.data.success) {
-        setTimeout(() => {
+        });
+        if (res.data.success) {
+          setTimeout(() => {
+            setVisible(false);
+            dispatch(setLoanRepaidTotal(parseFloat(loanRepaid) + parseFloat(newFloatMoney)));
+            dispatch(setBalance(newOldBalance - newFloatMoney));
+
+            navigation.navigate('RepaidSuccess');
+            console.log(newOldBalance - newFloatMoney);
+          }, 3000);
+        } else {
           setVisible(false);
-          dispatch(setLoanRepaidTotal(loanRepaid + newFloatMoney))
-          navigation.navigate("RepaidSuccess");
-        }, 3000);
-      } else {
+          showToast('error', 'Lỗi truyền thông tin');
+        }
+      } catch (err) {
         setVisible(false);
         showToast('error', 'Lỗi truyền thông tin');
+        console.log('Co loi : ' + err.message);
+        console.log('Có lỗi server');
       }
-    } catch (err) {
-      setVisible(false);
-      showToast('error', 'Lỗi truyền thông tin');
-      console.log('Co loi : ' + err.message);
-      console.log('Có lỗi server');
-    }
     }
   };
   return (
@@ -104,11 +107,16 @@ const LoanRepaid = () => {
               <ActivityIndicator
                 size="large"
                 color="#00ff00"
-                style={{alignSelf: 'center'}}
+                style={{alignSelf: 'center', position: 'absolute', top: '50%'}}
               />
             )}
             <View style={styles.contentTextInput}>
-              <TextInput style={styles.input} value={loanMoney} onChangeText={setLoanMoney} keyboardType='numeric'/>
+              <TextInput
+                style={styles.input}
+                value={loanMoney}
+                onChangeText={setLoanMoney}
+                keyboardType="numeric"
+              />
               <Text style={styles.contentLabel}>Nhập số tiền muốn trả</Text>
             </View>
 

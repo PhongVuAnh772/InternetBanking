@@ -18,6 +18,12 @@ import SuccessingTransferWrap from './Layout/mobile/Generators/modules/screens/L
 import DepositMoney from './Layout/mobile/Generators/DepositMoney';
 import ConfirmInformationTransferCreditWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-credit/ConfirmInformationTransferCreditWrap';
 import ConfirmInformationInternalWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-internal/ConfirmInformationTransferInternalWrap';
+import SuccessTransferCreditWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-internal/success/SuccessTransferInternalWrap';
+import OTPCheckingCreditWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-internal/auth/OTPCheckingCreditWrap';
+import OTPCheckingInternalWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-credit/auth/OTPCheckingInternalWrap';
+import OTPCreditWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-credit/OTP/OTPCreditWrap';
+import OTPInternalWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-internal/OTP/OTPInternalWrap';
+
 const MainStack = createStackNavigator();
 
 const MainPage = () => {
@@ -33,19 +39,43 @@ const MainPage = () => {
           animation: 'slide_from_bottom',
         }}
       />
-      <MainStack.Screen name="OTPScreen" component={OTPScreenWrap} options={{
+
+      <MainStack.Screen
+        name="OTPScreen"
+        component={OTPScreenWrap}
+        options={{
           presentation: 'modal',
           animationTypeForReplace: 'pop',
           animation: 'slide_from_right',
-        }}/>
+        }}
+      />
+      <MainStack.Screen name="OTPInternalWrap" component={OTPInternalWrap} />
+      <MainStack.Screen name="OTPCreditWrap" component={OTPCreditWrap} />
       <MainStack.Screen
         name="ConfirmInformationSendingWrap"
         component={ConfirmInformationSendingWrap}
+        options={{
+          presentation: 'modal',
+          animationTypeForReplace: 'pop',
+          animation: 'slide_from_right',
+        }}
+      />
+      <MainStack.Screen
+        name="OTPCheckingCreditWrap"
+        component={OTPCheckingCreditWrap}
+      />
+      <MainStack.Screen
+        name="OTPCheckingInternalWrap"
+        component={OTPCheckingInternalWrap}
       />
       <MainStack.Screen name="OTPCheckingWrap" component={OTPCheckingWrap} />
       <MainStack.Screen
         name="SuccessingTransferWrap"
         component={SuccessingTransferWrap}
+      />
+      <MainStack.Screen
+        name="SuccessTransferCreditWrap"
+        component={SuccessTransferCreditWrap}
       />
       <MainStack.Screen name="SendingMoney" component={SendingMoney} />
       <MainStack.Screen name="DepositMoney" component={DepositMoney} />

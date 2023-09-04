@@ -14,8 +14,8 @@ import {useAppSelector, useAppDispatch} from '../../../../app/hooks/hooks';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
-import { setLoanTotal } from '../../../../slice/loanSlice';
-
+import { setLoanTotal, } from '../../../../slice/loanSlice';
+import { setBalance } from '../../../../slice/creditSlice';
 const LoanOfficialScreen = () => {
   const dispatch = useAppDispatch()
   const fullName = useAppSelector(state => state.signUp.fullName);
@@ -31,6 +31,7 @@ const LoanOfficialScreen = () => {
   const oldLoan = useAppSelector(state => state.loan.loanTotal)
   const networkState = useAppSelector(state => state.network.ipv4Address)
   const oldBalance = useAppSelector(state => state.credit.Balance)
+  const newOldBalance = parseFloat(oldBalance)
 
   const showToast = (type, title, text) => {
     Toast.show({
@@ -54,7 +55,7 @@ const LoanOfficialScreen = () => {
         setTimeout(() => {
           setVisible(false);
           dispatch(setLoanTotal(oldLoan + newFloatMoney))
-          dispatch(setBalance(oldBalance + newFloatMoney))
+          dispatch(setBalance((newOldBalance + newFloatMoney).toFixed(2)))
           navigation.navigate("LoanSuccess")
         }, 3000);
       }
@@ -96,7 +97,7 @@ const LoanOfficialScreen = () => {
           <ActivityIndicator
             size="large"
             color="#00ff00"
-            style={{alignSelf: 'center'}}
+            style={{alignSelf: 'center',position: 'absolute',top: '50%'}}
           />
         )}
 

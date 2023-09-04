@@ -15,35 +15,14 @@ import {
 
 const ConfirmInformationInternalContent = () => {
   const navigation = useNavigation();
-  const BankChoosingValue = useAppSelector(
-    state => state.transfer.BankChoosing,
-  );
-  const BankChoosingIconValue = useAppSelector(
-    state => state.transfer.BankChoosingIcon,
-  );
-  const binBankChoosingValue = useAppSelector(
-    state => state.transfer.binBankChoosing,
-  );
-  const STKBankChoosingValue = useAppSelector(
-    state => state.transfer.STKBankChoosing,
-  );
-  const BankValueMoneyValue = useAppSelector(
-    state => state.transfer.BankValueMoney,
-  );
-  const messageTransferValue = useAppSelector(
-    state => state.transfer.messageTransfer,
-  );
-  const longNameBankChoosingValue = useAppSelector(
-    state => state.transfer.longNameBankChoosing,
-  );
-  const NameOfSTKBankChoosingValue = useAppSelector(
-    state => state.transfer.NameOfSTKBankChoosing,
-  );
-  const userNameBankingDetails = useAppSelector(state => state.signUp.fullName);
-  const userSTKBankingDetails = useAppSelector(
-    state => state.signUp.newAccountSTK,
-  );
+  const STKBankChoosingInternal = useAppSelector(state => state.transferInternal.STKBankChoosingInternal)
+  const NameOfSTKBankChoosingInternal = useAppSelector(state => state.transferInternal.NameOfSTKBankChoosingInternal)
+  const BankValueMoneyInternal = useAppSelector(state => state.transferInternal.BankValueMoneyInternal)
+  const messageTransferInternal = useAppSelector(state => state.transferInternal.messageTransferInternal)
   const userBalanceDetails = useAppSelector(state => state.credit.Balance)
+  const initialUser = useAppSelector(state => state.signUp.fullName)
+    const initialSTK = useAppSelector(state => state.signUp.newAccountSTK)
+
 
   function numberToWordsVi(number) {
     const units = [
@@ -109,7 +88,6 @@ const ConfirmInformationInternalContent = () => {
 
     return words.trim();
   }
-  console.log(STKBankChoosingValue);
   return (
     // onPress={() => navigation.navigate('OTPScreen')
     <>
@@ -120,21 +98,20 @@ const ConfirmInformationInternalContent = () => {
               Tài khoản nguồn
             </Text>
             <View style={styles.sendingContentUserNowContent}>
-              <View style={styles.sendingContentUserNowIconContainer}>
+              <View style={styles.sendingContentUserNowIcon}>
                 <MaterialIcons
                   name="credit-card"
                   size={20}
                   color="rgb(64, 163, 119)"
-                  style={styles.sendingContentUserNowIcon}
                 />
               </View>
               <View style={styles.sendingContentUserNowInformation}>
                 <Text style={styles.sendingContentUserNowInformationName}>
-                  {userNameBankingDetails}
+                  {`${initialUser}`}
                 </Text>
 
                 <Text style={styles.sendingContentUserNowInformationSTK}>
-                  {userSTKBankingDetails}
+                  {initialSTK}
                 </Text>
               </View>
               <Text style={styles.sendingContentUserNowTitle}>{userBalanceDetails} đ</Text>
@@ -152,11 +129,11 @@ const ConfirmInformationInternalContent = () => {
               </View>
               <View style={styles.sendingContentUserNowInformation}>
                 <Text style={styles.sendingContentUserNowInformationName}>
-                  {`${BankChoosingValue} - ${longNameBankChoosingValue}`}
+                  {`${NameOfSTKBankChoosingInternal}`}
                 </Text>
 
                 <Text style={styles.sendingContentUserNowInformationSTK}>
-                  {STKBankChoosingValue}
+                  {STKBankChoosingInternal}
                 </Text>
               </View>
             </View>
@@ -166,23 +143,23 @@ const ConfirmInformationInternalContent = () => {
           <View style={styles.VPBankSendingInfor}>
             <Text style={styles.VPBankSendingInforTitle}>Tên người nhận</Text>
             <Text style={styles.VPBankSendingInforContent}>
-              {NameOfSTKBankChoosingValue}
+              {NameOfSTKBankChoosingInternal}
             </Text>
           </View>
           <View style={styles.VPBankSendingInfor}>
             <Text style={styles.VPBankSendingInforTitle}>Tài khoản nhận</Text>
             <Text style={styles.VPBankSendingInforContent}>
-              {STKBankChoosingValue}
+              {STKBankChoosingInternal}
             </Text>
           </View>
           <View style={[styles.VPBankSendingInfor]}>
             <Text style={styles.VPBankSendingInforTitle}>Số tiền chuyển</Text>
             <Text style={styles.VPBankSendingInforContentValue}>
-              {BankValueMoneyValue}{' '}
+              {BankValueMoneyInternal}{' '}
               <Text style={styles.VPBankSendingInforContentCurrency}>đ</Text>
             </Text>
             <Text style={styles.VPBankSendingInforTitleVN}>
-              {`${numberToWordsVi(BankValueMoneyValue)} việt nam đồng`}
+              {`${numberToWordsVi(BankValueMoneyInternal)} việt nam đồng`}
             </Text>
           </View>
           <View style={styles.VPBankSendingInfor}>
@@ -197,7 +174,7 @@ const ConfirmInformationInternalContent = () => {
           <View style={styles.VPBankSendingInfor}>
             <Text style={styles.VPBankSendingInforTitle}>Nội dung</Text>
             <Text style={styles.VPBankSendingInforContent}>
-              {messageTransferValue}
+              {messageTransferInternal}
             </Text>
           </View>
           <View style={styles.VPBankSendingInfor}>

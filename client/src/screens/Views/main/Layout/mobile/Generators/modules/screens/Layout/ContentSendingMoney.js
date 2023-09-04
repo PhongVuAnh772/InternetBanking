@@ -117,19 +117,33 @@ const ContentSendingMoney = () => {
     } else if (onChangeMoney > parseFloat(userBankMoney)) {
       showToast('error', 'Số tiền chuyển lớn hơn số tiền trong tài khoản');
     } else if (
-      BankChoosingValue === '' ||
-      STKSendingPerson === '' ||
-      binBankChoosingValue === '' ||
-      longNameBankChoosingValue === '' ||
-      NameOfSTKBankChoosingValue === '' ||
+      BankChoosingValue === '' &&
+      (STKSendingPerson === '' || STKBankChoosingValue == '') &&
+      binBankChoosingValue === '' &&
+      longNameBankChoosingValue === '' &&
+      NameOfSTKBankChoosingValue === '' &&
       onChangeMoney === ''
     ) {
       showToast('error', 'Bạn phải nhập đủ các trường');
+      console.log(
+        BankChoosingValue,
+        STKSendingPerson,
+        binBankChoosingValue,
+        longNameBankChoosingValue,
+        NameOfSTKBankChoosingValue,
+        onChangeMoney,
+      );
     } else {
-      dispatch(setSTKBankChoosing(STKSendingPerson))
-      dispatch(setBankValueMoney(onChangeMoney));
-      dispatch(setmessageTransfer(onChangeMessage));
-      navigation.navigate('ConfirmInformationSendingWrap');
+      if (STKSendingPerson != '') {
+        dispatch(setSTKBankChoosing(STKSendingPerson));
+        dispatch(setBankValueMoney(onChangeMoney));
+        dispatch(setmessageTransfer(onChangeMessage));
+        navigation.navigate('ConfirmInformationSendingWrap');
+      } else {
+        dispatch(setBankValueMoney(onChangeMoney));
+        dispatch(setmessageTransfer(onChangeMessage));
+        navigation.navigate('ConfirmInformationSendingWrap');
+      }
     }
   };
   const fetchDataBanks = async () => {

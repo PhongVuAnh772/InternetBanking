@@ -111,7 +111,6 @@ const ConfirmInformationSendingContent = () => {
   }
   console.log(STKBankChoosingValue);
   return (
-    // onPress={() => navigation.navigate('OTPScreen')
     <>
       <ScrollView style={styles.container}>
         <View style={styles.sendingContentUser}>
@@ -252,7 +251,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
   },
-  sendingContentUserNowIconContainer: {flex: 0.84},
   sendingContentUserNowInformation: {
     flexDirection: 'column',
     flex: 8,

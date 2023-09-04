@@ -27,7 +27,6 @@ const HeaderMain = ({props = '10299200...', money = 14000}) => {
   const originalSTK = useAppSelector(state => state.signUp.newAccountSTK)
   const moneyValue = useAppSelector(state => state.credit.Balance)
   const PINCode = useAppSelector(state => state.credit.PINCode)
-  console.log(PINCode)
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>

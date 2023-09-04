@@ -12,7 +12,7 @@ const updateController = require("../controllers/updateController");
 const forgetPasswordController = require("../controllers/forgetPassword");
 const sendMailController = require("../controllers/sendMailController");
 const transactionCreditController = require("../controllers/creditController");
-
+const historyTransactionController = require("../controllers/historyTransaction");
 router.post("/signup", index.signUp);
 router.post("/login", index.signIn);
 router.post("/private", index.isAuth);
@@ -55,7 +55,8 @@ router.post(
 );
 router.post("/checkINickBank", checkSTKBanksController.checkINickBank);
 router.post("/checkCreditExist", transactionCreditController.checkCreditExist);
-// router.post
+router.post("/getTransactionCK", historyTransactionController.getTransactionCK)
+router.post("/getTransactionCredit", historyTransactionController.getTransactionCredit)
 
 
 router.use("/", (req, res, next) => {
