@@ -81,20 +81,17 @@ const showToast = (type, title,text) => {
       text2: text,
     });
   };
-  console.log(CMNDUser,binBankChoosing,messageTransfer,BankValueMoney,NameOfSTKBankChoosing,STKBankChoosing)
   const handleContinue = async () => {
     setVisible(true);
     try {
       const ress = await axios.post(
-        `${networkState}/api/createSendingMoney`,
+        `${networkState}/api/createCreditCardTransaction`,
         {
           CMNDUser: CMNDUser,
-        BINCode:binBankChoosing,
-        Transaction_Type: "Chuyển khoản",
-        Description: messageTransfer,
+        
+       Merchant_Details: "Giao dịch với tài khoản ",
         Account_Balance: BankValueMoney,
-        Payee: NameOfSTKBankChoosing,
-        recipient_account_number: STKBankChoosing,
+      
         Account_id: accountID
         },
       );  

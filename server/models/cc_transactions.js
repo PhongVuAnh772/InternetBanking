@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
       Transaction_Date: DataTypes.DATEONLY,
       Amount: DataTypes.DECIMAL(10, 2),
       Merchant_Details: DataTypes.STRING,
+      recipient_accounts_id: {
+        type: DataTypes.INTEGER,
+        foreignKey: true,
+      }
     },
     {
       sequelize,

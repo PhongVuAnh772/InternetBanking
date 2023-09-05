@@ -147,7 +147,7 @@ const ConfirmInformationCreditContent = () => {
             </Text>
           </View>
           <View style={styles.VPBankSendingInfor}>
-            <Text style={styles.VPBankSendingInforTitle}>Tài khoản nhận</Text>
+            <Text style={styles.VPBankSendingInforTitle}>Số thẻ nhận</Text>
             <Text style={styles.VPBankSendingInforContent}>
               {cardNumberChoosing}
             </Text>
@@ -229,7 +229,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
   },
-  sendingContentUserNowIconContainer: {flex: 0.84},
   sendingContentUserNowInformation: {
     flexDirection: 'column',
     flex: 8,

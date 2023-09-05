@@ -465,10 +465,229 @@ const updateMoneySTK = (req, res) => {
     });
 };
 
+const transactionInternal = (req, res) => {
+  try {
+    db.customers
+      .findOne({ where: { CMND: req.body.CMNDUser } })
+      .then((customer) => {
+        db.account_customers
+          .findOne({
+            where: {
+              Customer_id: customer.Customer_id,
+            },
+          })
+          .then((dataAccountCustomer) => {
+            db.accounts
+              .findOne({
+                where: {
+                  Account_id: dataAccountCustomer.Account_id,
+                },
+              })
+              .then((dataAccount) => {
+                db.accounts
+                  .findOne({
+                    where: {
+                      Account_id: req.body.AccountIdReceipted,
+                    },
+                  })
+                  .then((dataAccountReceipted) => {
+                    const currentBalance = parseFloat(
+                      dataAccount.Account_Balance
+                    );
+                    const currentBalanceReceipted = parseFloat(
+                      dataAccountReceipted.Account_Balance
+                    );
+                    const amountToAdd = parseFloat(req.body.Account_Balance);
+                    if (isNaN(currentBalance) || isNaN(amountToAdd)) {
+                      return res.status(400).json({
+                        success: false,
+                        message: "Invalid input for Account_Balance.",
+                      });
+                    }
+                    const updatedBalance = currentBalance - amountToAdd;
+                    const updatedBalanceReceipted =
+                      currentBalanceReceipted - amountToAdd;
+
+                    db.accounts
+
+                      .update(
+                        { Account_Balance: updatedBalance.toFixed(2) },
+                        {
+                          where: {
+                            Account_id: dataAccount.Account_id,
+                          },
+                        }
+                      )
+                      .then((dataAccountUpdated) => {
+                        db.accounts
+                          .update(
+                            {
+                              Account_Balance:
+                                updatedBalanceReceipted.toFixed(2),
+                            },
+                            {
+                              where: {
+                                Account_id: dataAccountReceipted.Account_id,
+                              },
+                            }
+                          )
+                          .then((dataAccountReceiptedUpdated) => {
+                            db.banking_transactions
+                              .max("id")
+                              .then((maxBankingTransactionId) => {
+                                const newBankingTransactionId =
+                                  maxBankingTransactionId
+                                    ? maxBankingTransactionId + 1
+                                    : 1;
+
+                                db.banking_transactions
+                                  .create({
+                                    id: newBankingTransactionId,
+                                    Transaction_Type: "Chuyển khoản",
+                                    Description: req.body.Description,
+                                    Amount: amountToAdd,
+                                    Date: new Date(),
+                                    Customer_id: customer.id,
+                                    recipient_accounts_id:
+                                      dataAccountReceipted.Account_id,
+                                  })
+                                  .then((createdbankingtransactions) => {
+                                    return res.status(200).json({
+                                      success: true,
+                                      message:
+                                        "Tạo dữ liệu chuyển khoản thành công",
+                                      createdbankingtransactions:
+                                        createdbankingtransactions,
+                                      dataAccountReceiptedUpdated:
+                                        dataAccountReceiptedUpdated,
+                                      AccountIdReceipted: dataAccountUpdated,
+                                    });
+                                  })
+                                  .catch((error) => {
+                                    db.banking_transactions
+                                      .destroy({
+                                        where: {
+                                          id: newBankingTransactionId,
+                                        },
+                                      })
+                                      .then((accountsDestroyed) => {
+                                        db.accounts
+                                          .update(
+                                            {
+                                              Account_Balance: currentBalance,
+                                            },
+                                            {
+                                              where: {
+                                                Account_id:
+                                                  dataAccount.Account_id,
+                                              },
+                                            }
+                                          )
+                                          .then((errBackUpData) => {
+                                            db.accounts
+                                              .update(
+                                                {
+                                                  Account_Balance:
+                                                    currentBalanceReceipted,
+                                                },
+                                                {
+                                                  where: {
+                                                    Account_id:
+                                                      dataAccountReceipted.Account_id,
+                                                  },
+                                                }
+                                              )
+                                              .then((errUpdatedAccount) => {
+                                                return res.status(500).json({
+                                                  success: false,
+                                                  message:
+                                                    "Lỗi khi tạo dữ liệu chuyển khoản",
+                                                  error: error.message,
+                                                });
+                                              });
+                                          });
+                                      });
+                                  });
+                              })
+
+                              .catch((error) => {
+                                return res.status(500).json({
+                                  message:
+                                    "Lỗi khi tìm giá trị lớn nhất của banking_transaction_id",
+                                  error: error.message,
+                                });
+                              });
+                          })
+                          .catch((err) => {
+                            db.accounts
+                              .update(
+                                {
+                                  Account_Balance: currentBalance,
+                                },
+                                {
+                                  where: {
+                                    Account_id: dataAccountReceipted.Account_id,
+                                  },
+                                }
+                              )
+                              .then((errUpdated) => {
+                                return res.status(500).json({
+                                  success: false,
+                                  message:
+                                    "Lỗi khi update dữ liệu tiền mặt của người gửi",
+                                  error: err.message,
+                                });
+                              });
+                          });
+                      })
+                      .catch((err) => {
+                        return res.status(500).json({
+                          success: false,
+                          message:
+                            "Lỗi khi update dữ liệu tiền mặt của người gửi",
+                          error: err.message,
+                        });
+                      });
+                  });
+              })
+              .catch((err) => {
+                return res.status(500).json({
+                  success: false,
+                  message: "Lỗi khi tìm thông tin tài khoản",
+                  error: err.message,
+                });
+              });
+          })
+          .catch((err) => {
+            return res.status(500).json({
+              success: false,
+              message: "Lỗi khi tìm thông tin tài khoản",
+              error: err.message,
+            });
+          });
+      })
+
+      .catch((err) => {
+        return res.status(500).json({
+          success: false,
+          message: "Lỗi khi tìm thông tin khách hàng",
+          error: err.message,
+        });
+      });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Lỗi server",
+      error: err.message,
+    });
+  }
+};
+
 module.exports = {
   addCreditCard,
   createSendingMoney,
   createBank,
   createCreditCardTransaction,
   updateMoneySTK,
+  transactionInternal,
 };

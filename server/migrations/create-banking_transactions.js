@@ -34,12 +34,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATEONLY,
       },
-      accept_Recharge: {
-        allowNull: true,
-        type: Sequelize.BOOLEAN,
-      },
+
       Customer_id: {
         allowNull: false,
+        foreignKey: true,
+        type: Sequelize.INTEGER,
+      },
+      recipient_accounts_id: {
+        allowNull: true,
         foreignKey: true,
         type: Sequelize.INTEGER,
       },
@@ -48,7 +50,6 @@ module.exports = {
         foreignKey: true,
         type: Sequelize.INTEGER,
       },
-      
     });
   },
   async down(queryInterface, Sequelize) {

@@ -28,6 +28,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      recipient_accounts_id: {
+        type: Sequelize.INTEGER,
+        foreignKey: true,
+      }
     });
   },
   async down(queryInterface, Sequelize) {

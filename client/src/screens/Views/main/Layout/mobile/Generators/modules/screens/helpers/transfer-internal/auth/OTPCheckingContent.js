@@ -1,11 +1,13 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {Text, View, StyleSheet, Animated, TouchableOpacity,ActivityIndicator} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import { settimeTransferBank } from '../../../../../../../../../../../slice/transferSlice';
 import { useAppDispatch,useAppSelector } from '../../../../../../../../../../../app/hooks/hooks';
 import Toast from 'react-native-toast-message';
+import { settimeTransferBankInternal } from '../../../../../../../../../../../slice/transferCreditSlice';
+
 import axios from 'axios';
 const TimerBar = () => {
+  const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const [remainingSeconds, setRemainingSeconds] = useState(20);
   const progressAnimation = useRef(new Animated.Value(0)).current;
@@ -17,24 +19,12 @@ const TimerBar = () => {
   const [serial, setSerial] = useState('');
   const [currentDate, setCurrentDate] = useState('');
   const [visible, setVisible] = useState(false);
-  const STKBankChoosing = useAppSelector(
-    state => state.transfer.STKBankChoosing,
-  );
-  const BankValueMoney = useAppSelector(state => state.transfer.BankValueMoney);
-  const messageTransfer = useAppSelector(
-    state => state.transfer.messageTransfer,
-  );
-  const binBankChoosing = useAppSelector(
-    state => state.transfer.binBankChoosing,
-  );
-  const NameOfSTKBankChoosing = useAppSelector(
-    state => state.transfer.NameOfSTKBankChoosing,
-  );
+  
   const accountID = useAppSelector(state => state.signUp.newAccountSTK)
   const CMNDUser = useAppSelector(state => state.signUp.personalIdNumber);
-  const navigation = useNavigation();
-        const networkState = useAppSelector(state => state.network.ipv4Address)
-
+  const networkState = useAppSelector(state => state.network.ipv4Address)
+  const creditBankValue = useAppSelector(state => state.transferCredit.BankValueMoneyInternal)
+  const cardNumberInternal = useAppSelector(state => state.transferCredit.cardNumberInternal)
   const formatTime = seconds => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -79,29 +69,25 @@ const showToast = (type, title,text) => {
       text2: text,
     });
   };
-  console.log(CMNDUser,binBankChoosing,messageTransfer,BankValueMoney,NameOfSTKBankChoosing,STKBankChoosing)
   const handleContinue = async () => {
     setVisible(true);
     try {
       const ress = await axios.post(
-        `${networkState}/api/createSendingMoney`,
+        `${networkState}/api/createCreditCardTransaction`,
         {
           CMNDUser: CMNDUser,
-        BINCode:binBankChoosing,
-        Transaction_Type: "Chuyển khoản",
-        Description: messageTransfer,
-        Account_Balance: BankValueMoney,
-        Payee: NameOfSTKBankChoosing,
-        recipient_account_number: STKBankChoosing,
-        Account_id: accountID
+        Merchant_Details:binBankChoosing,
+        Account_Balance: creditBankValue,
+        Account_id: accountID,
+        recipient_credit: cardNumberInternal
         },
       );  
       if (ress.data.success === true) {
         setTimeout(() => {
           setVisible(false);
-          dispatch(settimeTransferBank(currentDate))
+          dispatch(settimeTransferBankInternal(currentDate))
           showToast('success', 'Bạn có biến động số dư mới', '');
-          navigation.navigate('SuccessingTransferWrap');
+          navigation.navigate('SuccessTransferCreditWrap');
         }, 3000);
       }
     } catch (err) {

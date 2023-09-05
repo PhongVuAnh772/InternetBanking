@@ -53,6 +53,10 @@ router.post(
   "/transactionCredit",
   transactionCreditController.transactionCredit
 );
+router.post(
+  "/transactionInternal",
+  bankingController.transactionInternal
+);
 router.post("/checkINickBank", checkSTKBanksController.checkINickBank);
 router.post("/checkCreditExist", transactionCreditController.checkCreditExist);
 router.post("/getTransactionCK", historyTransactionController.getTransactionCK)
