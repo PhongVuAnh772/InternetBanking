@@ -39,7 +39,7 @@ const SecondSignUpNumberScreen = ({route}) => {
             Account_id: valueSTK,
           },
         );
-        if (res.data.success) {
+        if (!(res.data.success)) {
           dispatch(setnewAccountSTK(valueSTK));
           navigation.navigate('ThirdSignUpNumberScreen', {
             email: email,
@@ -61,7 +61,7 @@ const SecondSignUpNumberScreen = ({route}) => {
           Account_id: valueSTKNotWant,
         },
       );
-      if (res.data.success) {
+      if (!(res.data.success)) {
         dispatch(setnewAccountSTK(valueSTKNotWant));
 
         navigation.navigate('ThirdSignUpNumberScreen', {

@@ -78,21 +78,21 @@ const ContentAccountPage = () => {
           <Text
             style={[
               styles.numberCVC,
-              {color: 'white', fontSize: 27, left: 70, top: 119},
+              {color: 'white', fontSize: 27, left: '20%', top: '40%'},
             ]}>
             {formattedStr}
           </Text>
           <Text
             style={[
               styles.numberCVC,
-              {color: 'white', fontSize: 15, left: 120, top: 165},
+              {color: 'white', fontSize: 15, left: '30%', top: '55.5%'},
             ]}>
             {replacedStr}
           </Text>
           <Text
             style={[
               styles.numberCVC,
-              {color: 'white', fontSize: 18, left: 65, bottom: 95},
+              {color: 'white', fontSize: 18, left: '18%', bottom: '31%'},
             ]}>
             {userName}
           </Text>

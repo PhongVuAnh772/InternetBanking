@@ -299,9 +299,7 @@ const ContentSendingMoney = () => {
                       ? STKBankChoosingValue
                       : STKSendingPerson
                   }
-                  onBlur={() => {
-                    fetchDataUserSTK();
-                  }}
+                  onBlur={fetchDataUserSTK}
                 />
                 <FontAwesome
                   name="id-card-o"

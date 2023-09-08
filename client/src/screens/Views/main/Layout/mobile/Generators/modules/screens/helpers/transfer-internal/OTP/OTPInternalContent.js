@@ -52,7 +52,7 @@ const OTPInternalContent = () => {
           if (newCode === PINCode) {
             showToast('success', 'Mã PIN đúng', '')
 
-            navigation.navigate('OTPCheckingCreditWrap')
+            navigation.navigate('OTPCheckingInternalWrap')
           }
           else {
             showToast('error', 'Sai mã PIN', 'Vui lòng truy cập lại và nhập lại mã PIN')
@@ -61,7 +61,7 @@ const OTPInternalContent = () => {
 
         } catch (error) {
           showToast('error', 'Lỗi server', 'Vui lòng tạo lại phiếu truy cập')
-          navigation.navigate('OTPCheckingCreditWrap')
+          navigation.navigate('MainIndex')
 
         }
 

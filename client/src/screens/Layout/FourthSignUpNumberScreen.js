@@ -9,6 +9,7 @@ import {
   Image,
   Platform,
   PermissionsAndroid,
+  ActivityIndicator
 } from 'react-native';
 import iconMember from '../../assets/member-card.png';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -18,6 +19,8 @@ import {useAppDispatch, useAppSelector} from '../../app/hooks/hooks';
 import {setimageBackURL, setimageFrontURL} from '../../slice/signUpSlice';
 
 const App = () => {
+    const [visible, setVisible] = useState(false);
+
   const [filePath, setFilePath] = useState([]);
   const [responseDataUser, setResponseDataUser] = useState([]);
   const navigation = useNavigation();
@@ -64,19 +67,21 @@ const App = () => {
   const fetchDataUser = async results => {
     try {
       if (results) {
+        setVisible(true)
         const response = await axios.post(
           `${networkState}/api/upImageToGlobal`,
           {
             filePathSpecified: results.assets[0].base64,
           },
         );
-          
-          if (response.data.success) {
-            dispatch(setimageFrontURL(response.data.signedUrl));
-            navigation.navigate('BonusContinueSignUpNumberScreen');
-          } else {
-            console.log('Upload not successful:', response.data);
-          }
+
+        if (response.data.success) {
+          dispatch(setimageFrontURL(response.data.signedUrl));
+          setVisible(false)
+          navigation.navigate('BonusContinueSignUpNumberScreen');
+        } else {
+          console.log('Upload not successful:', response.data);
+        }
       } else {
         console.log('Upload not successful:', response.data);
       }
@@ -124,45 +129,54 @@ const App = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.backContainer}>
-        <MaterialIcons name="arrow-back" size={20} color="white" />
-      </View>
-      <View style={styles.screenContainer}>
-        <View style={styles.imageContainer}>
-          <Image source={iconMember} style={styles.imageTitle} />
+    <>
+      <View style={styles.container}>
+        <View style={styles.backContainer}>
+          <MaterialIcons name="arrow-back" size={20} color="white" />
         </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.textStyleHighLight}>
+        <View style={styles.screenContainer}>
+          <View style={styles.imageContainer}>
+            <Image source={iconMember} style={styles.imageTitle} />
+          </View>
+          <View style={styles.textContainer}>
             <Text style={styles.textStyleHighLight}>
-              Bạn được đưa tới hệ thống nhận diện danh tính chuẩn Auth02
+              <Text style={styles.textStyleHighLight}>
+                Bạn được đưa tới hệ thống nhận diện danh tính chuẩn Auth02
+              </Text>
             </Text>
-          </Text>
-          <Text style={styles.textStyle}>
-            {'\u2022'} <Text style={styles.textStyleFocus}>Bước 1:</Text> Chụp
-            mặt trước căn cước công dân của bạn.
-          </Text>
-          <Text style={styles.textStyle}>
-            {'\u2022'} <Text style={styles.textStyleFocus}>Bước 2:</Text> Sau
-            khi hệ thống xác nhận, tiếp tục chụp mặt sau của giấy tờ.
-          </Text>
-          <Text style={styles.textStyle}>
-            {'\u2022'} <Text style={styles.textStyleFocus}>Bước 3:</Text> Đối
-            chiếu và xác nhận thông tin cá nhân
-          </Text>
-          <Text style={styles.textStyleHighLight}>
-            Xin mời chụp mặt trước CCCD/CMND đầu tiên
-          </Text>
+            <Text style={styles.textStyle}>
+              {'\u2022'} <Text style={styles.textStyleFocus}>Bước 1:</Text> Chụp
+              mặt trước căn cước công dân của bạn.
+            </Text>
+            <Text style={styles.textStyle}>
+              {'\u2022'} <Text style={styles.textStyleFocus}>Bước 2:</Text> Sau
+              khi hệ thống xác nhận, tiếp tục chụp mặt sau của giấy tờ.
+            </Text>
+            <Text style={styles.textStyle}>
+              {'\u2022'} <Text style={styles.textStyleFocus}>Bước 3:</Text> Đối
+              chiếu và xác nhận thông tin cá nhân
+            </Text>
+            <Text style={styles.textStyleHighLight}>
+              Xin mời chụp mặt trước CCCD/CMND đầu tiên
+            </Text>
+          </View>
         </View>
-      </View>
 
-      <TouchableOpacity
-        activeOpacity={0.5}
-        style={styles.buttonStyle}
-        onPress={() => captureImage('photo')}>
-        <Text style={styles.textStyle}>Bắt đầu xác thực</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={styles.buttonStyle}
+          onPress={() => captureImage('photo')}>
+          <Text style={styles.textStyle}>Bắt đầu xác thực</Text>
+        </TouchableOpacity>
+      </View>
+      {visible && (
+        <ActivityIndicator
+          size="large"
+          color="#00ff00"
+          style={{alignSelf: 'center', position: 'absolute', top: '50%'}}
+        />
+      )}
+    </>
   );
 };
 

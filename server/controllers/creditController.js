@@ -45,150 +45,158 @@ const transactionCredit = (req, res) => {
                                   },
                                 })
                                 .then((accountsRecipientData) => {
-                                  const oldBalance =
-                                    accountsRecipientData.Account_Balance;
-                                  db.accounts.update(
-                                    {
-                                      Account_Balance: parseFloat(
-                                        req.body.recipient_credit
-                                      ),
-                                    },
-                                    {
-                                      where: {
-                                        Account_id:
-                                          accountsRecipientData.Account_id,
-                                      },
-                                    }
-                                      .then((updatedDataBalanceAccount) => {
-                                        const currentBalance = parseFloat(
-                                          databaseCreditCard.Account_Balance
-                                        );
-                                        const amountToAdd = parseFloat(
-                                          req.body.moneySent
-                                        );
-                                        db.cc_transactions
-                                          .create({
-                                            id: maxCCTransactionsIdRes,
-                                            CC_number:
-                                              databaseCreditCard.CC_number,
-                                            Transaction_Date: Date.now(),
-                                            Amount: amountToAdd,
-                                            MerchantDetails:
-                                              req.body.merchantDetails,
-                                            recipient_accounts_id:
-                                              accountsRecipientData.id,
-                                          })
-
-                                          .then((ccTransactionCreated) => {
-                                            db.accounts
-                                              .update(
-                                                {
-                                                  Account_Balance:
-                                                    currentBalance -
-                                                    amountToAdd,
-                                                },
-                                                {
-                                                  where: {
-                                                    Account_id: dataAccount.id,
-                                                  },
-                                                }
-                                              )
-                                              .then((AccountBalanceUpdated) => {
-                                                return res.status(200).json({
-                                                  success: true,
-                                                  message:
-                                                    "Thành công trong việc update mọi dữ liệu",
-                                                  ccTransactionCreated:
-                                                    ccTransactionCreated,
-                                                  AccountBalanceUpdated:
-                                                    AccountBalanceUpdated,
-                                                  updatedDataReceiptBalanceAccount:
-                                                    updatedDataBalanceAccount,
-                                                });
-                                              })
-                                              .catch((err) => {
-                                                db.cc_transactions
-                                                  .destroy({
-                                                    where: {
-                                                      id: maxCCTransactionsIdRes,
-                                                    },
-                                                  })
-                                                  .then((accountsDestroyed) => {
-                                                    db.accounts
-                                                      .update(
-                                                        {
-                                                          Account_balance:
-                                                            oldBalance,
-                                                        }, // Sử dụng giá trị cũ
-                                                        {
-                                                          where: {
-                                                            Customer_id:
-                                                              customersRecipientData.id,
-                                                          },
-                                                        }
-                                                      )
-                                                      .then((errBackUpData) => {
-                                                        return res
-                                                          .status(200)
-                                                          .json({
-                                                            success: false,
-                                                            message:
-                                                              "Lỗi khi update dữ liệu Account_Balance và đã xóa bảng thành công",
-                                                            err: err.message,
-                                                          });
-                                                      });
-                                                  });
-                                              });
-                                          })
-                                          .catch((err) => {
-                                            db.accounts
-                                              .update(
-                                                { Account_balance: oldBalance }, // Sử dụng giá trị cũ
-                                                {
-                                                  where: {
-                                                    Customer_id:
-                                                      customersRecipientData.id,
-                                                  },
-                                                }
-                                              )
-                                              .then((errBackUpData) => {
-                                                return res.status(200).json({
-                                                  success: false,
-                                                  message:
-                                                    "Lỗi khi tạo thanh toán cho bảng cc_transactions",
-                                                  err: err.message,
-                                                });
-                                              });
-                                          });
-                                      })
-                                      .catch((err) => {
-                                        db.accounts
-                                          .update(
-                                            { Account_balance: oldBalance }, // Sử dụng giá trị cũ
-                                            {
-                                              where: {
-                                                Customer_id:
-                                                  customersRecipientData.id,
-                                              },
-                                            }
-                                          )
-                                          .then((errBackUpData) => {
-                                            return res.status(200).json({
-                                              success: false,
-                                              message:
-                                                "Lỗi khi update dữ liệu account_balance người nhận",
-                                              err: err.message,
-                                            });
-                                          });
-                                      })
+                                  const oldBalance = parseFloat(
+                                    accountsRecipientData.Account_Balance
                                   );
+                                  const amountToAdded = parseFloat(
+                                    req.body.moneySent
+                                  );
+
+                                  db.accounts
+                                    .update(
+                                      {
+                                        Account_Balance: oldBalance + amountToAdded
+                                        ,
+                                      },
+                                      {
+                                        where: {
+                                          Account_id:
+                                            accountsRecipientData.Account_id,
+                                        },
+                                      }
+                                    )
+                                    .then((updatedDataBalanceAccount) => {
+                                      const currentBalance = parseFloat(
+                                        databaseCreditCard.Account_Balance
+                                      );
+                                      const amountToAdd = parseFloat(
+                                        req.body.moneySent
+                                      );
+                                      db.cc_transactions
+                                        .create({
+                                          id: maxCCTransactionsIdRes,
+                                          CC_number:
+                                            databaseCreditCard.CC_number,
+                                          Transaction_Date: Date.now(),
+                                          Amount: amountToAdd,
+                                          Merchant_Details:
+                                            req.body.merchantDetails,
+                                          recipient_accounts_id:
+                                            accountsRecipientData.id,
+                                        })
+                                        .then((ccTransactionCreated) => {
+                                          db.accounts
+                                            .update(
+                                              {
+                                                Account_Balance: currentBalance - amountToAdd,
+                                              },
+                                              {
+                                                where: {
+                                                  Account_id: dataAccount.id,
+                                                },
+                                              }
+                                            )
+                                            .then((AccountBalanceUpdated) => {
+                                          return res.status(200).json({
+                                            success: true,
+                                            message:
+                                              "Thành công trong việc update mọi dữ liệu",
+                                            ccTransactionCreated:
+                                              ccTransactionCreated,
+                                            // AccountBalanceUpdated: AccountBalanceUpdated,
+                                            updatedDataReceiptBalanceAccount:
+                                              updatedDataBalanceAccount,
+                                            moneySent: req.body.moneySent,
+                                          });
+                                        })
+                                            .catch((err) => {
+                                              db.cc_transactions
+                                                .destroy({
+                                                  where: {
+                                                    id: maxCCTransactionsIdRes,
+                                                  },
+                                                })
+                                                .then((accountsDestroyed) => {
+                                                  db.accounts
+                                                    .update(
+                                                      {
+                                                        Account_balance: oldBalance,
+                                                      }, 
+                                                      {
+                                                        where: {
+                                                          Customer_id: customersRecipientData.id,
+                                                        },
+                                                      }
+                                                    )
+                                                    .then((errBackUpData) => {
+                                                      return res.status(200).json({
+                                                        success: false,
+                                                        message: "Lỗi khi update dữ liệu Account_Balance và đã xóa bảng thành công",
+                                                        err: err.message,
+                                                      });
+                                                    });
+                                                });
+                                            });
+                                        })
+                                        .catch((err) => {
+                                          db.accounts
+                                            .update(
+                                              {
+                                                Account_balance: oldBalance,
+                                              }, // Sử dụng giá trị cũ
+                                              {
+                                                where: {
+                                                  Customer_id:
+                                                    customersRecipientData.id,
+                                                },
+                                              }
+                                            )
+                                            .then((errBackUpData) => {
+                                              return res.status(200).json({
+                                                success: false,
+                                                message:
+                                                  "Lỗi khi tạo thanh toán cho bảng cc_transactions",
+                                                err: err.message,
+                                              });
+                                            });
+                                        });
+                                    })
+                                    .catch((err) => {
+                                      db.accounts
+                                        .update(
+                                          {
+                                            Account_balance: oldBalance,
+                                          },
+                                          {
+                                            where: {
+                                              Customer_id:
+                                                customersRecipientData.id,
+                                            },
+                                          }
+                                        )
+                                        .then((errBackUpData) => {
+                                          return res.status(200).json({
+                                            success: false,
+                                            message:
+                                              "Lỗi khi update dữ liệu account_balance người nhận",
+                                            err: err.message,
+                                          });
+                                        });
+                                    });
+                                })
+                                .catch((err) => {
+                                  return res.status(200).json({
+                                    success: false,
+                                    message:
+                                      "Lỗi khi tìm người dùng trong bảng Account",
+                                  });
                                 });
                             })
                             .catch((err) => {
                               return res.status(200).json({
                                 success: false,
                                 message:
-                                  "Lỗi khi tìm nguời được chuyển tiền trong bảng customers",
+                                  "Lỗi khi tìm người dùng trong bảng Acccount_Customers",
                                 err: err.message,
                               });
                             });

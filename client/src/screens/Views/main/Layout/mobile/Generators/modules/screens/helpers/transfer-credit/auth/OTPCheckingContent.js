@@ -1,10 +1,18 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {Text, View, StyleSheet, Animated, TouchableOpacity,ActivityIndicator} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Animated,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import { settimeTransferBank } from '../../../../../../../../../../../slice/transferSlice';
+import {settimeTransferBank} from '../../../../../../../../../../../slice/transferSlice';
 import {
   useAppDispatch,
-  useAppSelector} from '../../../../../../../../../../../app/hooks/hooks'
+  useAppSelector,
+} from '../../../../../../../../../../../app/hooks/hooks';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 const TimerBar = () => {
@@ -19,24 +27,15 @@ const TimerBar = () => {
   const [serial, setSerial] = useState('');
   const [currentDate, setCurrentDate] = useState('');
   const [visible, setVisible] = useState(false);
-  const STKBankChoosing = useAppSelector(
-    state => state.transfer.STKBankChoosing,
-  );
-  const BankValueMoney = useAppSelector(state => state.transfer.BankValueMoney);
-  const messageTransfer = useAppSelector(
-    state => state.transfer.messageTransfer,
-  );
-  const binBankChoosing = useAppSelector(
-    state => state.transfer.binBankChoosing,
-  );
-  const NameOfSTKBankChoosing = useAppSelector(
-    state => state.transfer.NameOfSTKBankChoosing,
-  );
-  const accountID = useAppSelector(state => state.signUp.newAccountSTK)
+  
+  const BankValueMoney = useAppSelector(state => state.transferCredit.BankValueMoneyInternal);
+  
+  const accountID = useAppSelector(state => state.signUp.newAccountSTK);
   const CMNDUser = useAppSelector(state => state.signUp.personalIdNumber);
   const navigation = useNavigation();
-        const networkState = useAppSelector(state => state.network.ipv4Address)
-
+  const networkState = useAppSelector(state => state.network.ipv4Address);
+  const CCNumberReceipted = useAppSelector(state => state.transferCredit.cardNumberInternal)
+  const CCNumber = useAppSelector(state => state.credit.CC_number)
   const formatTime = seconds => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -74,7 +73,7 @@ const TimerBar = () => {
   };
 
   // const BankChoosingIcon
-const showToast = (type, title,text) => {
+  const showToast = (type, title, text) => {
     Toast.show({
       type: type,
       text1: title,
@@ -84,31 +83,28 @@ const showToast = (type, title,text) => {
   const handleContinue = async () => {
     setVisible(true);
     try {
-      const ress = await axios.post(
-        `${networkState}/api/createCreditCardTransaction`,
-        {
-          CMNDUser: CMNDUser,
-        
-       Merchant_Details: "Giao dịch với tài khoản ",
-        Account_Balance: BankValueMoney,
-      
-        Account_id: accountID
-        },
-      );  
+      const ress = await axios.post(`${networkState}/api/transactionInternal`, {
+        CMNDUser: CMNDUser,
+        recipient_credit: CCNumberReceipted,
+        merchantDetails: `Giao dịch với tài khoản thẻ : ${CCNumberReceipted} `,
+        moneySent: BankValueMoney,
+        CC_number: CCNumber
+      });
       if (ress.data.success === true) {
         setTimeout(() => {
           setVisible(false);
-          dispatch(settimeTransferBank(currentDate))
+          dispatch(settimeTransferBank(currentDate));
           showToast('success', 'Bạn có biến động số dư mới', '');
           navigation.navigate('SuccessingTransferWrap');
         }, 3000);
       }
     } catch (err) {
-                setVisible(false);
+      setVisible(false);
 
       console.log(err.message);
       return false;
     }
+    console.log(CMNDUser,AccountIdReceipted,BankValueMoney,accountID)
   };
   useEffect(() => {
     const animation = Animated.timing(progressAnimation, {
@@ -188,12 +184,12 @@ const showToast = (type, title,text) => {
           </View>
         </View>
         {visible && (
-        <ActivityIndicator
-          size="large"
-          color="#00ff00"
-          style={{alignSelf: 'center'}}
-        />
-      )}
+          <ActivityIndicator
+            size="large"
+            color="#00ff00"
+            style={{alignSelf: 'center'}}
+          />
+        )}
         <View style={styles.OTPCheckingSerial}>
           <Text style={styles.OTPCheckingSerialText}>Serial: {serial}</Text>
           <Text style={styles.OTPCheckingSerialText}>{currentDate}</Text>

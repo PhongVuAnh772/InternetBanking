@@ -68,7 +68,7 @@ const BonusContinueSignUpNumberScreen = () => {
   const fetchDataUser = async (results) => {
     try {
       if (results) {
-   
+        setVisible(true)
         const response = await axios.post(
           `${networkState}/api/upImageBackToGlobal`,
           {
@@ -77,6 +77,7 @@ const BonusContinueSignUpNumberScreen = () => {
         );
         if (response.data.success) {
             dispatch(setimageBackURL(response.data.signedUrl));
+            setVisible(false);
             navigation.navigate('ConfirmCheckMicroBlink');
           } else {
             console.log('Upload not successful:', response.data);
@@ -118,8 +119,9 @@ const BonusContinueSignUpNumberScreen = () => {
           alert(response.errorMessage);
           return;
         } else {
-     
+          
           setFilePath(response);
+
           fetchDataUser(response);
           
         }
@@ -155,7 +157,7 @@ const BonusContinueSignUpNumberScreen = () => {
         <ActivityIndicator
           size="large"
           color="#00ff00"
-          style={{alignSelf: 'center', position: 'absolute'}}
+          style={{alignSelf: 'center', position: 'absolute',top:'50%'}}
         />)}</>
   );
 };

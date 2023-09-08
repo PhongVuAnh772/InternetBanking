@@ -23,7 +23,6 @@ import LastSuccessSignUpScreen from './src/screens/Layout/LastSuccessSignUpScree
 import PassChange from './src/auth/Template/Interface/tasks/Pass/PassChange';
 import { setLogin } from './src/slice/authSlice';
 import Toast from 'react-native-toast-message';
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {

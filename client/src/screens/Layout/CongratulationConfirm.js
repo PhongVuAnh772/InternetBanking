@@ -1,5 +1,5 @@
-import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, View, TouchableOpacity, Image,ActivityIndicator} from 'react-native';
+import React,{useState} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 import {useAppSelector} from '../../app/hooks/hooks';
@@ -11,6 +11,8 @@ const CongratulationConfirm = () => {
   const personalIdNumber = useAppSelector(
     state => state.signUp.personalIdNumber,
   );
+  const [visible, setVisible] = useState(false);
+
   const sex = useAppSelector(state => state.signUp.sex);
   const region = useAppSelector(state => state.signUp.regionName);
   const email = useAppSelector(state => state.signUp.email);
@@ -18,46 +20,42 @@ const CongratulationConfirm = () => {
   const dateOfBirth = useAppSelector(state => state.signUp.dateOfBirth);
   const CMND = useAppSelector(state => state.signUp.CMNDUser);
   const fullName = useAppSelector(state => state.signUp.fullName);
-  const networkState = useAppSelector(state => state.network.ipv4Address)
+  const networkState = useAppSelector(state => state.network.ipv4Address);
   const currentTimeInMilliseconds = Date.now();
-const currentDate = new Date(currentTimeInMilliseconds);
+  const currentDate = new Date(currentTimeInMilliseconds);
   function generateRandomNumberString(length) {
-        let result = '';
-        for (let i = 0; i < length; i++) {
-            result += Math.floor(Math.random() * 10);
-        }
-        return result;
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += Math.floor(Math.random() * 10);
     }
+    return result;
+  }
   const handleButton = async () => {
+    setVisible(true);
     try {
-
-        const response = await axios.post(
-          `${networkState}/api/signup`,
-          {
-            gender: sex === 'male' || 'Nam' ? 'M' : 'F',
-            region: region,
-            email: email,
-            Account_id: newAccountSTK,
-            password: email,
-            CMNDUser: CMND,
-            dateOfBirth: dateOfBirth,
-            fullName: fullName,
-            PINCode: "0000",
-            CardNumber: generateRandomNumberString(14),
-            CVCNumber: generateRandomNumberString(3),
-            subject: "Đăng ký tài khoản VP Bank",
-            time: currentDate.toISOString(),
-          },
-        );
-        if(response.data.success) {
-            navigation.navigate('LastSuccessSignUpScreen')
-        }
-        
-      
+      const response = await axios.post(`${networkState}/api/signup`, {
+        gender: sex === 'male' || 'Nam' ? 'M' : 'F',
+        region: region,
+        email: email,
+        Account_id: newAccountSTK,
+        password: email,
+        CMNDUser: CMND,
+        dateOfBirth: dateOfBirth,
+        fullName: fullName,
+        PINCode: '0000',
+        CardNumber: generateRandomNumberString(14),
+        CVCNumber: generateRandomNumberString(3),
+        subject: 'Đăng ký tài khoản VP Bank',
+        time: currentDate.toISOString(),
+      });
+      if (response.data.success) {
+        setVisible(false)
+        navigation.navigate('LastSuccessSignUpScreen');
+      }
     } catch (error) {
       console.log(error.message);
     }
-  }
+  };
   return (
     <>
       <View style={styles.container}>
@@ -106,7 +104,7 @@ const currentDate = new Date(currentTimeInMilliseconds);
             </View>
             <Text style={styles.textResultContent}>{newAccountSTK}</Text>
           </View>
-         
+
           <View style={styles.congratulationUserInfoOther}>
             <View style={styles.UserOtherInfoContainer}>
               <Text style={styles.textTitle}>Ngày sinh</Text>
@@ -121,11 +119,20 @@ const currentDate = new Date(currentTimeInMilliseconds);
           </View>
         </View>
       </View>
-      <TouchableOpacity style={styles.buttonContainer} onPress={() => handleButton()}>
-        <Text style={styles.buttonText} >
+      <TouchableOpacity
+        style={styles.buttonContainer}
+        onPress={() => handleButton()}>
+        <Text style={styles.buttonText}>
           Tôi đồng ý với thông tin cá nhân đã liệt kê
         </Text>
       </TouchableOpacity>
+      {visible && (
+        <ActivityIndicator
+          size="large"
+          color="#00ff00"
+          style={{alignSelf: 'center', position: 'absolute', top: '50%'}}
+        />
+      )}
     </>
   );
 };

@@ -202,7 +202,7 @@ const createCreditCardTransaction = (req, res) => {
               })
               .then((dataAccount) => {
                 const currentBalance = parseFloat(dataAccount.Account_Balance);
-                const amountToAdd = parseFloat(req.body.Account_Balance);
+                const amountToAdd = parseFloat(req.body.amountToAdd);
 
                 if (isNaN(currentBalance) || isNaN(amountToAdd)) {
                   return res.status(400).json({
@@ -473,7 +473,7 @@ const transactionInternal = (req, res) => {
         db.account_customers
           .findOne({
             where: {
-              Customer_id: customer.Customer_id,
+              Customer_id: customer.id,
             },
           })
           .then((dataAccountCustomer) => {
@@ -497,11 +497,13 @@ const transactionInternal = (req, res) => {
                     const currentBalanceReceipted = parseFloat(
                       dataAccountReceipted.Account_Balance
                     );
-                    const amountToAdd = parseFloat(req.body.Account_Balance);
+                    const amountToAdd = parseFloat(req.body.amountToAdd);
                     if (isNaN(currentBalance) || isNaN(amountToAdd)) {
                       return res.status(400).json({
                         success: false,
                         message: "Invalid input for Account_Balance.",
+                        currentBalance: currentBalance,
+                        amountToAdd: amountToAdd
                       });
                     }
                     const updatedBalance = currentBalance - amountToAdd;
@@ -509,7 +511,6 @@ const transactionInternal = (req, res) => {
                       currentBalanceReceipted - amountToAdd;
 
                     db.accounts
-
                       .update(
                         { Account_Balance: updatedBalance.toFixed(2) },
                         {

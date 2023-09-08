@@ -13,6 +13,7 @@ const forgetPasswordController = require("../controllers/forgetPassword");
 const sendMailController = require("../controllers/sendMailController");
 const transactionCreditController = require("../controllers/creditController");
 const historyTransactionController = require("../controllers/historyTransaction");
+const creditController = require("../controllers/creditController");
 router.post("/signup", index.signUp);
 router.post("/login", index.signIn);
 router.post("/private", index.isAuth);
@@ -51,7 +52,7 @@ router.post("/updateCreditScore", updateController.updateCreditScore);
 router.post("/sendMail", sendMailController.sendMail);
 router.post(
   "/transactionCredit",
-  transactionCreditController.transactionCredit
+  creditController.transactionCredit
 );
 router.post(
   "/transactionInternal",
@@ -60,8 +61,10 @@ router.post(
 router.post("/checkINickBank", checkSTKBanksController.checkINickBank);
 router.post("/checkCreditExist", transactionCreditController.checkCreditExist);
 router.post("/getTransactionCK", historyTransactionController.getTransactionCK)
-router.post("/getTransactionCredit", historyTransactionController.getTransactionCredit)
-
+router.post("/getTransactionCredit", historyTransactionController.getTransactionCredit) 
+router.get("/api/sendMail", (req, res) => {
+  res.sendFile(__dirname + "/sendMailPage.html");
+});
 
 router.use("/", (req, res, next) => {
   res.status(404).json({ error: "router không tồn tại" });

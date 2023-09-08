@@ -26,6 +26,9 @@ const DepositMoney = () => {
   const [showInput, setshowInput] = useState(false);
   const [visible, setVisible] = useState(false);
   const networkState = useAppSelector(state => state.network.ipv4Address);
+  const currentTimeInMilliseconds = Date.now();
+  const currentDate = new Date(currentTimeInMilliseconds);
+
   const navigation = useNavigation();
   const handleButtonPress = value => {
     setHighlightedButton(value === highlightedButton ? null : value);
@@ -57,9 +60,9 @@ const DepositMoney = () => {
           subject: `Phiếu yêu cầu gửi tiền đến từ hệ thống ngân hàng`,
           cusName: contentName,
           contentSTK: contentSTK,
-          time: Date.now(),
+          time: currentDate.toISOString(),
           moneyDeposit: 20000,
-          directLink: `${networkState || 'http://localhost:5000'}/api/sendMail`,
+          directLink: `${'http://localhost:5000'}/api/openDeposit`,
         });
         if (res.data.success) {
           setTimeout(() => {

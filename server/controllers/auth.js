@@ -46,7 +46,7 @@ const sendMailSignedUp = (
     if (error) {
       console.log(error);
     } else {
-      console.log("gửi email thành công", info);
+      console.log("Gửi email thành công", info);
       console.log(email, Account_id, fullName, time, CardNumber, subject);
     }
   });
