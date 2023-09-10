@@ -18,12 +18,14 @@ import SuccessingTransferWrap from './Layout/mobile/Generators/modules/screens/L
 import DepositMoney from './Layout/mobile/Generators/DepositMoney';
 import ConfirmInformationTransferCreditWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-credit/ConfirmInformationTransferCreditWrap';
 import ConfirmInformationInternalWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-internal/ConfirmInformationTransferInternalWrap';
-import SuccessTransferCreditWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-internal/success/SuccessTransferInternalWrap';
+import SuccessTransferInternalWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-internal/success/SuccessTransferInternalWrap';
+import SuccessTransferCreditWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-credit/success/SuccessTransferCreditWrap';
 import OTPCheckingInternalWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-internal/auth/OTPCheckingInternalWrap';
 import OTPCheckingCreditWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-credit/auth/OTPCheckingCreditWrap';
 import OTPCreditWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-credit/OTP/OTPCreditWrap';
 import OTPInternalWrap from './Layout/mobile/Generators/modules/screens/helpers/transfer-internal/OTP/OTPInternalWrap';
-
+import StockMainView from '../tasks/StockMainView';
+import TicketMain from './Layout/mobile/ticket/TicketMain';
 const MainStack = createStackNavigator();
 
 const MainPage = () => {
@@ -39,7 +41,24 @@ const MainPage = () => {
           animation: 'slide_from_bottom',
         }}
       />
-
+      <MainStack.Screen
+        name="TicketMain"
+        component={TicketMain}
+        options={{
+          presentation: 'modal',
+          animationTypeForReplace: 'pop',
+          animation: 'slide_from_bottom',
+        }}
+      />
+      <MainStack.Screen
+        name="StockMainView"
+        component={StockMainView}
+        options={{
+          presentation: 'modal',
+          animationTypeForReplace: 'pop',
+          animation: 'slide_from_bottom',
+        }}
+      />
       <MainStack.Screen
         name="OTPScreen"
         component={OTPScreenWrap}
@@ -76,6 +95,10 @@ const MainPage = () => {
       <MainStack.Screen
         name="SuccessTransferCreditWrap"
         component={SuccessTransferCreditWrap}
+      />
+      <MainStack.Screen
+        name="SuccessTransferInternalWrap"
+        component={SuccessTransferInternalWrap}
       />
       <MainStack.Screen name="SendingMoney" component={SendingMoney} />
       <MainStack.Screen name="DepositMoney" component={DepositMoney} />

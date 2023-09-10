@@ -24,7 +24,7 @@ const SuccessTransferCreditHeader = () => {
         />
         <Text style={styles.Text}>Thành công!</Text>
       </View>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity onPress={() => navigation.navigate('MainIndex')}>
         <FontAwesome
           name="home"
           size={20}

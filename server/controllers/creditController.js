@@ -55,8 +55,8 @@ const transactionCredit = (req, res) => {
                                   db.accounts
                                     .update(
                                       {
-                                        Account_Balance: oldBalance + amountToAdded
-                                        ,
+                                        Account_Balance:
+                                          oldBalance + amountToAdded,
                                       },
                                       {
                                         where: {
@@ -67,7 +67,7 @@ const transactionCredit = (req, res) => {
                                     )
                                     .then((updatedDataBalanceAccount) => {
                                       const currentBalance = parseFloat(
-                                        databaseCreditCard.Account_Balance
+                                        dataAccount.Account_Balance
                                       );
                                       const amountToAdd = parseFloat(
                                         req.body.moneySent
@@ -88,27 +88,29 @@ const transactionCredit = (req, res) => {
                                           db.accounts
                                             .update(
                                               {
-                                                Account_Balance: currentBalance - amountToAdd,
+                                                Account_Balance:
+                                                  currentBalance - amountToAdd,
                                               },
                                               {
                                                 where: {
-                                                  Account_id: dataAccount.id,
+                                                  Account_id: dataAccount.Account_id,
                                                 },
                                               }
                                             )
                                             .then((AccountBalanceUpdated) => {
-                                          return res.status(200).json({
-                                            success: true,
-                                            message:
-                                              "Thành công trong việc update mọi dữ liệu",
-                                            ccTransactionCreated:
-                                              ccTransactionCreated,
-                                            // AccountBalanceUpdated: AccountBalanceUpdated,
-                                            updatedDataReceiptBalanceAccount:
-                                              updatedDataBalanceAccount,
-                                            moneySent: req.body.moneySent,
-                                          });
-                                        })
+                                              return res.status(200).json({
+                                                success: true,
+                                                message:
+                                                  "Thành công trong việc update mọi dữ liệu",
+                                                ccTransactionCreated:
+                                                  ccTransactionCreated,
+                                                // AccountBalanceUpdated: AccountBalanceUpdated,
+                                                updatedDataReceiptBalanceAccount:
+                                                  updatedDataBalanceAccount,
+                                                moneySent: req.body.moneySent,
+                                                current:currentBalance - amountToAdd
+                                              });
+                                            })
                                             .catch((err) => {
                                               db.cc_transactions
                                                 .destroy({
@@ -120,20 +122,25 @@ const transactionCredit = (req, res) => {
                                                   db.accounts
                                                     .update(
                                                       {
-                                                        Account_balance: oldBalance,
-                                                      }, 
+                                                        Account_balance:
+                                                          oldBalance,
+                                                      },
                                                       {
                                                         where: {
-                                                          Customer_id: customersRecipientData.id,
+                                                          Customer_id:
+                                                            customersRecipientData.id,
                                                         },
                                                       }
                                                     )
                                                     .then((errBackUpData) => {
-                                                      return res.status(200).json({
-                                                        success: false,
-                                                        message: "Lỗi khi update dữ liệu Account_Balance và đã xóa bảng thành công",
-                                                        err: err.message,
-                                                      });
+                                                      return res
+                                                        .status(200)
+                                                        .json({
+                                                          success: false,
+                                                          message:
+                                                            "Lỗi khi update dữ liệu Account_Balance và đã xóa bảng thành công",
+                                                          err: err.message,
+                                                        });
                                                     });
                                                 });
                                             });

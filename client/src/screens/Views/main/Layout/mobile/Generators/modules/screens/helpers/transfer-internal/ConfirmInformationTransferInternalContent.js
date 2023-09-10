@@ -188,7 +188,7 @@ const ConfirmInformationInternalContent = () => {
           <View style={styles.contentFooter}>
             <TouchableOpacity
               style={styles.buttonNext}
-              onPress={() => navigation.navigate('OTPScreen')}>
+              onPress={() => navigation.navigate('OTPInternalWrap')}>
               <Text style={styles.buttonNextText}>Xác nhận</Text>
             </TouchableOpacity>
           </View>

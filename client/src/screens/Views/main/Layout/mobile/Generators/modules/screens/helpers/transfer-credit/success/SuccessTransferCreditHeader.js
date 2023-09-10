@@ -3,29 +3,40 @@ import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 
-const SuccessTransferCreditHeader = () => {
+const SuccessingTransferHeader = () => {
   const navigation = useNavigation();
+  
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          paddingLeft: 10,
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}>
         <FontAwesome
-          name="chevron-left"
+          name="check-circle"
           size={20}
           style={styles.iconModal}
-          color="black"
+          color="rgb(0, 150, 80)"
         />
-      </TouchableOpacity>
-      <View style={{flex: 1, alignItems: 'center'}}>
-        <Text style={styles.Text}>Chuyển đến số tài khoản</Text>
+        <Text style={styles.Text}>Thành công!</Text>
       </View>
       <TouchableOpacity onPress={() => navigation.navigate('MainIndex')}>
-        <Text style={styles.TextCanceled}>Hủy</Text>
+        <FontAwesome
+          name="home"
+          size={20}
+          style={styles.iconModal}
+          color="rgb(0, 150, 80)"
+        />
       </TouchableOpacity>
     </View>
   );
 };
 
-export default SuccessTransferCreditHeader;
+export default SuccessingTransferHeader;
 
 const styles = StyleSheet.create({
   container: {
@@ -44,15 +55,9 @@ const styles = StyleSheet.create({
   },
   TouchableOpacity: {},
   Text: {
-    fontSize: 17,
-    color: 'black',
+    fontSize: 20,
+    color: 'rgb(0, 150, 80)',
     fontWeight: '600',
+    paddingLeft: 10,
   },
-  TextCanceled: {
-    fontSize: 18,
-    color: 'rgb(61, 134, 98)',
-    fontWeight: '600',
-  }
 });
-
-

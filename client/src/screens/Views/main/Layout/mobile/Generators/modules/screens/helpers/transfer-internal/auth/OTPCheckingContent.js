@@ -1,10 +1,20 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {Text, View, StyleSheet, Animated, TouchableOpacity,ActivityIndicator} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Animated,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import { useAppDispatch,useAppSelector } from '../../../../../../../../../../../app/hooks/hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../../../../../../../../../../app/hooks/hooks';
 import Toast from 'react-native-toast-message';
-import { settimeTransferBankInternal } from '../../../../../../../../../../../slice/transferCreditSlice';
-
+import {settimeTransferBankInternal} from '../../../../../../../../../../../slice/transferCreditSlice';
+import { setBalance } from '../../../../../../../../../../../slice/creditSlice';
 import axios from 'axios';
 const TimerBar = () => {
   const navigation = useNavigation();
@@ -19,12 +29,26 @@ const TimerBar = () => {
   const [serial, setSerial] = useState('');
   const [currentDate, setCurrentDate] = useState('');
   const [visible, setVisible] = useState(false);
-  
-  const accountID = useAppSelector(state => state.signUp.newAccountSTK)
+
+  const accountID = useAppSelector(state => state.signUp.newAccountSTK);
   const CMNDUser = useAppSelector(state => state.signUp.personalIdNumber);
-  const networkState = useAppSelector(state => state.network.ipv4Address)
-  const creditBankValue = useAppSelector(state => state.transferCredit.BankValueMoneyInternal)
-  const cardNumberInternal = useAppSelector(state => state.transferCredit.cardNumberInternal)
+  const networkState = useAppSelector(state => state.network.ipv4Address);
+  const creditBankValue = useAppSelector(
+    state => state.transferCredit.BankValueMoneyInternal,
+  );
+  const balanceValue = useAppSelector(state => state.credit.Balance)
+  const cardNumberInternal = useAppSelector(
+    state => state.transferCredit.cardNumberInternal,
+  );
+  const STKBankChoosingInternal = useAppSelector(
+    state => state.transferInternal.STKBankChoosingInternal,
+  );
+  const BankValueMoneyInternal = useAppSelector(
+    state => state.transferInternal.BankValueMoneyInternal,
+  );
+  const Description = useAppSelector(
+    state => state.transferInternal.messageTransferInternal,
+  );
   const formatTime = seconds => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -62,7 +86,7 @@ const TimerBar = () => {
   };
 
   // const BankChoosingIcon
-const showToast = (type, title,text) => {
+  const showToast = (type, title, text) => {
     Toast.show({
       type: type,
       text1: title,
@@ -72,26 +96,26 @@ const showToast = (type, title,text) => {
   const handleContinue = async () => {
     setVisible(true);
     try {
-      const ress = await axios.post(
-        `${networkState}/api/createCreditCardTransaction`,
-        {
-          CMNDUser: CMNDUser,
-        Merchant_Details:binBankChoosing,
-        Account_Balance: creditBankValue,
-        Account_id: accountID,
-        recipient_credit: cardNumberInternal
-        },
-      );  
+      const ress = await axios.post(`${networkState}/api/transactionInternal`, {
+        CMNDUser: CMNDUser,
+        Description: Description,
+        amountToAdd: BankValueMoneyInternal,
+        AccountIdReceipted: STKBankChoosingInternal,
+      });
       if (ress.data.success === true) {
         setTimeout(() => {
           setVisible(false);
-          dispatch(settimeTransferBankInternal(currentDate))
+          dispatch(settimeTransferBankInternal(currentDate));
+          dispatch(
+            setBalance(parseFloat(balanceValue) - parseFloat(BankValueMoneyInternal)),
+          );
+
           showToast('success', 'Bạn có biến động số dư mới', '');
-          navigation.navigate('SuccessTransferCreditWrap');
+          navigation.navigate('SuccessTransferInternalWrap');
         }, 3000);
       }
     } catch (err) {
-                setVisible(false);
+      setVisible(false);
 
       console.log(err.message);
       return false;
@@ -175,12 +199,12 @@ const showToast = (type, title,text) => {
           </View>
         </View>
         {visible && (
-        <ActivityIndicator
-          size="large"
-          color="#00ff00"
-          style={{alignSelf: 'center'}}
-        />
-      )}
+          <ActivityIndicator
+            size="large"
+            color="#00ff00"
+            style={{alignSelf: 'center'}}
+          />
+        )}
         <View style={styles.OTPCheckingSerial}>
           <Text style={styles.OTPCheckingSerialText}>Serial: {serial}</Text>
           <Text style={styles.OTPCheckingSerialText}>{currentDate}</Text>

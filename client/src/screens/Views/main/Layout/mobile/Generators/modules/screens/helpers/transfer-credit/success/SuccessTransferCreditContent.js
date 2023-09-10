@@ -1,15 +1,15 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-// import { useAppDispatch,useAppSelector } from '../../../../../../../../../../../app/hooks/hooks';
-// import logoDefault from '../../../../../../../../../../../assets/logo_default.svg';
 
-// import FontAwesome from 'react-native-vector-icons/FontAwesome';
-// import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useAppDispatch,useAppSelector } from '../../../../../../../../../../../app/hooks/hooks';
+import logoDefault from '../../../../../../../../../../../assets/logo_default2.png';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-// import checkshield from '../../../../../../../../../../../assets/protection.png';
-// import banner from '../../../../../../../../../../../assets/ads/8.jpg';
-// import logoSmall from '../../../../../../../../../../../assets/vpbanklogo-small.jpg';
+import checkshield from '../../../../../../../../../../../assets/protection.png';
+import banner from '../../../../../../../../../../../assets/ads/8.jpg';
+import logoSmall from '../../../../../../../../../../../assets/vpbanklogo-small.jpg';
 import {
   setlongNameBankChoosing,
   setbinBankChoosing,
@@ -21,10 +21,10 @@ import {
   setmessageTransfer,
   settimeTransferBank,
   
-} from '../../../../../../../../../../slice/transferSlice';
+} from '../../../../../../../../../../../slice/transferSlice';
 import axios from 'axios';
-import { setBalance } from '../../../../../../../../../../slice/creditSlice';
-const SuccessTransferCreditContent = () => {
+import { setBalance } from '../../../../../../../../../../../slice/creditSlice';
+const SuccessingTransferContent = () => {
   const navigation = useNavigation();
   const [currentDate, setCurrentDate] = useState('');
   const dispatch = useAppDispatch();
@@ -59,9 +59,13 @@ const SuccessTransferCreditContent = () => {
   const firebaseTokenValue = useAppSelector(
     state => state.allToken.firebaseToken,
   );
-    const userBalanceDetails = useAppSelector(state => state.credit.Balance)
 
-
+  const userBalanceDetails = useAppSelector(state => state.credit.Balance)
+  const nameCreditTransfer = useAppSelector(state => state.transferCredit.NameOfCardNumberInternal)
+  const cardCreditTransfer = useAppSelector(state => state.transferCredit.cardNumberInternal)
+  const messageCardTransfer = useAppSelector(state => state.transferCredit.messageTransferInternal)
+  const timeTransferCard = useAppSelector(state => state.transferCredit.timeTransferBankInternal)
+  const valueMoneyCardTransfer = useAppSelector(state => state.transferCredit.BankValueMoneyInternal)
   const getCurrentDate = () => {
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
@@ -72,36 +76,7 @@ const SuccessTransferCreditContent = () => {
     return date + '-' + month + '-' + year; //format: d-m-y;
     // return new Date().toLocaleString();
   };
-  // const sendNotification = async () => {
-  //   const message = {
-  //     to: firebaseTokenValue,
-  //     notification: {
-  //       title: 'VPBank: Thông báo',
-  //       body: 'Bạn có biến động số dư mới',
-  //       icon: logoSmall,
-  //     },
-  //   };
-
-  //   try {
-  //     const response = await axios.post(
-  //       'https://fcm.googleapis.com/fcm/send',
-  //       message,
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `key=${serverKeyValue}`,
-  //         },
-  //       },
-  //     );
-
-  //     console.log('Notification sent successfully:', response.data);
-  //   } catch (error) {
-  //     console.error('Error sending notification:', error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   sendNotification();
-  // }, []);
+  
   function numberToWordsVi(number) {
     const units = [
       '',
@@ -184,16 +159,17 @@ const SuccessTransferCreditContent = () => {
     navigation.navigate('SendingMoney');
     
   };
+  
   return (
     <>
       <View style={styles.container}>
         <View style={styles.BankValueMoneyContainer}>
           <Text style={styles.BankValueMoneyText}>
-            {BankValueMoneyValue}{' '}
+            {valueMoneyCardTransfer}{' '}
             <Text style={styles.BankValueMoneyTextCurrency}>đ</Text>
           </Text>
           <Text style={styles.BankValueMoneyTextSwap}>
-            {numberToWordsVi(BankValueMoneyValue)} Việt Nam Đồng
+            {numberToWordsVi(valueMoneyCardTransfer)} Việt Nam Đồng
           </Text>
         </View>
         <View style={styles.BankTransferContainer}>
@@ -217,10 +193,10 @@ const SuccessTransferCreditContent = () => {
             </Text>
             <View style={styles.BankTransferUserContentContainer}>
               <Text style={styles.BankTransferUserContentName}>
-                {NameOfSTKBankChoosingValue}
+                {nameCreditTransfer}
               </Text>
               <Text style={styles.BankTransferUserContentSTK}>
-                {STKBankChoosingValue}
+                {cardCreditTransfer}
               </Text>
             </View>
           </View>
@@ -233,7 +209,7 @@ const SuccessTransferCreditContent = () => {
           <View style={styles.BankTransferSpecifiedContainer}>
             <Text style={styles.BankTransferUserTitle}>Nội dung</Text>
             <Text style={styles.BankTransferUserContent}>
-              {messageTransferValue}
+              {messageCardTransfer}
             </Text>
           </View>
           <View style={styles.BankTransferSpecifiedContainer}>
@@ -307,7 +283,7 @@ const SuccessTransferCreditContent = () => {
   );
 };
 
-export default SuccessTransferCreditContent;
+export default SuccessingTransferContent;
 
 const styles = StyleSheet.create({
   BankValueMoneyContainer: {

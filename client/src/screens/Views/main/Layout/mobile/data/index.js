@@ -6,8 +6,8 @@ export const flatIndex = [
   },
   {
     icon: 'signal',
-    title: 'Chứng khoán',
-    screen: 'DepositTrading',
+    title: 'Tiền mạng',
+    screen: 'StockMainView',
   },
   {
     icon: 'mobile-phone',
@@ -15,12 +15,7 @@ export const flatIndex = [
     title: 'Điện thoại',
     screen: 'DepositMobile',
   },
-  {
-    icon: 'map',
-
-    title: 'Tài khoản số đẹp',
-    screen: 'AccountBeauty',
-  },
+  
   {
     icon: 'handshake-o',
 
@@ -30,7 +25,7 @@ export const flatIndex = [
   {
     icon: 'superpowers',
 
-    title: 'Mua Vietlott SMS',
+    title: 'Mua Vietlott',
     screen: 'VietlottSMS',
   },
   
@@ -38,7 +33,7 @@ export const flatIndex = [
   {
     icon: 'ticket',
 
-    title: 'Mã khuyến mãi',
+    title: 'Mua vé',
     screen: 'DiscountComponent',
   },
   {

@@ -10,6 +10,7 @@ const HeaderAccountPage = () => {
       <View style={{flex: 1, alignItems: 'center', paddingLeft: 20}}>
         <Text style={styles.Text}>Tài khoản</Text>
       </View>
+      
       <TouchableOpacity
         onPress={() => navigation.navigate('QRgenerator')}
         style={styles.touchableOpacity}>

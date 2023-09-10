@@ -503,7 +503,7 @@ const transactionInternal = (req, res) => {
                         success: false,
                         message: "Invalid input for Account_Balance.",
                         currentBalance: currentBalance,
-                        amountToAdd: amountToAdd
+                        amountToAdd: amountToAdd,
                       });
                     }
                     const updatedBalance = currentBalance - amountToAdd;
@@ -684,6 +684,116 @@ const transactionInternal = (req, res) => {
   }
 };
 
+const otherTransaction = (req, res) => {
+  try {
+    db.customers
+      .findOne({ where: { CMND: req.body.CMNDUser } })
+      .then((customer) => {
+        db.account_customers
+          .findOne({
+            where: {
+              Customer_id: customer.id,
+            },
+          })
+          .then((dataAccountCustomer) => {
+            db.accounts
+              .findOne({
+                where: {
+                  Account_id: dataAccountCustomer.Account_id,
+                },
+              })
+              .then((dataAccount) => {
+                db.banking_transactions
+                  .max("id")
+                  .then((maxBankingTransactionId) => {
+                    const newBankingTransactionId = maxBankingTransactionId
+                      ? maxBankingTransactionId + 1
+                      : 1;
+                    const currentBalance = parseFloat(
+                      dataAccount.Account_Balance
+                    );
+                    const amountToAdd = parseFloat(req.body.amountToAdd);
+                    db.accounts
+                      .update(
+                        {
+                          Account_Balance: currentBalance - amountToAdd,
+                        },
+                        {
+                          where: {
+                            Account_id: dataAccount.Account_id,
+                          },
+                        }
+                      )
+                      .then((updatedAccount) => {
+                        db.banking_transactions
+                          .create({
+                            id: newBankingTransactionId,
+                            Transaction_Type: "Dịch vụ",
+                            Description: req.body.Description,
+                            Amount: amountToAdd,
+                            Date: new Date(),
+                            Customer_id: customer.id,
+                          })
+                          .then((createdbankingtransactions) => {
+                            return res.status(200).json({
+                              success: true,
+                              message: "Tạo dữ liệu dịch vụ thành công",
+                              createdbankingtransactions:
+                                createdbankingtransactions,
+                              updatedAccount: updatedAccount,
+                            });
+                          })
+                          .catch((err) => {
+                            return res.status(500).json({
+                              success: false,
+                              message:
+                                "Lỗi khi tìm tạo thông tin cho bảng banking_transactions",
+                              error: err.message,
+                            });
+                          });
+                      });
+                  })
+                  .catch((err) => {
+                    return res.status(500).json({
+                      success: false,
+                      message:
+                        "Lỗi khi tìm thông tin max id của bảng banking_transactions",
+                      error: err.message,
+                    });
+                  });
+              })
+              .catch((err) => {
+                return res.status(500).json({
+                  success: false,
+                  message: "Lỗi khi tìm thông tin tài khoản",
+                  error: err.message,
+                });
+              });
+          })
+          .catch((err) => {
+            return res.status(500).json({
+              success: false,
+              message: "Lỗi khi tìm thông tin tài khoản",
+              error: err.message,
+            });
+          });
+      })
+
+      .catch((err) => {
+        return res.status(500).json({
+          success: false,
+          message: "Lỗi khi tìm thông tin khách hàng",
+          error: err.message,
+        });
+      });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Lỗi server",
+      error: err.message,
+    });
+  }
+};
 module.exports = {
   addCreditCard,
   createSendingMoney,
@@ -691,4 +801,5 @@ module.exports = {
   createCreditCardTransaction,
   updateMoneySTK,
   transactionInternal,
+  otherTransaction,
 };

@@ -3,7 +3,7 @@ import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 
-const SuccessingTransferHeader = () => {
+const SuccessTransferCreditHeader = () => {
   const navigation = useNavigation();
   
   return (
@@ -24,7 +24,7 @@ const SuccessingTransferHeader = () => {
         />
         <Text style={styles.Text}>Thành công!</Text>
       </View>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity onPress={() => navigation.navigate('MainIndex')}>
         <FontAwesome
           name="home"
           size={20}
@@ -36,7 +36,7 @@ const SuccessingTransferHeader = () => {
   );
 };
 
-export default SuccessingTransferHeader;
+export default SuccessTransferCreditHeader;
 
 const styles = StyleSheet.create({
   container: {

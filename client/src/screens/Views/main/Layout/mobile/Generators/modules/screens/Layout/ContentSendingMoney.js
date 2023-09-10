@@ -10,8 +10,9 @@ import {
   ScrollView,
   Image,
   FlatList,
+  RefreshControl,
 } from 'react-native';
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
@@ -42,6 +43,8 @@ const ContentSendingMoney = () => {
   const [responseDataUser, setResponseDataUser] = useState([]);
   const [STKSendingPerson, setSTKSendingPerson] = useState('');
   const [onChangeMoney, setOnChangeMoney] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
+
   const BankChoosingIconValue = useAppSelector(
     state => state.transfer.BankChoosingIcon,
   );
@@ -51,6 +54,19 @@ const ContentSendingMoney = () => {
       text1: message,
     });
   };
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      dispatch(setBankChoosing(''));
+      dispatch(setSTKBankChoosing(''));
+      dispatch(setBankValueMoney(''));
+      dispatch(setmessageTransfer(''));
+      dispatch(setlongNameBankChoosing(''));
+      dispatch(setbinBankChoosing(''));
+      dispatch(setNameOfSTKBankChoosing(''));
+      setRefreshing(false);
+    }, 2000);
+  }, []);
   const binBankChoosingValue = useAppSelector(
     state => state.transfer.binBankChoosing,
   );
@@ -222,7 +238,10 @@ const ContentSendingMoney = () => {
 
   return (
     <>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} color="green"/>
+        }>
         <View style={styles.container}>
           <View style={styles.headerMoneyInfo}>
             <Text style={styles.textheaderMoneyInfo}>Tài khoản nguồn</Text>

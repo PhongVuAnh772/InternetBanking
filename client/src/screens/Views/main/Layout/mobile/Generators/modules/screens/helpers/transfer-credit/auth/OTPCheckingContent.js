@@ -13,6 +13,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '../../../../../../../../../../../app/hooks/hooks';
+import { setBalance } from '../../../../../../../../../../../slice/creditSlice';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 const TimerBar = () => {
@@ -29,7 +30,7 @@ const TimerBar = () => {
   const [visible, setVisible] = useState(false);
   
   const BankValueMoney = useAppSelector(state => state.transferCredit.BankValueMoneyInternal);
-  
+  const balanceValue = useAppSelector(state => state.credit.Balance);
   const accountID = useAppSelector(state => state.signUp.newAccountSTK);
   const CMNDUser = useAppSelector(state => state.signUp.personalIdNumber);
   const navigation = useNavigation();
@@ -83,7 +84,7 @@ const TimerBar = () => {
   const handleContinue = async () => {
     setVisible(true);
     try {
-      const ress = await axios.post(`${networkState}/api/transactionInternal`, {
+      const ress = await axios.post(`${networkState}/api/transactionCredit`, {
         CMNDUser: CMNDUser,
         recipient_credit: CCNumberReceipted,
         merchantDetails: `Giao dịch với tài khoản thẻ : ${CCNumberReceipted} `,
@@ -94,8 +95,9 @@ const TimerBar = () => {
         setTimeout(() => {
           setVisible(false);
           dispatch(settimeTransferBank(currentDate));
+          dispatch(setBalance(parseFloat(balanceValue) - parseFloat(BankValueMoney)))
           showToast('success', 'Bạn có biến động số dư mới', '');
-          navigation.navigate('SuccessingTransferWrap');
+          navigation.navigate('SuccessTransferCreditWrap');
         }, 3000);
       }
     } catch (err) {
@@ -104,7 +106,6 @@ const TimerBar = () => {
       console.log(err.message);
       return false;
     }
-    console.log(CMNDUser,AccountIdReceipted,BankValueMoney,accountID)
   };
   useEffect(() => {
     const animation = Animated.timing(progressAnimation, {

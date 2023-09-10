@@ -3,7 +3,7 @@ import React from 'react'
 import SuccessTransferInternalHeader from './SuccessTransferInternalHeader'
 import SuccessTransferInternalContent from './SuccessTransferInternalContent'
 
-const SuccessTransferCreditWrap = () => {
+const SuccessTransferInternalWrap = () => {
   return (
     <View>
         <SuccessTransferInternalHeader />
@@ -12,6 +12,6 @@ const SuccessTransferCreditWrap = () => {
   )
 }
 
-export default SuccessTransferCreditWrap
+export default SuccessTransferInternalWrap
 
 const styles = StyleSheet.create({})
