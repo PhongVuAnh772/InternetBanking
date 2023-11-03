@@ -41,7 +41,11 @@ const LoanOfficialScreen = () => {
   };
   console.log(CMNDUser)
   const handleNext = async () => {
-    setVisible(true);
+    if (newFloatMoney > 15000000) {
+        showToast('error', 'Chỉ chấp nhận số tiền vay dưới 15 triệu');
+    }
+    else {
+      setVisible(true);
     try {
       const res = await axios.post(
         `${networkState}/api/addLoan`,
@@ -68,6 +72,7 @@ const LoanOfficialScreen = () => {
         showToast('error', 'Lỗi truyền thông tin');
       console.log('Co loi : ' + err.message);
       console.log('Có lỗi server');
+    }
     }
   };
   return (

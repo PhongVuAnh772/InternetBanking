@@ -50,6 +50,8 @@ router.post("/createBank", bankingController.createBank); //
 router.post("/updateMoneySTK", bankingController.updateMoneySTK);
 router.post("/updateCreditScore", updateController.updateCreditScore);
 router.post("/sendMail", sendMailController.sendMail);
+router.post("/sendOTPMail", sendMailController.sendMailOTP);
+
 router.post(
   "/transactionCredit",
   creditController.transactionCredit

@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    // margin: 30,
     backgroundColor: 'white'
   },
   iconButtonHomeContainer: {marginRight: 10},
@@ -36,7 +35,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   RNQRCode: {
-    // flex: 1,
+    flex: 1,
     marginTop: 100,
 
   },

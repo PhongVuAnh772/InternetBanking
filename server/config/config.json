@@ -3,6 +3,7 @@
     "username": "root",
     "password": "22092002",
     "database": "banking_db",
+
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

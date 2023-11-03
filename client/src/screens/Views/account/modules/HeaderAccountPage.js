@@ -21,6 +21,7 @@ const HeaderAccountPage = () => {
         />
         <Text style={styles.textTouchableOpacity}>Mã QR</Text>
       </TouchableOpacity>
+     
     </View>
   );
 };

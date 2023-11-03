@@ -6,10 +6,11 @@ import {
   Animated,
   TouchableOpacity,
   ActivityIndicator,
+  TextInput,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {settimeTransferBank} from '../../../../../../../../../../slice/transferSlice';
-import { setBalance } from '../../../../../../../../../../slice/creditSlice';
+import {setBalance} from '../../../../../../../../../../slice/creditSlice';
 import {
   useAppDispatch,
   useAppSelector,
@@ -18,7 +19,7 @@ import Toast from 'react-native-toast-message';
 import axios from 'axios';
 const TimerBar = () => {
   const dispatch = useAppDispatch();
-  const [remainingSeconds, setRemainingSeconds] = useState(20);
+  const [remainingSeconds, setRemainingSeconds] = useState(1000);
   const progressAnimation = useRef(new Animated.Value(0)).current;
   const [remainingTimesOTP, setRemainingTimesOTP] = useState(1);
 
@@ -45,12 +46,14 @@ const TimerBar = () => {
   const CMNDUser = useAppSelector(state => state.signUp.personalIdNumber);
   const navigation = useNavigation();
   const networkState = useAppSelector(state => state.network.ipv4Address);
-  const initialBalance = useAppSelector(state => state.credit.Balance)
+  const initialBalance = useAppSelector(state => state.credit.Balance);
+  const gmailValue = useAppSelector(state => state.signUp.email);
   const formatTime = seconds => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+    return `${seconds < 10 ? '0' : ''}${seconds}`;
   };
+  const [OTPRandom, setOTPRandom] = useState('');
 
   const getProgressBarWidth = () => {
     const progress = progressAnimation.interpolate({
@@ -90,42 +93,78 @@ const TimerBar = () => {
       text2: text,
     });
   };
-  console.log(
-    CMNDUser,
-    binBankChoosing,
-    messageTransfer,
-    BankValueMoney,
-    NameOfSTKBankChoosing,
-    STKBankChoosing,
-  );
-  const handleContinue = async () => {
-    setVisible(true);
-    try {
-      const ress = await axios.post(`${networkState}/api/createSendingMoney`, {
-        CMNDUser: CMNDUser,
-        BINCode: binBankChoosing,
-        Transaction_Type: 'Chuyển khoản',
-        Description: messageTransfer,
-        Account_Balance: BankValueMoney,
-        Payee: NameOfSTKBankChoosing,
-        recipient_account_number: STKBankChoosing,
-        Account_id: accountID,
-      });
-      if (ress.data.success === true) {
-        setTimeout(() => {
-          setVisible(false);
-          dispatch(setBalance(parseFloat(initialBalance) - parseFloat(BankValueMoney)));
+  // console.log(
+  //   CMNDUser,
+  //   binBankChoosing,
+  //   messageTransfer,
+  //   BankValueMoney,
+  //   NameOfSTKBankChoosing,
+  //   STKBankChoosing,
+  // );
+  useEffect(() => {
+    const handleContinue = async () => {
+      try {
+        const ress = await axios.post(`${networkState}/api/sendOTPMail`, {
+          emailReceived: gmailValue,
+          OTPChecking: randomNumbers,
+        });
+        if (ress.data.message === 'OK') {
+          showToast(
+            'success',
+            'Hệ thống vừa gửi mã OTP về gmail, hãy kiểm tra',
+            '',
+          );
+        }
+      } catch (err) {
+        setVisible(false);
 
-          dispatch(settimeTransferBank(currentDate));
-          showToast('success', 'Bạn có biến động số dư mới', '');
-          navigation.navigate('SuccessingTransferWrap');
-        }, 3000);
+        console.log(err.message);
+        return false;
       }
-    } catch (err) {
-      setVisible(false);
+    };
+    handleContinue();
+  }, []);
+  const handleContinue = async () => {
+    console.log(OTPRandom,randomNumbers);
+    if (OTPRandom !== randomNumbers) {
+      showToast('error', 'Bạn nhập mã OTP sai', '');
+    } else {
+      setVisible(true);
+      console.log(CMNDUser,binBankChoosing,messageTransfer,BankValueMoney,NameOfSTKBankChoosing,STKBankChoosing,accountID)
+      try {
+        const ress = await axios.post(
+          `${networkState}/api/createSendingMoney`,
+          {
+            CMNDUser: CMNDUser,
+            BINCode: binBankChoosing,
+            Transaction_Type: 'Chuyển khoản',
+            Description: messageTransfer,
+            Account_Balance: BankValueMoney,
+            Payee: NameOfSTKBankChoosing,
+            recipient_account_number: STKBankChoosing,
+            Account_id: accountID,
+          },
+        );
+        if (ress.data.success === true) {
+          setTimeout(() => {
+            setVisible(false);
+            dispatch(
+              setBalance(
+                parseFloat(initialBalance) - parseFloat(BankValueMoney),
+              ),
+            );
 
-      console.log(err.message);
-      return false;
+            dispatch(settimeTransferBank(currentDate));
+            showToast('success', 'Bạn có biến động số dư mới', '');
+            navigation.navigate('SuccessingTransferWrap');
+          }, 3000);
+        }
+      } catch (err) {
+        setVisible(false);
+
+        console.log(err.message);
+        return false;
+      }
     }
   };
   useEffect(() => {
@@ -169,9 +208,9 @@ const TimerBar = () => {
       let randomNums = '';
       for (let i = 0; i < 6; i++) {
         randomNums += Math.floor(Math.random() * 10);
-        if (i < 5) {
-          randomNums += ' ';
-        }
+        // if (i < 5) {
+        //   randomNums += '';
+        // }
       }
       setRandomNumbers(randomNums);
     }
@@ -192,11 +231,18 @@ const TimerBar = () => {
           </Text>
 
           <View style={styles.randomNumbersContainer}>
-            {remainingTimesOTP > 0 ? (
+            {/* {remainingTimesOTP > 0 ? (
               <Text style={styles.textOTPNotShow}>___ ___</Text>
             ) : (
               <Text style={styles.textOTP}>{randomNumbers}</Text>
-            )}
+            )} */}
+            <TextInput
+  style={styles.textInput}
+  maxLength={6}
+  keyboardType="numeric"
+  onChangeText={(value) => setOTPRandom(value)}
+/>
+
           </View>
           <View style={styles.warningOTP}>
             <Text style={styles.warningOTPText}>
@@ -252,6 +298,13 @@ const TimerBar = () => {
 
 const styles = StyleSheet.create({
   container: {height: '100%'},
+  textInput: {
+    width: '100%',
+    color: 'black',
+    letterSpacing: 20,
+    textAlign: 'center',
+    fontSize: 50,
+  },
   bar: {
     height: 10,
     backgroundColor: '#4CAF50',

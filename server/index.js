@@ -1,16 +1,17 @@
 const express = require("express");
 const cors = require("cors");
 const Sequelize = require("sequelize");
-const socket = require("socket.io");
+// const { Server } = require('socket.io');
 const rootRouter = require("./routes/routes");
 require("dotenv").config();
 const pg_URL = process.env.PG_URL;
-// const pg = require('pg');
-
-// const sequelize = new Sequelize('vp_bank', 'postgres', '22092002', {
-//   host: 'localhost',
-//   dialect: 'postgres'
-// })
+// const io = new Server(server);
+// const http = require("http").Server(app);
+// const socketIO = require('socket.io')(http, {
+//     cors: {
+//         origin: "<http://localhost:3000>"
+//     }
+// });
 
 const sequelize = new Sequelize(
   process.env.DATABASE_NAME,
@@ -40,6 +41,15 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors());
 
 app.use("/api", rootRouter);
+
+// socketIO.on('connection', (socket) => {
+//     console.log(`⚡: ${socket.id} user just connected!`);
+
+//     socket.on('disconnect', () => {
+//       socket.disconnect()
+//       console.log('🔥: A user disconnected');
+//     });
+// });
 
 const server = app.listen(5000, () =>
   console.log(`app listened on port: ${5000}`)

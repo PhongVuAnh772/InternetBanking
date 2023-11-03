@@ -17,8 +17,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DECIMAL(10, 2),
       },
-    
-
       Date_Opened: {
         allowNull: false,
         type: Sequelize.DATEONLY,
@@ -39,7 +37,11 @@ module.exports = {
       iNick: {
         allowNull: true,
         type: Sequelize.STRING,
-      }  
+      },
+      OTP: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
     });
   },
   async down(queryInterface, Sequelize) {

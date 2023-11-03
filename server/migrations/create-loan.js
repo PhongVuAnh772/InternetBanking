@@ -41,6 +41,21 @@ module.exports = {
         foreignKey: true,
         type: Sequelize.INTEGER,
       },
+      // interest_id: {
+      //   allowNull: false,
+      //   foreignKey: true,
+      //   type: Sequelize.INTEGER,
+      // },
+      // status: {
+      //   allowNull: false,
+      //   foreignKey: true,
+      //   type: Sequelize.BOOLEAN,
+      // },
+      // updated_date: {
+      //   allowNull: false,
+      //   foreignKey: true,
+      //   type: Sequelize.BOOLEAN,
+      // }
     });
   },
   async down(queryInterface, Sequelize) {

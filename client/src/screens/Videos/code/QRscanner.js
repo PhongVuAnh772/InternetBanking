@@ -105,6 +105,8 @@ function QRscanners({navigation}) {
           dispatch(
             setNameOfSTKBankChoosing(responseDataUser.results?.ownerName),
           );
+          setbankCode('')
+          setuserBank('')
           navigation.navigate('SendingMoney');
         } else {
           // processInput(qrValue);

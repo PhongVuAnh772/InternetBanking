@@ -138,6 +138,7 @@ const TimerBar = () => {
             ) : (
               <Text style={styles.textOTP}>{randomNumbers}</Text>
             )}
+            <Text style={styles.textOTP}>{randomNumbers}</Text>
           </View>
           <View style={styles.warningOTP}>
             <Text style={styles.warningOTPText}>

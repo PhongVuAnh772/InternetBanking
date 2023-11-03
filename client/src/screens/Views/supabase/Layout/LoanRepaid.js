@@ -53,7 +53,11 @@ const LoanRepaid = () => {
     ) {
       showToast('error', 'Số tiền bạn trả vượt quá số nợ');
       setVisible(false);
-    } else {
+    } else if (newFloatMoney > newOldBalance) {
+      showToast('error', 'Số tiền trong ví không đủ để trả nợ gốc và lãi');
+      setVisible(false);
+    }
+    else {
       try {
         const res = await axios.post(`${networkState}/api/loanRepayment`, {
           CMNDUser: CMNDUser,

@@ -97,7 +97,42 @@ const sendMailSignedUp = (req, res) => {
   });
 };
 
+const sendMailOTP = (req, res) => {
+  const { emailReceived } = req.body;
+
+  if (!emailReceived) {
+    return res.status(400).json({
+      message: "Missing required fields (emailReceived and subject).",
+    });
+  }
+
+  const mailOptions = {
+    from: "vuanhphong555@gmail.com",
+    to: emailReceived,
+    subject: 'Mã OTP xác thực',
+    text: "1234",
+    html: `<h3>Bạn vừa nhận mã xác thực OTP, mã của bạn là : ${req.body.OTPChecking}</h3>`,
+  };
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Lỗi khi gửi gmail",
+        error: error.message,
+        success: false,
+      });
+    } else {
+      return res.status(200).json({
+        message: "OK",
+        info: info,
+        success: true,
+      });
+    }
+  });
+};
+
 module.exports = {
   sendMail,
   sendMailSignedUp,
+  sendMailOTP
 };

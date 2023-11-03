@@ -39,7 +39,7 @@ const ConfirmCheckMicroBlink = () => {
   const headers = {
     'Content-Type': 'application/json',
     Authorization:
-      'Bearer N2U3ZjI3ZDNjOWRkNDZhM2I5Yjc3MTgwOGQxNTFlNzg6ODdlYTdjMzgtNDYwYy00ODg2LWFmMDAtM2EwMWRjMDA0NzQz',
+      'Bearer OGJmOTRkZTNkNGY0NDdlMmI2MDg5N2NjNmFiNjBmZjY6NGVlMjQzNzEtZmRiMS00YWU3LThkZDYtZTY3Zjc0ZGYwNDlk',
     Accept: 'application/json',
   };
   const imageFrontSideSelector = useAppSelector(

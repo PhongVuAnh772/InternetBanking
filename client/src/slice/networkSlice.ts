@@ -7,7 +7,7 @@ interface NetworkState {
   }
 
 const NetworkInitialState: NetworkState = {
-    ipv4Address: 'http://192.168.0.100:5000',
+    ipv4Address: 'http://172.20.10.2:500.0',
   };
 
   export const networkSlice =  createSlice({
@@ -18,7 +18,7 @@ const NetworkInitialState: NetworkState = {
         state.ipv4Address = action.payload;
       },
     },
-  });
+  }); 
 
 export const {setIPv4Address} = networkSlice.actions;
   // export const selectCount = (state: RootState) => state.login.loggedIn;

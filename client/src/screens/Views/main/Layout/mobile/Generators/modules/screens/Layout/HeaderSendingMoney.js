@@ -7,7 +7,7 @@ const HeaderSendingMoney = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity onPress={() => navigation.navigate("MainIndex")}>
         <FontAwesome
           name="chevron-left"
           size={20}

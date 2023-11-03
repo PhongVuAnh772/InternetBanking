@@ -26,7 +26,7 @@ const LoanRepaidSuccess = () => {
         source={require('../../../../assets/lottieShaking.gif')}
         resizeMode={FastImage.resizeMode.contain}
       />
-      <Text style={styles.text}>Chúc mừng bạn đã vay thành công</Text>
+      <Text style={styles.text}>Cảm ơn bạn đã sử dụng dịch vụ</Text>
     </View>
   )
 }

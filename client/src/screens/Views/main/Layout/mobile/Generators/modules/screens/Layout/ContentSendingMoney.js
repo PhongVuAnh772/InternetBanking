@@ -119,12 +119,12 @@ const ContentSendingMoney = () => {
     dispatch(setBankValueMoney(''));
 
     setModalVisible(false);
-    console.log(
-      BankChoosingIconValue,
-      binBankChoosingValue,
-      BankChoosingValue,
-      longNameBankChoosingValue,
-    );
+    // console.log(
+    //   BankChoosingIconValue,
+    //   binBankChoosingValue,
+    //   BankChoosingValue,
+    //   longNameBankChoosingValue,
+    // );
   };
 
   const handleContinue = () => {
@@ -141,14 +141,14 @@ const ContentSendingMoney = () => {
       onChangeMoney === ''
     ) {
       showToast('error', 'Bạn phải nhập đủ các trường');
-      console.log(
-        BankChoosingValue,
-        STKSendingPerson,
-        binBankChoosingValue,
-        longNameBankChoosingValue,
-        NameOfSTKBankChoosingValue,
-        onChangeMoney,
-      );
+      // console.log(
+      //   BankChoosingValue,
+      //   STKSendingPerson,
+      //   binBankChoosingValue,
+      //   longNameBankChoosingValue,
+      //   NameOfSTKBankChoosingValue,
+      //   onChangeMoney,
+      // );
     } else {
       if (STKSendingPerson != '') {
         dispatch(setSTKBankChoosing(STKSendingPerson));
@@ -209,7 +209,7 @@ const ContentSendingMoney = () => {
       } else {
         await fetchDataUserSTK();
       }
-      console.log(responseDataUser);
+      // console.log(responseDataUser);
     } catch (error) {
       console.log(error);
     }

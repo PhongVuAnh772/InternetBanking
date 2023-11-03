@@ -61,7 +61,7 @@ const DepositMoney = () => {
           cusName: contentName,
           contentSTK: contentSTK,
           time: currentDate.toISOString(),
-          moneyDeposit: 20000,
+          moneyDeposit: highlightedButton,
           directLink: `${'http://localhost:5000'}/api/openDeposit`,
         });
         if (res.data.success) {

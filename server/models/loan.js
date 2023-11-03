@@ -23,6 +23,21 @@ id: {
       Loan_Amount_Repaid: DataTypes.DECIMAL(10, 2),
       Loan_Type: DataTypes.STRING,
       Customer_id: DataTypes.INTEGER,
+      // interest_id: {
+      //   allowNull: false,
+      //   foreignKey: true,
+      //   type: DataTypes.INTEGER,
+      // },
+      // status: {
+      //   allowNull: false,
+      //   foreignKey: true,
+      //   type: DataTypes.BOOLEAN,
+      // },
+      // updated_date: {
+      //   allowNull: false,
+      //   foreignKey: true,
+      //   type: DataTypes.BOOLEAN,
+      // }
     },
     {
       sequelize,

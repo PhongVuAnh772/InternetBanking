@@ -22,13 +22,7 @@ const AuthScreen = ({navigation, route}) => {
     }, 3000);
     return () => clearTimeout(timer);
   }, []);
-  useEffect(() => {
-    Animated.timing(animationValue, {
-      toValue: 1,
-      duration: 3000,
-      useNativeDriver: true,
-    }).start(() => setLoading(false));
-  }, [animationValue]);
+
 
   return loading ? (
     <LoadingScreen />
@@ -38,24 +32,11 @@ const AuthScreen = ({navigation, route}) => {
         source={background}
         resizeMode="cover"
         style={styles.image}>
-        <Animated.View
-          style={[
-            styles.container,
-            {
-              transform: [
-                {
-                  translateX: animationValue.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [500, 0],
-                  }),
-                },
-              ],
-            },
-          ]}>
+        
           <Header />
           <Content />
           <Footer />
-        </Animated.View>
+
       </ImageBackground>
       <StatusBar hidden />
     </>
